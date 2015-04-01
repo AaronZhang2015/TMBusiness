@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		6B7852591ACC353C008F1A49 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B7852581ACC353C008F1A49 /* AppDelegate.swift */; };
-		6B78525B1ACC353C008F1A49 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B78525A1ACC353C008F1A49 /* ViewController.swift */; };
 		6B78525E1ACC353D008F1A49 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6B78525C1ACC353D008F1A49 /* Main.storyboard */; };
 		6B7852601ACC353D008F1A49 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6B78525F1ACC353D008F1A49 /* Images.xcassets */; };
 		6B7852631ACC353D008F1A49 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B7852611ACC353D008F1A49 /* LaunchScreen.xib */; };
@@ -29,7 +28,6 @@
 		6B7852531ACC353C008F1A49 /* TMBusiness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TMBusiness.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B7852571ACC353C008F1A49 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6B7852581ACC353C008F1A49 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		6B78525A1ACC353C008F1A49 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		6B78525D1ACC353D008F1A49 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6B78525F1ACC353D008F1A49 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		6B7852621ACC353D008F1A49 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -77,8 +75,8 @@
 		6B7852551ACC353C008F1A49 /* TMBusiness */ = {
 			isa = PBXGroup;
 			children = (
+				6B78527E1ACC362F008F1A49 /* Classes */,
 				6B7852581ACC353C008F1A49 /* AppDelegate.swift */,
-				6B78525A1ACC353C008F1A49 /* ViewController.swift */,
 				6B78525C1ACC353D008F1A49 /* Main.storyboard */,
 				6B78525F1ACC353D008F1A49 /* Images.xcassets */,
 				6B7852611ACC353D008F1A49 /* LaunchScreen.xib */,
@@ -110,6 +108,53 @@
 				6B78526D1ACC353D008F1A49 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		6B78527E1ACC362F008F1A49 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				6B78527F1ACC362F008F1A49 /* Controllers */,
+				6B7852801ACC362F008F1A49 /* Helpers */,
+				6B7852811ACC362F008F1A49 /* Models */,
+				6B7852821ACC362F008F1A49 /* Stores */,
+				6B7852831ACC362F008F1A49 /* Views */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		6B78527F1ACC362F008F1A49 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		6B7852801ACC362F008F1A49 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		6B7852811ACC362F008F1A49 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		6B7852821ACC362F008F1A49 /* Stores */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Stores;
+			sourceTree = "<group>";
+		};
+		6B7852831ACC362F008F1A49 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -212,7 +257,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6B78525B1ACC353C008F1A49 /* ViewController.swift in Sources */,
 				6B7852591ACC353C008F1A49 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -338,6 +382,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = TMBusiness/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -348,6 +393,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = TMBusiness/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
