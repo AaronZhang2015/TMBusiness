@@ -50,7 +50,6 @@ class TMShop: NSObject {
         }
         return Singleton.instance
     }
-    
 }
 
 /*

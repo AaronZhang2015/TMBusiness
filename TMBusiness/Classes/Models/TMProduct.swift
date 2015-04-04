@@ -56,13 +56,16 @@ class TMProduct: NSObject {
     var image_url: String?
     
     // 官方报价
-    var official_quotation: NSNumber?
+    var official_quotation: NSNumber = 0.0
     
     // 货币单位
     var monetary_unit: String?
     
     // 封面图片宽度
     var width: NSNumber?
+    
+    // 下单数量
+    var quantity: NSNumber = 0
     
     // 封面图片高度
     var height: NSNumber?

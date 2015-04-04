@@ -93,7 +93,7 @@ class TMShopService: NSObject {
                         product.title_5 = productResult["title_5"].string
                         product.description_5 = productResult["description_5"].string
                         product.image_url = productResult["image_url"].string
-                        product.official_quotation = productResult["official_quotation"].number
+                        product.official_quotation = productResult["official_quotation"].numberValue
                         product.monetary_unit = productResult["monetary_unit"].string
                         product.width = productResult["width"].number
                         product.height = productResult["height"].number

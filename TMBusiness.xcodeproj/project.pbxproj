@@ -7,6 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6B1365831ACFBA1900D0A185 /* TMOrderProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1365821ACFBA1900D0A185 /* TMOrderProduct.swift */; };
+		6B4FBD871ACCDD6F0017CB6F /* TMLoginHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4FBD861ACCDD6F0017CB6F /* TMLoginHeaderView.swift */; };
+		6B4FBD891ACCED500017CB6F /* TMSegmentControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4FBD881ACCED500017CB6F /* TMSegmentControl.swift */; };
+		6B4FBD8C1ACD14AC0017CB6F /* ThingMe.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6B4FBD8A1ACD14AC0017CB6F /* ThingMe.xcdatamodeld */; };
+		6B4FBD911ACD16290017CB6F /* TMTakeOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4FBD901ACD16290017CB6F /* TMTakeOrderViewController.swift */; };
+		6B4FBD9E1ACD16F50017CB6F /* TMProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4FBD9D1ACD16F50017CB6F /* TMProductCell.swift */; };
+		6B4FBDA61ACD186B0017CB6F /* AAContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4FBDA41ACD186B0017CB6F /* AAContainerViewController.swift */; };
+		6B4FBDA71ACD186B0017CB6F /* AAScrollMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4FBDA51ACD186B0017CB6F /* AAScrollMenuView.swift */; };
+		6B4FBDA91ACD1C3A0017CB6F /* TMTakeOrderListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4FBDA81ACD1C3A0017CB6F /* TMTakeOrderListHeaderView.swift */; };
+		6B4FBDAD1ACD1FDA0017CB6F /* TMTakeOrderListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4FBDAC1ACD1FDA0017CB6F /* TMTakeOrderListCell.swift */; };
+		6B4FBDAF1ACD25410017CB6F /* TMTakeOrderDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4FBDAE1ACD25410017CB6F /* TMTakeOrderDetailView.swift */; };
+		6B4FBDB11ACD2CBF0017CB6F /* TMTakeOrderPayWayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4FBDB01ACD2CBF0017CB6F /* TMTakeOrderPayWayView.swift */; };
+		6B4FBDB31ACD439B0017CB6F /* TMProductListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4FBDB21ACD439B0017CB6F /* TMProductListViewController.swift */; };
 		6B5F08051ACC551200CBD3BD /* Alamofire.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 6B5F07FA1ACC550600CBD3BD /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6B5F081C1ACC560F00CBD3BD /* TMCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5F08121ACC560F00CBD3BD /* TMCategory.swift */; };
 		6B5F081D1ACC560F00CBD3BD /* TMOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5F08131ACC560F00CBD3BD /* TMOrder.swift */; };
@@ -41,6 +54,9 @@
 		6B7852601ACC353D008F1A49 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6B78525F1ACC353D008F1A49 /* Images.xcassets */; };
 		6B7852631ACC353D008F1A49 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B7852611ACC353D008F1A49 /* LaunchScreen.xib */; };
 		6B78526F1ACC353D008F1A49 /* TMBusinessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B78526E1ACC353D008F1A49 /* TMBusinessTests.swift */; };
+		6BA06F7E1ACE6E4600DDA62E /* AZPagingContainerMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BA06F7C1ACE6E4600DDA62E /* AZPagingContainerMenuView.swift */; };
+		6BA06F7F1ACE6E4600DDA62E /* AZPagingContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BA06F7D1ACE6E4600DDA62E /* AZPagingContainerViewController.swift */; };
+		6BA06F8B1ACE88BB00DDA62E /* AZPagingContainerMenuListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BA06F8A1ACE88BB00DDA62E /* AZPagingContainerMenuListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -139,6 +155,19 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6B1365821ACFBA1900D0A185 /* TMOrderProduct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMOrderProduct.swift; sourceTree = "<group>"; };
+		6B4FBD861ACCDD6F0017CB6F /* TMLoginHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMLoginHeaderView.swift; sourceTree = "<group>"; };
+		6B4FBD881ACCED500017CB6F /* TMSegmentControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMSegmentControl.swift; sourceTree = "<group>"; };
+		6B4FBD8B1ACD14AC0017CB6F /* ThingMe.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ThingMe.xcdatamodel; sourceTree = "<group>"; };
+		6B4FBD901ACD16290017CB6F /* TMTakeOrderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMTakeOrderViewController.swift; sourceTree = "<group>"; };
+		6B4FBD9D1ACD16F50017CB6F /* TMProductCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMProductCell.swift; sourceTree = "<group>"; };
+		6B4FBDA41ACD186B0017CB6F /* AAContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AAContainerViewController.swift; sourceTree = "<group>"; };
+		6B4FBDA51ACD186B0017CB6F /* AAScrollMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AAScrollMenuView.swift; sourceTree = "<group>"; };
+		6B4FBDA81ACD1C3A0017CB6F /* TMTakeOrderListHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMTakeOrderListHeaderView.swift; sourceTree = "<group>"; };
+		6B4FBDAC1ACD1FDA0017CB6F /* TMTakeOrderListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMTakeOrderListCell.swift; sourceTree = "<group>"; };
+		6B4FBDAE1ACD25410017CB6F /* TMTakeOrderDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMTakeOrderDetailView.swift; sourceTree = "<group>"; };
+		6B4FBDB01ACD2CBF0017CB6F /* TMTakeOrderPayWayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMTakeOrderPayWayView.swift; sourceTree = "<group>"; };
+		6B4FBDB21ACD439B0017CB6F /* TMProductListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMProductListViewController.swift; sourceTree = "<group>"; };
 		6B5F07F21ACC550600CBD3BD /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = Alamofire/Alamofire.xcodeproj; sourceTree = "<group>"; };
 		6B5F08121ACC560F00CBD3BD /* TMCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMCategory.swift; sourceTree = "<group>"; };
 		6B5F08131ACC560F00CBD3BD /* TMOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMOrder.swift; sourceTree = "<group>"; };
@@ -177,6 +206,9 @@
 		6B7852681ACC353D008F1A49 /* TMBusinessTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TMBusinessTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B78526D1ACC353D008F1A49 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6B78526E1ACC353D008F1A49 /* TMBusinessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMBusinessTests.swift; sourceTree = "<group>"; };
+		6BA06F7C1ACE6E4600DDA62E /* AZPagingContainerMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZPagingContainerMenuView.swift; sourceTree = "<group>"; };
+		6BA06F7D1ACE6E4600DDA62E /* AZPagingContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZPagingContainerViewController.swift; sourceTree = "<group>"; };
+		6BA06F8A1ACE88BB00DDA62E /* AZPagingContainerMenuListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZPagingContainerMenuListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -197,6 +229,71 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6B4FBD8D1ACD16010017CB6F /* TakeOrder */ = {
+			isa = PBXGroup;
+			children = (
+				6B4FBD8E1ACD16010017CB6F /* Controller */,
+				6B4FBD8F1ACD16010017CB6F /* View */,
+			);
+			path = TakeOrder;
+			sourceTree = "<group>";
+		};
+		6B4FBD8E1ACD16010017CB6F /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				6B4FBD901ACD16290017CB6F /* TMTakeOrderViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		6B4FBD8F1ACD16010017CB6F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				6B4FBDAC1ACD1FDA0017CB6F /* TMTakeOrderListCell.swift */,
+				6B4FBDAE1ACD25410017CB6F /* TMTakeOrderDetailView.swift */,
+				6B4FBDA81ACD1C3A0017CB6F /* TMTakeOrderListHeaderView.swift */,
+				6B4FBDB01ACD2CBF0017CB6F /* TMTakeOrderPayWayView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		6B4FBD981ACD16AA0017CB6F /* ProductList */ = {
+			isa = PBXGroup;
+			children = (
+				6B4FBD991ACD16AA0017CB6F /* Controller */,
+				6B4FBD9A1ACD16AA0017CB6F /* View */,
+			);
+			path = ProductList;
+			sourceTree = "<group>";
+		};
+		6B4FBD991ACD16AA0017CB6F /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				6B4FBDB21ACD439B0017CB6F /* TMProductListViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		6B4FBD9A1ACD16AA0017CB6F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				6B4FBD9D1ACD16F50017CB6F /* TMProductCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		6B4FBD9F1ACD18560017CB6F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				6BA06F7C1ACE6E4600DDA62E /* AZPagingContainerMenuView.swift */,
+				6BA06F8A1ACE88BB00DDA62E /* AZPagingContainerMenuListView.swift */,
+				6BA06F7D1ACE6E4600DDA62E /* AZPagingContainerViewController.swift */,
+				6B4FBDA41ACD186B0017CB6F /* AAContainerViewController.swift */,
+				6B4FBDA51ACD186B0017CB6F /* AAScrollMenuView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		6B5F07F31ACC550600CBD3BD /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -226,6 +323,7 @@
 		6B5F08081ACC55C800CBD3BD /* General */ = {
 			isa = PBXGroup;
 			children = (
+				6B4FBD9F1ACD18560017CB6F /* View */,
 				6B5F08381ACC567B00CBD3BD /* Manager */,
 				6B5F08091ACC55C800CBD3BD /* Extensions */,
 				6B5F080A1ACC55C800CBD3BD /* Helpers */,
@@ -264,6 +362,7 @@
 				6B5F08191ACC560F00CBD3BD /* TMShop.swift */,
 				6B5F081A1ACC560F00CBD3BD /* TMUser.swift */,
 				6B5F081B1ACC560F00CBD3BD /* TMUserAccountBalance.swift */,
+				6B1365821ACFBA1900D0A185 /* TMOrderProduct.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -278,13 +377,13 @@
 		6B5F080D1ACC55C800CBD3BD /* Sections */ = {
 			isa = PBXGroup;
 			children = (
+				6B4FBD981ACD16AA0017CB6F /* ProductList */,
 				6B5F080E1ACC55C800CBD3BD /* Common */,
 				6B5F084B1ACC57F800CBD3BD /* Login */,
 				6B5F084E1ACC57F800CBD3BD /* Master */,
 				6B5F08511ACC57F800CBD3BD /* Order */,
-				6B5F08541ACC57F800CBD3BD /* ProductList */,
 				6B5F08571ACC57F800CBD3BD /* RestingOrder */,
-				6B5F085A1ACC57F800CBD3BD /* TakeOrder */,
+				6B4FBD8D1ACD16010017CB6F /* TakeOrder */,
 			);
 			path = Sections;
 			sourceTree = "<group>";
@@ -362,6 +461,7 @@
 			isa = PBXGroup;
 			children = (
 				6B5F08721ACC5A7100CBD3BD /* TMLoginView.swift */,
+				6B4FBD861ACCDD6F0017CB6F /* TMLoginHeaderView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -386,6 +486,7 @@
 		6B5F08501ACC57F800CBD3BD /* View */ = {
 			isa = PBXGroup;
 			children = (
+				6B4FBD881ACCED500017CB6F /* TMSegmentControl.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -413,29 +514,6 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		6B5F08541ACC57F800CBD3BD /* ProductList */ = {
-			isa = PBXGroup;
-			children = (
-				6B5F08551ACC57F800CBD3BD /* Controller */,
-				6B5F08561ACC57F800CBD3BD /* View */,
-			);
-			path = ProductList;
-			sourceTree = "<group>";
-		};
-		6B5F08551ACC57F800CBD3BD /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		6B5F08561ACC57F800CBD3BD /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
 		6B5F08571ACC57F800CBD3BD /* RestingOrder */ = {
 			isa = PBXGroup;
 			children = (
@@ -453,29 +531,6 @@
 			sourceTree = "<group>";
 		};
 		6B5F08591ACC57F800CBD3BD /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		6B5F085A1ACC57F800CBD3BD /* TakeOrder */ = {
-			isa = PBXGroup;
-			children = (
-				6B5F085B1ACC57F800CBD3BD /* Controller */,
-				6B5F085C1ACC57F800CBD3BD /* View */,
-			);
-			path = TakeOrder;
-			sourceTree = "<group>";
-		};
-		6B5F085B1ACC57F800CBD3BD /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		6B5F085C1ACC57F800CBD3BD /* View */ = {
 			isa = PBXGroup;
 			children = (
 			);
@@ -521,6 +576,7 @@
 				6B78525C1ACC353D008F1A49 /* Main.storyboard */,
 				6B78525F1ACC353D008F1A49 /* Images.xcassets */,
 				6B7852611ACC353D008F1A49 /* LaunchScreen.xib */,
+				6B4FBD8A1ACD14AC0017CB6F /* ThingMe.xcdatamodeld */,
 				6B7852561ACC353C008F1A49 /* Supporting Files */,
 			);
 			path = TMBusiness;
@@ -724,19 +780,28 @@
 			buildActionMask = 2147483647;
 			files = (
 				6B5F083A1ACC568100CBD3BD /* NetworkManager.swift in Sources */,
+				6B4FBD871ACCDD6F0017CB6F /* TMLoginHeaderView.swift in Sources */,
+				6B4FBDA71ACD186B0017CB6F /* AAScrollMenuView.swift in Sources */,
+				6B4FBD891ACCED500017CB6F /* TMSegmentControl.swift in Sources */,
 				6B5F082A1ACC561E00CBD3BD /* TMShopService.swift in Sources */,
 				6B5F081F1ACC560F00CBD3BD /* TMProductRecord.swift in Sources */,
 				6B5F08751ACC5AFA00CBD3BD /* UIColor+LangExt.swift in Sources */,
 				6B5F084A1ACC573400CBD3BD /* BaseViewController.swift in Sources */,
+				6B4FBD8C1ACD14AC0017CB6F /* ThingMe.xcdatamodeld in Sources */,
 				6B5F08291ACC561E00CBD3BD /* TMOrderService.swift in Sources */,
 				6B5F08251ACC560F00CBD3BD /* TMUserAccountBalance.swift in Sources */,
 				6B5F08341ACC564600CBD3BD /* TMShopDataManager.swift in Sources */,
+				6B4FBD9E1ACD16F50017CB6F /* TMProductCell.swift in Sources */,
+				6B4FBDB11ACD2CBF0017CB6F /* TMTakeOrderPayWayView.swift in Sources */,
 				6B5F08331ACC564600CBD3BD /* TMDataManager.swift in Sources */,
+				6B4FBDB31ACD439B0017CB6F /* TMProductListViewController.swift in Sources */,
 				6B5F083E1ACC56D000CBD3BD /* SwiftyJSON.swift in Sources */,
+				6B4FBDAF1ACD25410017CB6F /* TMTakeOrderDetailView.swift in Sources */,
 				6B5F08771ACC5B0200CBD3BD /* UIView+Geometry.swift in Sources */,
 				6B5F08481ACC573400CBD3BD /* BaseNavigationController.swift in Sources */,
 				6B5F08791ACC5C1200CBD3BD /* MasterViewController.swift in Sources */,
 				6B5F08371ACC565700CBD3BD /* TMNetworkManager.swift in Sources */,
+				6BA06F7E1ACE6E4600DDA62E /* AZPagingContainerMenuView.swift in Sources */,
 				6B5F081E1ACC560F00CBD3BD /* TMProduct.swift in Sources */,
 				6B5F08201ACC560F00CBD3BD /* TMRechargeRecord.swift in Sources */,
 				6B5F08421ACC56FB00CBD3BD /* AppManager.swift in Sources */,
@@ -745,9 +810,16 @@
 				6B5F08731ACC5A7100CBD3BD /* TMLoginView.swift in Sources */,
 				6B5F08211ACC560F00CBD3BD /* TMReward.swift in Sources */,
 				6B5F081D1ACC560F00CBD3BD /* TMOrder.swift in Sources */,
+				6B4FBDAD1ACD1FDA0017CB6F /* TMTakeOrderListCell.swift in Sources */,
 				6B5F08241ACC560F00CBD3BD /* TMUser.swift in Sources */,
 				6B5F082B1ACC561E00CBD3BD /* TMUserService.swift in Sources */,
+				6B4FBDA61ACD186B0017CB6F /* AAContainerViewController.swift in Sources */,
+				6BA06F8B1ACE88BB00DDA62E /* AZPagingContainerMenuListView.swift in Sources */,
+				6BA06F7F1ACE6E4600DDA62E /* AZPagingContainerViewController.swift in Sources */,
+				6B1365831ACFBA1900D0A185 /* TMOrderProduct.swift in Sources */,
+				6B4FBD911ACD16290017CB6F /* TMTakeOrderViewController.swift in Sources */,
 				6B5F08231ACC560F00CBD3BD /* TMShop.swift in Sources */,
+				6B4FBDA91ACD1C3A0017CB6F /* TMTakeOrderListHeaderView.swift in Sources */,
 				6B5F08491ACC573400CBD3BD /* BaseTableViewController.swift in Sources */,
 				6B7852591ACC353C008F1A49 /* AppDelegate.swift in Sources */,
 				6B5F085E1ACC581A00CBD3BD /* TMLoginViewController.swift in Sources */,
@@ -972,6 +1044,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		6B4FBD8A1ACD14AC0017CB6F /* ThingMe.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				6B4FBD8B1ACD14AC0017CB6F /* ThingMe.xcdatamodel */,
+			);
+			currentVersion = 6B4FBD8B1ACD14AC0017CB6F /* ThingMe.xcdatamodel */;
+			path = ThingMe.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 6B78524B1ACC353C008F1A49 /* Project object */;
 }

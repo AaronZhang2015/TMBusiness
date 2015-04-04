@@ -17,6 +17,17 @@ class TMShopDataManager: TMDataManager {
         }()
     
     /**
+    商家登录
+    
+    :param: username   用户名or手机号
+    :param: password   密码
+    :param: completion 如果请求正常，返回商铺信息，否则返回错误
+    */
+    func login(username: String, password: String, completion: (TMShop?, NSError?) -> Void) {
+        shopService.login(username, password: password, completion: completion)
+    }
+    
+    /**
     获取商铺分类列表以及分类下的商品列表
     
     :param: shopId     商铺编号
