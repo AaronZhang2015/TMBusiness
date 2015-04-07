@@ -2,12 +2,13 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x"
+      "scale" : "1x",
+      "filename" : "loginbutton.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "loginbutton.png"
+      "filename" : "loginbutton@2x.png"
     },
     {
       "idiom" : "universal",

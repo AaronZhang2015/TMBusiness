@@ -39,10 +39,10 @@ class TMTakeOrderDetailView: UIView {
         discountAmountTitleLabel.text = "优惠金额"
         addSubview(discountAmountTitleLabel)
         
-        discountAmountLabel = UILabel(frame: CGRectMake(91, 65, 142, 22))
+        discountAmountLabel = UILabel(frame: CGRectMake(94, 65, 142, 22))
         discountAmountLabel.font = UIFont.systemFontOfSize(18.0)
-        discountAmountLabel.textAlignment = .Center
-        discountAmountLabel.text = "¥22.00"
+        discountAmountLabel.textAlignment = .Left
+        discountAmountLabel.text = "¥0.00"
         addSubview(discountAmountLabel)
         
         var consumeAmountTitleLabel = UILabel(frame: CGRectMake(260, 25, 60, 18))
@@ -53,7 +53,7 @@ class TMTakeOrderDetailView: UIView {
         consumeAmountLabel = UILabel(frame: CGRectMake(338, 22, 90, 22))
         consumeAmountLabel.font = UIFont.systemFontOfSize(18.0)
         consumeAmountLabel.textAlignment = .Left
-        consumeAmountLabel.text = "¥104.00"
+        consumeAmountLabel.text = "¥0.00"
         addSubview(consumeAmountLabel)
         
         var actualAmountTitleLabel = UILabel(frame: CGRectMake(260, 67, 60, 18))
@@ -65,14 +65,14 @@ class TMTakeOrderDetailView: UIView {
         actualAmountLabel.font = UIFont.systemFontOfSize(18.0)
         actualAmountLabel.textColor = UIColor(hex: 0xFF0000)
         actualAmountLabel.textAlignment = .Left
-        actualAmountLabel.text = "¥104.00"
+        actualAmountLabel.text = "¥0.00"
         addSubview(actualAmountLabel)
         
         // button
         resetButton = UIButton.buttonWithType(.Custom) as UIButton
-        resetButton.frame = CGRectMake(50, 98, 120, 40)
-        resetButton.setBackgroundImage(UIImage(named: "baiseanniu"), forState: .Normal)
-        resetButton.setBackgroundImage(UIImage(named: "baiseanniu_on"), forState: .Highlighted)
+        resetButton.frame = CGRectMake(50, 98, 120, 50)
+        resetButton.setBackgroundImage(UIImage(named: "home_order"), forState: .Normal)
+        resetButton.setBackgroundImage(UIImage(named: "home_order_on"), forState: .Highlighted)
         resetButton.setTitle("重新下单", forState: .Normal)
         resetButton.setTitleColor(UIColor(hex: 0x1E8EBC), forState: .Normal)
         resetButton.setTitleColor(UIColor.whiteColor(), forState: .Highlighted)
@@ -80,9 +80,9 @@ class TMTakeOrderDetailView: UIView {
         
         // button
         restingButton = UIButton.buttonWithType(.Custom) as UIButton
-        restingButton.frame = CGRectMake(186, 98, 95, 40)
-        restingButton.setBackgroundImage(UIImage(named: "baiseanniu"), forState: .Normal)
-        restingButton.setBackgroundImage(UIImage(named: "baiseanniu_on"), forState: .Highlighted)
+        restingButton.frame = CGRectMake(186, 98, 95, 50)
+        restingButton.setBackgroundImage(UIImage(named: "home_order"), forState: .Normal)
+        restingButton.setBackgroundImage(UIImage(named: "home_order_on"), forState: .Highlighted)
         restingButton.setTitle("挂单", forState: .Normal)
         restingButton.setTitleColor(UIColor(hex: 0x1E8EBC), forState: .Normal)
         restingButton.setTitleColor(UIColor.whiteColor(), forState: .Highlighted)
@@ -90,9 +90,9 @@ class TMTakeOrderDetailView: UIView {
         
         // button
         takeOrderButton = UIButton.buttonWithType(.Custom) as UIButton
-        takeOrderButton.frame = CGRectMake(297, 98, 120, 40)
-        takeOrderButton.setBackgroundImage(UIImage(named: "baiseanniu"), forState: .Normal)
-        takeOrderButton.setBackgroundImage(UIImage(named: "baiseanniu_on"), forState: .Highlighted)
+        takeOrderButton.frame = CGRectMake(297, 98, 120, 50)
+        takeOrderButton.setBackgroundImage(UIImage(named: "home_order"), forState: .Normal)
+        takeOrderButton.setBackgroundImage(UIImage(named: "home_order_on"), forState: .Highlighted)
         takeOrderButton.setTitle("生成订单", forState: .Normal)
         takeOrderButton.setTitleColor(UIColor(hex: 0x1E8EBC), forState: .Normal)
         takeOrderButton.setTitleColor(UIColor.whiteColor(), forState: .Highlighted)

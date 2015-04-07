@@ -48,12 +48,12 @@ class TMTakeOrderViewController: BaseViewController {
     }
     
     func configureView() {
-        var bgView = UIView(frame: CGRectMake(8, 10, 444, 556))
+        var bgView = UIView(frame: CGRectMake(8, 10, 444, 570))
         bgView.backgroundColor = UIColor.whiteColor()
         view.addSubview(bgView)
         
         var bgImageView = UIImageView(image: UIImage(named: "xiaopiaobg"))
-        bgImageView.frame = CGRectMake(0, 0, 444, 556)
+        bgImageView.frame = CGRectMake(0, 0, 444, 570)
         bgView.addSubview(bgImageView)
         
         var orderContentView = UIView(frame: CGRectMake(5, 34, 434, 365))
@@ -74,10 +74,10 @@ class TMTakeOrderViewController: BaseViewController {
         // Register class
         tableView.registerClass(TMTakeOrderListCell.self, forCellReuseIdentifier: takeOrderListCellReuseIdentifier)
         
-        orderDetailView = TMTakeOrderDetailView(frame: CGRectMake(0, 399, 444, 157))
+        orderDetailView = TMTakeOrderDetailView(frame: CGRectMake(0, 399, 444, 171))
         bgView.addSubview(orderDetailView)
         
-        orderPayWayView = TMTakeOrderPayWayView(frame: CGRectMake(0, 566, 558, 134))
+        orderPayWayView = TMTakeOrderPayWayView(frame: CGRectMake(0, bgView.bottom, 558, view.height - 64 - bgView.bottom))
         view.addSubview(orderPayWayView)
         
         productListContainerView = UIView(frame: CGRectMake(465, 0, 559, view.height - 64))
@@ -180,8 +180,6 @@ extension TMTakeOrderViewController: UITableViewDataSource {
 extension TMTakeOrderViewController: TMTakeOrderListCellDelegate {
     func orderListDidDelete(product: TMProduct) {
 //        var index = orderProductList
-        editCell = nil
-        editIndexPath = nil
         
         var index = 0
         for ; index < orderProductList.count; ++index {
@@ -191,7 +189,12 @@ extension TMTakeOrderViewController: TMTakeOrderListCellDelegate {
         }
         
         orderProductList.removeAtIndex(index)
-        tableView.reloadData()
+        tableView.beginUpdates()
+        tableView.deleteRowsAtIndexPaths([editIndexPath!], withRowAnimation: UITableViewRowAnimation.Left)
+        tableView.endUpdates()
+        
+        editCell = nil
+        editIndexPath = nil
         updateOrderDetail()
     }
     
@@ -240,14 +243,18 @@ extension TMTakeOrderViewController: TMProductListViewControllerDelegate {
             var quantity: Int = orderProduct!.quantity.integerValue
             quantity += 1
             orderProduct!.quantity = NSNumber(integer: quantity)
+            tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)], withRowAnimation: UITableViewRowAnimation.None)
         } else {
             orderProduct = didSelectedProduct
             orderProduct?.quantity = 1
             orderProductList.append(orderProduct!)
+            tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Bottom)
         }
         
         updateOrderDetail()
-        tableView.reloadData()
-        tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0), atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
+        if editIndexPath != nil {
+            tableView.selectRowAtIndexPath(editIndexPath, animated: false, scrollPosition: UITableViewScrollPosition.None)
+        }
+        tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0), atScrollPosition: UITableViewScrollPosition.Middle, animated: true)
     }
 }

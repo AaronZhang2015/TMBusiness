@@ -2,12 +2,13 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x"
+      "scale" : "1x",
+      "filename" : "zhekoubg.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "zhekoubg.png"
+      "filename" : "zhekoubg@2x.png"
     },
     {
       "idiom" : "universal",

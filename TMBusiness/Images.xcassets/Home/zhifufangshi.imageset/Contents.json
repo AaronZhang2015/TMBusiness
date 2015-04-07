@@ -2,12 +2,13 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x"
+      "scale" : "1x",
+      "filename" : "zhifufangshi.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "zhifufangshi.png"
+      "filename" : "zhifufangshi@2x.png"
     },
     {
       "idiom" : "universal",

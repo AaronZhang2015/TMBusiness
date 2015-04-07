@@ -1,7 +1,19 @@
 {
   "images" : [
     {
+      "resizing" : {
+        "mode" : "3-part-horizontal",
+        "center" : {
+          "mode" : "fill",
+          "width" : 1
+        },
+        "capInsets" : {
+          "right" : 44,
+          "left" : 42
+        }
+      },
       "idiom" : "universal",
+      "filename" : "home_order.png",
       "scale" : "1x"
     },
     {
@@ -12,12 +24,12 @@
           "width" : 1
         },
         "capInsets" : {
-          "right" : 7,
-          "left" : 22
+          "right" : 62,
+          "left" : 76
         }
       },
       "idiom" : "universal",
-      "filename" : "yinyin.png",
+      "filename" : "home_order@2x.png",
       "scale" : "2x"
     },
     {

@@ -2,12 +2,13 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x"
+      "scale" : "1x",
+      "filename" : "tuichu.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "tuichu.png"
+      "filename" : "tuichu@2x.png"
     },
     {
       "idiom" : "universal",

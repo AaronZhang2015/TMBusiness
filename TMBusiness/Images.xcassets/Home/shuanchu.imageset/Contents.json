@@ -2,12 +2,13 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x"
+      "scale" : "1x",
+      "filename" : "shuanchu.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "shuanchu.png"
+      "filename" : "shuanchu@2x.png"
     },
     {
       "idiom" : "universal",

@@ -25,7 +25,7 @@ class TMProductListViewController: BaseViewController {
         super.viewDidLoad()
         
         var flowLayout = UICollectionViewFlowLayout();
-        flowLayout.itemSize = CGSizeMake(125, 80)
+        flowLayout.itemSize = CGSizeMake(170, 105)
         flowLayout.sectionInset = UIEdgeInsetsMake(14, 15, 14, 15)
         flowLayout.scrollDirection = .Vertical
         flowLayout.minimumLineSpacing = 10

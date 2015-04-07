@@ -2,12 +2,13 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x"
+      "scale" : "1x",
+      "filename" : "beizhu.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "beizhu.png"
+      "filename" : "beizhu@2x.png"
     },
     {
       "idiom" : "universal",

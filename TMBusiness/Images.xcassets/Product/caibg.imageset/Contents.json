@@ -3,12 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "food@1x.png"
+      "filename" : "caibg_on.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "caibg_on.png"
+      "filename" : "caibg_on@2x.png"
     },
     {
       "idiom" : "universal",

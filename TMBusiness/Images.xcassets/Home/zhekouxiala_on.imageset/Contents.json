@@ -2,12 +2,13 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x"
+      "scale" : "1x",
+      "filename" : "zhekouxiala_on.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "zhekouxiala_on.png"
+      "filename" : "zhekouxiala_on@2x.png"
     },
     {
       "idiom" : "universal",

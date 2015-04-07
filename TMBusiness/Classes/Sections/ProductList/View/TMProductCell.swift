@@ -22,8 +22,8 @@ class TMProductCell: UICollectionViewCell {
         productNameLabel.font = UIFont.systemFontOfSize(15.0)
         productNameLabel.textAlignment = .Center
         productNameLabel.backgroundColor = UIColor.clearColor()
-        productNameLabel.textColor = UIColor.whiteColor()
-        productNameLabel.highlightedTextColor = UIColor.blackColor()
+        productNameLabel.textColor = UIColor.blackColor()
+            productNameLabel.highlightedTextColor = UIColor.whiteColor()
         addSubview(productNameLabel)
     }
     
