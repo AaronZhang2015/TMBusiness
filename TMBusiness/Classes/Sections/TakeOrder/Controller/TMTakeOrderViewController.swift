@@ -17,11 +17,28 @@ class TMTakeOrderViewController: BaseViewController {
         return TMShopDataManager()
         }()
     
+    // 备注操作
+    private var remarkButton: UIButton!
+    
+    // 订单商品列表头
     private var orderListHeaderView: TMTakeOrderListHeaderView!
+    
+    // 订单商品列表
     private var tableView: UITableView!
+    
+    // 订单详情页面
     private var orderDetailView: TMTakeOrderDetailView!
+    
+    // 支付方式页面
     private var orderPayWayView: TMTakeOrderPayWayView!
+    
+    // 商品列表页面
     private var productListContainerView: UIView!
+    
+    // 备注页面
+    private lazy var remarkView: TMOrderRemarkView = {
+        return TMOrderRemarkView(frame: CGRectMake(0, 0, 400, 320))
+        }()
     
     var editCell: TMTakeOrderListCell?
     var editIndexPath: NSIndexPath?
@@ -55,6 +72,18 @@ class TMTakeOrderViewController: BaseViewController {
         var bgImageView = UIImageView(image: UIImage(named: "xiaopiaobg"))
         bgImageView.frame = CGRectMake(0, 0, 444, 570)
         bgView.addSubview(bgImageView)
+        
+        // 备注按钮
+        remarkButton = UIButton.buttonWithType(.Custom) as UIButton
+        remarkButton.frame = CGRectMake(350, 2, 70, 30)
+        remarkButton.setImage(UIImage(named: "remark_add"), forState: .Normal)
+        remarkButton.setTitle("备注", forState: .Normal)
+        remarkButton.titleLabel?.font = UIFont.systemFontOfSize(17.0)
+        remarkButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
+        remarkButton.imageEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 0)
+        remarkButton.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, remarkButton.titleLabel!.width)
+        remarkButton.addTarget(self, action: "handleRemarkAction", forControlEvents: .TouchUpInside)
+        bgView.addSubview(remarkButton)
         
         var orderContentView = UIView(frame: CGRectMake(5, 34, 434, 365))
         orderContentView.layer.borderWidth = 1
@@ -130,6 +159,13 @@ class TMTakeOrderViewController: BaseViewController {
         
         // 更新价格
         orderDetailView.consumeAmountLabel.text = NSString(format: "%.2f", totalPrice.doubleValue)
+    }
+    
+    
+    
+    // MARK: - Actions
+    func handleRemarkAction() {
+        view.addSubview(remarkView)
     }
 }
 
@@ -243,18 +279,21 @@ extension TMTakeOrderViewController: TMProductListViewControllerDelegate {
             var quantity: Int = orderProduct!.quantity.integerValue
             quantity += 1
             orderProduct!.quantity = NSNumber(integer: quantity)
-            tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)], withRowAnimation: UITableViewRowAnimation.None)
+//            tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)], withRowAnimation: UITableViewRowAnimation.None)
         } else {
             orderProduct = didSelectedProduct
             orderProduct?.quantity = 1
             orderProductList.append(orderProduct!)
-            tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Bottom)
+//            tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Bottom)
         }
         
         updateOrderDetail()
+        
+        tableView.reloadData()
         if editIndexPath != nil {
             tableView.selectRowAtIndexPath(editIndexPath, animated: false, scrollPosition: UITableViewScrollPosition.None)
         }
+        
         tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0), atScrollPosition: UITableViewScrollPosition.Middle, animated: true)
     }
 }

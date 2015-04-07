@@ -53,6 +53,7 @@
 		6B7852601ACC353D008F1A49 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6B78525F1ACC353D008F1A49 /* Images.xcassets */; };
 		6B7852631ACC353D008F1A49 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B7852611ACC353D008F1A49 /* LaunchScreen.xib */; };
 		6B78526F1ACC353D008F1A49 /* TMBusinessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B78526E1ACC353D008F1A49 /* TMBusinessTests.swift */; };
+		6B805C201AD4206500F2D968 /* AZPlaceholderTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B805C1F1AD4206500F2D968 /* AZPlaceholderTextView.swift */; };
 		6BA06F7E1ACE6E4600DDA62E /* AZPagingContainerMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BA06F7C1ACE6E4600DDA62E /* AZPagingContainerMenuView.swift */; };
 		6BA06F7F1ACE6E4600DDA62E /* AZPagingContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BA06F7D1ACE6E4600DDA62E /* AZPagingContainerViewController.swift */; };
 		6BA06F8B1ACE88BB00DDA62E /* AZPagingContainerMenuListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BA06F8A1ACE88BB00DDA62E /* AZPagingContainerMenuListView.swift */; };
@@ -205,6 +206,7 @@
 		6B7852681ACC353D008F1A49 /* TMBusinessTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TMBusinessTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B78526D1ACC353D008F1A49 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6B78526E1ACC353D008F1A49 /* TMBusinessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMBusinessTests.swift; sourceTree = "<group>"; };
+		6B805C1F1AD4206500F2D968 /* AZPlaceholderTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZPlaceholderTextView.swift; sourceTree = "<group>"; };
 		6BA06F7C1ACE6E4600DDA62E /* AZPagingContainerMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZPagingContainerMenuView.swift; sourceTree = "<group>"; };
 		6BA06F7D1ACE6E4600DDA62E /* AZPagingContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZPagingContainerViewController.swift; sourceTree = "<group>"; };
 		6BA06F8A1ACE88BB00DDA62E /* AZPagingContainerMenuListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZPagingContainerMenuListView.swift; sourceTree = "<group>"; };
@@ -291,6 +293,7 @@
 				6BA06F7D1ACE6E4600DDA62E /* AZPagingContainerViewController.swift */,
 				6B4FBDA41ACD186B0017CB6F /* AAContainerViewController.swift */,
 				6B4FBDA51ACD186B0017CB6F /* AAScrollMenuView.swift */,
+				6B805C1F1AD4206500F2D968 /* AZPlaceholderTextView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -803,6 +806,7 @@
 				6B5F08371ACC565700CBD3BD /* TMNetworkManager.swift in Sources */,
 				6BA06F7E1ACE6E4600DDA62E /* AZPagingContainerMenuView.swift in Sources */,
 				6B5F081E1ACC560F00CBD3BD /* TMProduct.swift in Sources */,
+				6B805C201AD4206500F2D968 /* AZPlaceholderTextView.swift in Sources */,
 				6B5F08201ACC560F00CBD3BD /* TMRechargeRecord.swift in Sources */,
 				6B5F08421ACC56FB00CBD3BD /* AppManager.swift in Sources */,
 				6B5F081C1ACC560F00CBD3BD /* TMCategory.swift in Sources */,
