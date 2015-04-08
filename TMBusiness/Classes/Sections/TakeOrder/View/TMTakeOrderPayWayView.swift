@@ -8,6 +8,14 @@
 
 import UIKit
 
+
+enum TMPayType {
+    case Cash
+    case BankCard
+    case MembershipCard
+    case Other
+}
+
 class TMTakeOrderPayWayView: UIView {
     // 会员支付，余额支付
     var balancePayButton: UIButton!

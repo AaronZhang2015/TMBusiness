@@ -35,9 +35,29 @@ class TMTakeOrderViewController: BaseViewController {
     // 商品列表页面
     private var productListContainerView: UIView!
     
+    // 遮罩页面
+    private lazy var maskView: UIView = {
+        var view = UIView(frame: self.view.bounds)
+        view.backgroundColor = UIColor.blackColor()
+        view.alpha = 0
+        return view
+        }()
+    
     // 备注页面
     private lazy var remarkView: TMOrderRemarkView = {
-        return TMOrderRemarkView(frame: CGRectMake(0, 0, 400, 320))
+        var remark = TMOrderRemarkView(frame: CGRectMake(0, 0, 405, 300))
+        remark.alpha = 0
+        remark.orderRemarkViewClosure = { index in
+            self.hideRemarkView()
+        }
+        return remark
+        }()
+    
+    
+    // 现金支付页面
+    private lazy var cashPayView: TMCashPayView = {
+        var payView = TMCashPayView(frame: CGRectZero)
+        return payView
         }()
     
     var editCell: TMTakeOrderListCell?
@@ -64,6 +84,11 @@ class TMTakeOrderViewController: BaseViewController {
         super.didReceiveMemoryWarning()
     }
     
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
+    // 设置所有页面视图
     func configureView() {
         var bgView = UIView(frame: CGRectMake(8, 10, 444, 570))
         bgView.backgroundColor = UIColor.whiteColor()
@@ -111,6 +136,49 @@ class TMTakeOrderViewController: BaseViewController {
         
         productListContainerView = UIView(frame: CGRectMake(465, 0, 559, view.height - 64))
         view.addSubview(productListContainerView)
+        
+        // 监听键盘弹出事件
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidShow:", name: UIKeyboardDidShowNotification, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidHide:", name: UIKeyboardDidHideNotification, object: nil)
+    }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        
+        if let userInfo = notification.userInfo {
+            let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as Double
+            let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as Int
+            
+            var rect = remarkView.frame
+            if let keyboardHeight = userInfo[UIKeyboardFrameEndUserInfoKey]?.CGRectValue().size.height {
+                rect.top = view.height - keyboardHeight - rect.height
+            }
+            
+            UIView.beginAnimations(nil, context: nil)
+            UIView.setAnimationDuration(duration)
+//            UIView.setAnimationCurve(UIViewAnimationCurve(rawValue: curve))
+            remarkView.frame = rect
+            
+            UIView.commitAnimations()
+        }
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        if let userInfo = notification.userInfo {
+            let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as Double
+            let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as Int
+            
+            var rect = remarkView.frame
+            rect.center = maskView.center
+            
+            UIView.beginAnimations(nil, context: nil)
+            UIView.setAnimationDuration(duration)
+            //            UIView.setAnimationCurve(UIViewAnimationCurve(rawValue: curve))
+            remarkView.frame = rect
+            
+            UIView.commitAnimations()
+        }
     }
     
     // 设置菜单列表
@@ -161,11 +229,75 @@ class TMTakeOrderViewController: BaseViewController {
         orderDetailView.consumeAmountLabel.text = NSString(format: "%.2f", totalPrice.doubleValue)
     }
     
-    
-    
     // MARK: - Actions
     func handleRemarkAction() {
-        view.addSubview(remarkView)
+        showRemarkView()
+    }
+    
+    /**
+    显示备注页面
+    */
+    func showRemarkView() {
+        if maskView.superview == nil {
+            view.addSubview(maskView)
+        }
+        
+        if remarkView.superview == nil {
+            view.addSubview(remarkView)
+            remarkView.top = 20
+            remarkView.centerX = maskView.centerX
+        }
+        
+        maskView.alpha = 0.4
+        
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.remarkView.alpha = 1.0
+        }) { (finished) -> Void in
+            self.remarkView.textView.becomeFirstResponder()
+            return
+        }
+        
+        remarkView.transform = CGAffineTransformMakeScale(0.5, 0.5)
+        UIView.animateWithDuration(0.3, delay: 0.0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0.3, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+            self.remarkView.transform = CGAffineTransformIdentity
+        }, completion: nil)
+    }
+    
+    /**
+    隐藏备注页面
+    */
+    func hideRemarkView() {
+        UIView.animateWithDuration(0.3, delay: 0.0, options: .CurveEaseInOut, animations: { () -> Void in
+            self.remarkView.alpha = 0.0
+        }) { (finished) -> Void in
+            self.maskView.alpha = 0
+        }
+    }
+    
+    
+    /**
+    显示现金支付页面
+    */
+    func showCashPayView() {
+        if cashPayView.superview == nil {
+            view.addSubview(cashPayView)
+        }
+        
+        cashPayView.frame = productListContainerView.frame
+        cashPayView.left = view.width
+        
+        var rect = productListContainerView.frame
+        
+        UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseInOut, animations: { () -> Void in
+            self.cashPayView.frame = rect
+        }, completion: nil)
+    }
+    
+    /**
+    隐藏现金支付页面
+    */
+    func hideCashPayView() {
+        
     }
 }
 

@@ -58,6 +58,8 @@
 		6BA06F7F1ACE6E4600DDA62E /* AZPagingContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BA06F7D1ACE6E4600DDA62E /* AZPagingContainerViewController.swift */; };
 		6BA06F8B1ACE88BB00DDA62E /* AZPagingContainerMenuListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BA06F8A1ACE88BB00DDA62E /* AZPagingContainerMenuListView.swift */; };
 		6BEF67221AD3B36400EF2BCB /* TMOrderRemarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEF67211AD3B36400EF2BCB /* TMOrderRemarkView.swift */; };
+		6BEF672C1AD4D5CD00EF2BCB /* JSONHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEF672B1AD4D5CD00EF2BCB /* JSONHelper.swift */; };
+		6BEF67341AD52C2700EF2BCB /* TMCashPayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEF67331AD52C2700EF2BCB /* TMCashPayView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -211,6 +213,8 @@
 		6BA06F7D1ACE6E4600DDA62E /* AZPagingContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZPagingContainerViewController.swift; sourceTree = "<group>"; };
 		6BA06F8A1ACE88BB00DDA62E /* AZPagingContainerMenuListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZPagingContainerMenuListView.swift; sourceTree = "<group>"; };
 		6BEF67211AD3B36400EF2BCB /* TMOrderRemarkView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMOrderRemarkView.swift; sourceTree = "<group>"; };
+		6BEF672B1AD4D5CD00EF2BCB /* JSONHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONHelper.swift; sourceTree = "<group>"; };
+		6BEF67331AD52C2700EF2BCB /* TMCashPayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMCashPayView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -256,6 +260,7 @@
 				6B4FBDA81ACD1C3A0017CB6F /* TMTakeOrderListHeaderView.swift */,
 				6B4FBDB01ACD2CBF0017CB6F /* TMTakeOrderPayWayView.swift */,
 				6BEF67211AD3B36400EF2BCB /* TMOrderRemarkView.swift */,
+				6BEF67331AD52C2700EF2BCB /* TMCashPayView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -349,6 +354,7 @@
 			children = (
 				6B5F08411ACC56FB00CBD3BD /* AppManager.swift */,
 				6B5F083D1ACC56D000CBD3BD /* SwiftyJSON.swift */,
+				6BEF672B1AD4D5CD00EF2BCB /* JSONHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -795,6 +801,7 @@
 				6B5F08251ACC560F00CBD3BD /* TMUserAccountBalance.swift in Sources */,
 				6B5F08341ACC564600CBD3BD /* TMShopDataManager.swift in Sources */,
 				6B4FBD9E1ACD16F50017CB6F /* TMProductCell.swift in Sources */,
+				6BEF672C1AD4D5CD00EF2BCB /* JSONHelper.swift in Sources */,
 				6B4FBDB11ACD2CBF0017CB6F /* TMTakeOrderPayWayView.swift in Sources */,
 				6B5F08331ACC564600CBD3BD /* TMDataManager.swift in Sources */,
 				6B4FBDB31ACD439B0017CB6F /* TMProductListViewController.swift in Sources */,
@@ -813,6 +820,7 @@
 				6B5F08221ACC560F00CBD3BD /* TMRewardRecord.swift in Sources */,
 				6B5F08731ACC5A7100CBD3BD /* TMLoginView.swift in Sources */,
 				6B5F08211ACC560F00CBD3BD /* TMReward.swift in Sources */,
+				6BEF67341AD52C2700EF2BCB /* TMCashPayView.swift in Sources */,
 				6B5F081D1ACC560F00CBD3BD /* TMOrder.swift in Sources */,
 				6B4FBDAD1ACD1FDA0017CB6F /* TMTakeOrderListCell.swift in Sources */,
 				6BEF67221AD3B36400EF2BCB /* TMOrderRemarkView.swift in Sources */,
