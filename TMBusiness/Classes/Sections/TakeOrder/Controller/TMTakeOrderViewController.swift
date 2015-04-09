@@ -57,6 +57,7 @@ class TMTakeOrderViewController: BaseViewController {
     // 现金支付页面
     private lazy var cashPayView: TMCashPayView = {
         var payView = TMCashPayView(frame: CGRectZero)
+        payView.backButton.addTarget(self, action: "hideCashPayView", forControlEvents: .TouchUpInside)
         return payView
         }()
     
@@ -132,16 +133,19 @@ class TMTakeOrderViewController: BaseViewController {
         bgView.addSubview(orderDetailView)
         
         orderPayWayView = TMTakeOrderPayWayView(frame: CGRectMake(0, bgView.bottom, 558, view.height - 64 - bgView.bottom))
+        orderPayWayView.cashPayButton.addTarget(self, action: "showCashPayView", forControlEvents: .TouchUpInside)
         view.addSubview(orderPayWayView)
         
         productListContainerView = UIView(frame: CGRectMake(465, 0, 559, view.height - 64))
         view.addSubview(productListContainerView)
         
         // 监听键盘弹出事件
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidShow:", name: UIKeyboardDidShowNotification, object: nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidHide:", name: UIKeyboardDidHideNotification, object: nil)
+        /*
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidShow:", name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidHide:", name: UIKeyboardDidHideNotification, object: nil)
+        */
     }
     
     func keyboardWillShow(notification: NSNotification) {
@@ -281,10 +285,13 @@ class TMTakeOrderViewController: BaseViewController {
     func showCashPayView() {
         if cashPayView.superview == nil {
             view.addSubview(cashPayView)
+            cashPayView.frame = productListContainerView.frame
+            cashPayView.left = view.width
         }
-        
-        cashPayView.frame = productListContainerView.frame
-        cashPayView.left = view.width
+    
+        if CGRectEqualToRect(cashPayView.frame, productListContainerView.frame) {
+            return
+        }
         
         var rect = productListContainerView.frame
         
@@ -297,7 +304,22 @@ class TMTakeOrderViewController: BaseViewController {
     隐藏现金支付页面
     */
     func hideCashPayView() {
+        if cashPayView.superview == nil {
+            return
+        }
         
+        if cashPayView.left >= view.width {
+            return
+        }
+        
+        var rect = productListContainerView.frame
+        rect.left = view.width
+        
+        UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseInOut, animations: { () -> Void in
+            self.cashPayView.frame = rect
+            }) {finished in
+                self.cashPayView.removeFromSuperview()
+        }
     }
 }
 
@@ -347,7 +369,6 @@ extension TMTakeOrderViewController: UITableViewDataSource {
 
 extension TMTakeOrderViewController: TMTakeOrderListCellDelegate {
     func orderListDidDelete(product: TMProduct) {
-//        var index = orderProductList
         
         var index = 0
         for ; index < orderProductList.count; ++index {
