@@ -57,8 +57,36 @@ class TMTakeOrderViewController: BaseViewController {
     // 现金支付页面
     private lazy var cashPayView: TMCashPayView = {
         var payView = TMCashPayView(frame: CGRectZero)
-        payView.backButton.addTarget(self, action: "hideCashPayView", forControlEvents: .TouchUpInside)
+        
+        payView.backClosure = {
+            self.hideCashPayView(true)
+        }
+        
+        payView.calculateClosure = {
+            
+        }
+        
         return payView
+        }()
+    
+    // 会员支付页面
+    private lazy var membershipCardPayView: TMMemebershipCardPayView = {
+        var payView = TMMemebershipCardPayView(frame: CGRectZero)
+        
+        payView.backClosure = {
+            self.hideMembershipCardPayView(true)
+        }
+        
+        payView.rechargeButton.addTarget(self, action: "showRechargeView", forControlEvents: .TouchUpInside)
+        
+        return payView
+        }()
+    
+    // 充值页面
+    private lazy var rechargeView: TMRechargeView = {
+        var rechargeView = TMRechargeView(frame: CGRectMake(0, 0, 375, 470))
+        
+        return rechargeView
         }()
     
     var editCell: TMTakeOrderListCell?
@@ -134,7 +162,13 @@ class TMTakeOrderViewController: BaseViewController {
         
         orderPayWayView = TMTakeOrderPayWayView(frame: CGRectMake(0, bgView.bottom, 558, view.height - 64 - bgView.bottom))
         orderPayWayView.cashPayButton.addTarget(self, action: "showCashPayView", forControlEvents: .TouchUpInside)
+        orderPayWayView.balancePayButton.addTarget(self, action: "showMembershipCardPayView", forControlEvents: .TouchUpInside)
         view.addSubview(orderPayWayView)
+        
+        //分割线
+        var separatorView = UIImageView(image: UIImage(named: "order_separator"))
+        separatorView.frame = CGRectMake(463, 0, 2, view.height - 64)
+        view.addSubview(separatorView)
         
         productListContainerView = UIView(frame: CGRectMake(465, 0, 559, view.height - 64))
         view.addSubview(productListContainerView)
@@ -278,6 +312,40 @@ class TMTakeOrderViewController: BaseViewController {
         }
     }
     
+    /**
+    显示充值页面
+    */
+    func showRechargeView() {
+        if maskView.superview == nil {
+            view.addSubview(maskView)
+        }
+        
+        if rechargeView.superview == nil {
+            view.addSubview(rechargeView)
+            rechargeView.center = maskView.center
+        }
+        
+        maskView.alpha = 0.4
+        
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.rechargeView.alpha = 1.0
+            }) { (finished) -> Void in
+                return
+        }
+        
+        remarkView.transform = CGAffineTransformMakeScale(0.5, 0.5)
+        UIView.animateWithDuration(0.3, delay: 0.0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0.3, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+            self.rechargeView.transform = CGAffineTransformIdentity
+            }, completion: nil)
+    }
+    
+    /**
+    隐藏充值页面
+    */
+    func hideRechargeView() {
+        
+    }
+    
     
     /**
     显示现金支付页面
@@ -297,14 +365,21 @@ class TMTakeOrderViewController: BaseViewController {
         
         UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseInOut, animations: { () -> Void in
             self.cashPayView.frame = rect
-        }, completion: nil)
+            }) { finished in
+                self.hideMembershipCardPayView(false)
+        }
     }
     
     /**
     隐藏现金支付页面
     */
-    func hideCashPayView() {
+    func hideCashPayView(animated: Bool) {
         if cashPayView.superview == nil {
+            return
+        }
+        
+        if !animated {
+            cashPayView.removeFromSuperview()
             return
         }
         
@@ -319,6 +394,58 @@ class TMTakeOrderViewController: BaseViewController {
             self.cashPayView.frame = rect
             }) {finished in
                 self.cashPayView.removeFromSuperview()
+        }
+    }
+    
+    /**
+    显示会员支付页面
+    */
+    func showMembershipCardPayView() {
+        if membershipCardPayView.superview == nil {
+            view.addSubview(membershipCardPayView)
+            membershipCardPayView.frame = productListContainerView.frame
+            membershipCardPayView.left = view.width
+        }
+        
+        if CGRectEqualToRect(membershipCardPayView.frame, productListContainerView.frame) {
+            return
+        }
+        
+        var rect = productListContainerView.frame
+        
+        UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseInOut, animations: { () -> Void in
+            self.membershipCardPayView.frame = rect
+            }) { finished in
+                self.hideCashPayView(false)
+        }
+    }
+    
+    /**
+    隐藏会员支付页面
+    
+    :param: animated 动画是否开启
+    */
+    func hideMembershipCardPayView(animated: Bool) {
+        if membershipCardPayView.superview == nil {
+            return
+        }
+        
+        if !animated {
+            membershipCardPayView.removeFromSuperview()
+            return
+        }
+        
+        if membershipCardPayView.left >= view.width {
+            return
+        }
+        
+        var rect = productListContainerView.frame
+        rect.left = view.width
+        
+        UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseInOut, animations: { () -> Void in
+            self.membershipCardPayView.frame = rect
+            }) {finished in
+                self.membershipCardPayView.removeFromSuperview()
         }
     }
 }

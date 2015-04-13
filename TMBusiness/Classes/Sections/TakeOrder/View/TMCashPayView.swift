@@ -17,12 +17,41 @@ class TMCashPayView: UIView {
     var consumeLabel: UILabel!
     var actualLabel: UILabel!
     var chargeLabel: UILabel!
+    var leftPanelImageView: UIImageView!
+    var panelImageView: UIImageView!
+    
+    var isDraging: Bool = false
+    var calculateClosure: (() -> ())!
+    var backClosure: (() -> ())!
+    
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
 
         backgroundColor = UIColor(hex: 0xFCFCFC)
         
+        leftPanelImageView = UIImageView(image: UIImage(named: "panel"))
+        leftPanelImageView.highlightedImage = UIImage(named: "panel_on")
+        addSubview(leftPanelImageView)
+        leftPanelImageView.snp_makeConstraints { make in
+            make.width.equalTo(3)
+            make.height.equalTo(self.snp_height)
+            make.left.equalTo(0)
+            make.top.equalTo(0)
+        }
+        
+        panelImageView = UIImageView(image: UIImage(named: "panel_button"))
+        panelImageView.highlightedImage = UIImage(named: "panel_button_on")
+        addSubview(panelImageView)
+        panelImageView.snp_makeConstraints { make in
+            make.width.equalTo(27)
+            make.height.equalTo(32)
+            make.left.equalTo(self.leftPanelImageView.snp_trailing)
+            make.centerY.equalTo(self.leftPanelImageView.snp_centerY)
+        }
         
         // 返回按钮
         backButton = UIButton.buttonWithType(.Custom) as UIButton
@@ -32,13 +61,13 @@ class TMCashPayView: UIView {
         backButton.setImage(UIImage(named: "back"), forState: .Normal)
         backButton.setImage(UIImage(named: "back_on"), forState: .Highlighted)
         backButton.imageEdgeInsets = UIEdgeInsetsMake(0, 50, 0, 0)
+        backButton.addTarget(self, action: "handleBackAction", forControlEvents: .TouchUpInside)
         addSubview(backButton)
         backButton.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(12)
             make.left.equalTo(25)
             make.width.equalTo(100)
             make.height.equalTo(35)
-            return
         }
         
         var consumeTitleLabel = UILabel()
@@ -110,7 +139,7 @@ class TMCashPayView: UIView {
         
         // 计算背景图片
         cashInputImageView.snp_makeConstraints { make in
-            make.left.equalTo(actualTitleLabel.snp_trailing).with.offset(20)
+            make.leading.equalTo(actualTitleLabel.snp_trailing).with.offset(20)
             make.width.equalTo(self.actualLabel.snp_width).offset(34)
             make.height.equalTo(50)
             make.top.equalTo(consumeTitleLabel.snp_bottom).width.offset(21)
@@ -291,7 +320,7 @@ class TMCashPayView: UIView {
             make.left.equalTo(button3.snp_trailing).with.offset(10)
         }
         
-        var buttonCancel = createNumberButton("取消", tag: 22)
+        var buttonCancel = createNumberButton("清空", tag: 22)
         buttonCancel.titleLabel?.lineBreakMode = NSLineBreakMode.ByWordWrapping
         buttonCancel.titleEdgeInsets = UIEdgeInsetsMake(0, 20, 0, 20)
         addSubview(buttonCancel)
@@ -303,6 +332,15 @@ class TMCashPayView: UIView {
         }
     }
     
+    /**
+    创建数字按钮
+    
+    :param: number  数字内容
+    :param: tag     索引号
+    :param: reverse 图片是否倒置
+    
+    :returns: 按钮
+    */
     func createNumberButton(number: String, tag: Int, reverse: Bool = false) -> UIButton {
         var button = UIButton.buttonWithType(.Custom) as UIButton
         
@@ -325,6 +363,11 @@ class TMCashPayView: UIView {
         return button
     }
 
+    /**
+    处理按钮点击事件
+    
+    :param: sender 按钮
+    */
     func handleNumberTap(sender: AnyObject) {
         var tag = sender.tag
         
@@ -348,71 +391,91 @@ class TMCashPayView: UIView {
                 } else {
                     actualLabel.text = "0"
                 }
-                
+            } else if tag == 21 {
+                calculateClosure()
+            } else if tag == 22 {
+                actualLabel.text = "0"
             }
         }
+        
+        updateAmountDetail()
     }
     
+    /**
+    刷新金额详情
+    */
     func updateAmountDetail() {
         if let consumeAmount = consumeLabel.text {
             if let actualAmount = actualLabel.text  {
                 let consume = (consumeAmount as NSString).doubleValue
                 let actual = (actualAmount as NSString).doubleValue
-                let charge = consume - actual
+                let charge = actual - consume
+                let format = ".2"
                 
+                chargeLabel.text = "\(charge.format(format))"
             }
         }
     }
-
-    required init(coder aDecoder: NSCoder) {
-       super.init(coder: aDecoder)
+    
+    /**
+    后退按钮事件
+    */
+    func handleBackAction() {
+        backClosure()
     }
 }
 
-/*
-// 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10(.)
-var text = amountLabel.text
-var tag = sender.tag
-
-// 如果超出长度就不给输入了
-if countElements(text!) > 12 {
-return
+extension TMCashPayView {
+    // MARK - UITouch Events
+    
+    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+        super.touchesBegan(touches, withEvent: event)
+        
+        var touch = touches.anyObject() as UITouch
+        var point = touch.locationInView(self)
+        if CGRectContainsPoint(panelImageView.frame, point) {
+            isDraging = true
+            leftPanelImageView.highlighted = true
+            panelImageView.highlighted = true
+        }
+    }
+    
+    override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
+        super.touchesMoved(touches, withEvent: event)
+        var touch = touches.anyObject() as UITouch
+        var point = touch.locationInView(self)
+        
+        if isDraging {
+            var distance = point.x
+            
+            self.frame.left += distance
+        }
+        
+        println("touchesMoved")
+    }
+    
+    override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
+        super.touchesEnded(touches, withEvent: event)
+        var touch = touches.anyObject() as UITouch
+        var point = touch.locationInView(self)
+        isDraging = false
+        leftPanelImageView.highlighted = false
+        panelImageView.highlighted = false
+        println("touchesEnded")
+    }
+    
+    override func touchesCancelled(touches: NSSet!, withEvent event: UIEvent!) {
+        super.touchesCancelled(touches, withEvent: event)
+        
+        var touch = touches.anyObject() as UITouch
+        var point = touch.locationInView(self)
+        
+        isDraging = false
+        leftPanelImageView.highlighted = false
+        panelImageView.highlighted = false
+        
+        println("point = \(point)")
+        
+        println("touchesCancelled")
+    }
 }
-
-// 小数点
-if tag == 10 {
-// 如果text已经包含小数点，则不进行处理
-if let range = text!.rangeOfString(".") {
-return
-} else {
-// 如果第一个字符是".",那么添加一个0
-if countElements(text!) == 0 {
-text = "0"
-}
-}
-// 如果不包含小数点，则添加进去
-amountLabel.text = "\(text!)."
-} else {
-// 小数点后面可以输入几位
-var range = (text! as NSString).rangeOfString(".")
-if range.location != NSNotFound{
-var length = countElements(text!)
-if (length - range.location - 1) >= ShowNumberOfDecimal {
-return
-}
-}
-// 如果首位是"0"，而第二位不是小数点".", 那么删除"0"字符
-if countElements(text!) == 1 {
-if (text! as NSString).substringToIndex(1) == "0" {
-text = (text! as NSString).substringFromIndex(1)
-}
-
-}
-amountLabel.text = "\(text!)\(tag)"
-}
-
-if countElements(amountLabel.text!) > 0 {
-deleteButton.hidden = false
-}
-
-*/

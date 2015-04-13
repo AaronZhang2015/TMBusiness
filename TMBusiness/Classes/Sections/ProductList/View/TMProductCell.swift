@@ -19,7 +19,7 @@ class TMProductCell: UICollectionViewCell {
         
         productNameLabel = UILabel(frame: bounds)
         productNameLabel.numberOfLines = 3
-        productNameLabel.font = UIFont.systemFontOfSize(15.0)
+        productNameLabel.font = UIFont.systemFontOfSize(20.0)
         productNameLabel.textAlignment = .Center
         productNameLabel.backgroundColor = UIColor.clearColor()
         productNameLabel.textColor = UIColor.blackColor()

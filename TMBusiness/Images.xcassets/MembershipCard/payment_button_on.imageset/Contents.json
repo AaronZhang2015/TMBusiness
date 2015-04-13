@@ -2,40 +2,34 @@
   "images" : [
     {
       "resizing" : {
-        "mode" : "9-part",
+        "mode" : "3-part-horizontal",
         "center" : {
           "mode" : "fill",
-          "width" : 1,
-          "height" : 1
+          "width" : 1
         },
         "capInsets" : {
-          "bottom" : 26,
-          "top" : 23,
-          "right" : 74,
-          "left" : 58
+          "right" : 32,
+          "left" : 84
         }
       },
       "idiom" : "universal",
-      "filename" : "cash_input.png",
+      "filename" : "payment_button_on.png",
       "scale" : "1x"
     },
     {
       "resizing" : {
-        "mode" : "9-part",
+        "mode" : "3-part-horizontal",
         "center" : {
           "mode" : "fill",
-          "width" : 1,
-          "height" : 1
+          "width" : 1
         },
         "capInsets" : {
-          "bottom" : 48,
-          "top" : 40,
-          "right" : 122,
-          "left" : 125
+          "right" : 79,
+          "left" : 138
         }
       },
       "idiom" : "universal",
-      "filename" : "cash_input@2x.png",
+      "filename" : "payment_button_on@2x.png",
       "scale" : "2x"
     },
     {

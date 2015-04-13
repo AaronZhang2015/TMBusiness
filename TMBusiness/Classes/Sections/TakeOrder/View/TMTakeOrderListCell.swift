@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Snap
 
 protocol TMTakeOrderListCellDelegate: class {
     func orderListDidSubtract(product: TMProduct)
@@ -25,6 +26,7 @@ class TMTakeOrderListCell: UITableViewCell {
     var priceLabel: UILabel!
     var deleteButton: UIButton!
     var product: TMProduct?
+    
     weak var delegate: TMTakeOrderListCellDelegate?
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {

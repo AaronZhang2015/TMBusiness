@@ -47,6 +47,14 @@ class AZPlaceholderTextView: UITextView {
     }
     
     private var placeholderLabel: UILabel!
+    
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    override init(frame: CGRect, textContainer: NSTextContainer?) {
+        super.init(frame: frame, textContainer: textContainer)
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -62,13 +70,12 @@ class AZPlaceholderTextView: UITextView {
         font = UIFont.systemFontOfSize(15.0)
     }
 
-    required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+    override func layoutSubviews() {
+        super.layoutSubviews()
+         placeholderLabel.frame = CGRectMake(5, 2, width - 10, 30)
     }
 
-    override init(frame: CGRect, textContainer: NSTextContainer?) {
-        super.init(frame: frame, textContainer: textContainer)
-    }
+   
     // MARK: - Notifications
     
     func textViewDidChange(notification: NSNotification) {
