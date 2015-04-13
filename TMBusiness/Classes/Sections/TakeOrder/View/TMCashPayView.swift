@@ -54,7 +54,7 @@ class TMCashPayView: UIView {
         }
         
         // 返回按钮
-        backButton = UIButton.buttonWithType(.Custom) as UIButton
+        backButton = UIButton.buttonWithType(.Custom) as! UIButton
         backButton.setTitle("返回", forState: .Normal)
         backButton.setTitleColor(UIColor(hex: 0x1E8EBC), forState: .Normal)
         backButton.titleEdgeInsets = UIEdgeInsetsMake(0, -100, 0, 0)
@@ -80,7 +80,7 @@ class TMCashPayView: UIView {
             make.width.equalTo(110)
             make.height.equalTo(24)
             make.left.equalTo(27)
-            make.top.equalTo(self.backButton.snp_bottom).with.offset(22)
+            make.top.equalTo(self.backButton.snp_bottom).offset(22)
         }
         
         consumeLabel = UILabel()
@@ -90,7 +90,7 @@ class TMCashPayView: UIView {
         consumeLabel.textAlignment = .Left
         addSubview(consumeLabel)
         consumeLabel.snp_makeConstraints { make in
-            make.leading.equalTo(consumeTitleLabel.snp_trailing).with.offset(37)
+            make.leading.equalTo(consumeTitleLabel.snp_trailing).offset(37)
             make.top.equalTo(consumeTitleLabel.snp_top)
             make.width.greaterThanOrEqualTo(20)
             make.height.equalTo(consumeTitleLabel.snp_height)
@@ -102,7 +102,7 @@ class TMCashPayView: UIView {
         yuan1Label.textColor = UIColor(hex: 0x222222)
         addSubview(yuan1Label)
         yuan1Label.snp_makeConstraints { make in
-            make.leading.equalTo(self.consumeLabel.snp_trailing).with.offset(10)
+            make.leading.equalTo(self.consumeLabel.snp_trailing).offset(10)
             make.width.equalTo(20)
             make.height.equalTo(consumeTitleLabel.snp_height)
             make.top.equalTo(consumeTitleLabel.snp_top)
@@ -118,7 +118,7 @@ class TMCashPayView: UIView {
             make.width.equalTo(consumeTitleLabel.snp_width)
             make.height.equalTo(consumeTitleLabel.snp_height)
             make.left.equalTo(consumeTitleLabel.snp_left)
-            make.top.equalTo(consumeTitleLabel.snp_bottom).with.offset(34)
+            make.top.equalTo(consumeTitleLabel.snp_bottom).offset(34)
         }
         
         var cashInputImageView = UIImageView(image: UIImage(named: "cash_input"))
@@ -131,7 +131,7 @@ class TMCashPayView: UIView {
         actualLabel.textAlignment = .Left
         addSubview(actualLabel)
         actualLabel.snp_makeConstraints { make in
-            make.leading.equalTo(actualTitleLabel.snp_trailing).with.offset(37)
+            make.leading.equalTo(actualTitleLabel.snp_trailing).offset(37)
             make.top.equalTo(actualTitleLabel.snp_top)
             make.width.greaterThanOrEqualTo(20)
             make.height.equalTo(actualTitleLabel.snp_height)
@@ -139,10 +139,10 @@ class TMCashPayView: UIView {
         
         // 计算背景图片
         cashInputImageView.snp_makeConstraints { make in
-            make.leading.equalTo(actualTitleLabel.snp_trailing).with.offset(20)
+            make.leading.equalTo(actualTitleLabel.snp_trailing).offset(20)
             make.width.equalTo(self.actualLabel.snp_width).offset(34)
             make.height.equalTo(50)
-            make.top.equalTo(consumeTitleLabel.snp_bottom).width.offset(21)
+            make.top.equalTo(consumeTitleLabel.snp_bottom).offset(21)
         }
         
         var yuan2Label = UILabel()
@@ -151,7 +151,7 @@ class TMCashPayView: UIView {
         yuan2Label.textColor = UIColor(hex: 0x222222)
         addSubview(yuan2Label)
         yuan2Label.snp_makeConstraints { make in
-            make.leading.equalTo(cashInputImageView.snp_trailing).with.offset(10)
+            make.leading.equalTo(cashInputImageView.snp_trailing).offset(10)
             make.width.equalTo(20)
             make.height.equalTo(actualTitleLabel.snp_height)
             make.top.equalTo(actualTitleLabel.snp_top)
@@ -167,7 +167,7 @@ class TMCashPayView: UIView {
             make.width.equalTo(actualTitleLabel.snp_width)
             make.height.equalTo(actualTitleLabel.snp_height)
             make.left.equalTo(actualTitleLabel.snp_left)
-            make.top.equalTo(actualTitleLabel.snp_bottom).with.offset(32)
+            make.top.equalTo(actualTitleLabel.snp_bottom).offset(32)
         }
         
         chargeLabel = UILabel()//(frame: CGRectMake(chargeTitleLabel.right + 37, actualTitleLabel.top, 200, 48))
@@ -178,7 +178,7 @@ class TMCashPayView: UIView {
         addSubview(chargeLabel)
         
         chargeLabel.snp_makeConstraints { make in
-            make.leading.equalTo(chargeTitleLabel.snp_trailing).with.offset(37)
+            make.leading.equalTo(chargeTitleLabel.snp_trailing).offset(37)
             make.top.equalTo(chargeTitleLabel.snp_top)
             make.width.greaterThanOrEqualTo(20)
             make.height.equalTo(chargeTitleLabel.snp_height)
@@ -190,7 +190,7 @@ class TMCashPayView: UIView {
         yuan3Label.textColor = UIColor(hex: 0x222222)
         addSubview(yuan3Label)
         yuan3Label.snp_makeConstraints { make in
-            make.leading.equalTo(self.chargeLabel.snp_trailing).with.offset(10)
+            make.leading.equalTo(self.chargeLabel.snp_trailing).offset(10)
             make.width.equalTo(20)
             make.height.equalTo(chargeTitleLabel.snp_height)
             make.top.equalTo(chargeTitleLabel.snp_top)
@@ -202,7 +202,7 @@ class TMCashPayView: UIView {
             make.width.equalTo(115)
             make.height.equalTo(100)
             make.left.equalTo(27)
-            make.top.equalTo(chargeTitleLabel.snp_bottom).with.offset(45)
+            make.top.equalTo(chargeTitleLabel.snp_bottom).offset(45)
         }
         
         var button2 = createNumberButton("2", tag: 2)
@@ -210,7 +210,7 @@ class TMCashPayView: UIView {
         button2.snp_makeConstraints { make in
             make.width.equalTo(button1.snp_width)
             make.height.equalTo(button1.snp_height)
-            make.left.equalTo(button1.snp_trailing).with.offset(10)
+            make.left.equalTo(button1.snp_trailing).offset(10)
             make.top.equalTo(button1.snp_top)
         }
         
@@ -219,7 +219,7 @@ class TMCashPayView: UIView {
         button3.snp_makeConstraints { make in
             make.width.equalTo(button1.snp_width)
             make.height.equalTo(button1.snp_height)
-            make.left.equalTo(button2.snp_trailing).with.offset(10)
+            make.left.equalTo(button2.snp_trailing).offset(10)
             make.top.equalTo(button1.snp_top)
         }
         
@@ -230,7 +230,7 @@ class TMCashPayView: UIView {
             make.width.equalTo(button1.snp_width)
             make.height.equalTo(button1.snp_height)
             make.left.equalTo(button1.snp_left)
-            make.top.equalTo(button1.snp_bottom).with.offset(10)
+            make.top.equalTo(button1.snp_bottom).offset(10)
         }
         
         var button5 = createNumberButton("5", tag: 5)
@@ -238,7 +238,7 @@ class TMCashPayView: UIView {
         button5.snp_makeConstraints { make in
             make.width.equalTo(button1.snp_width)
             make.height.equalTo(button1.snp_height)
-            make.left.equalTo(button4.snp_trailing).with.offset(10)
+            make.left.equalTo(button4.snp_trailing).offset(10)
             make.top.equalTo(button4.snp_top)
         }
         
@@ -247,7 +247,7 @@ class TMCashPayView: UIView {
         button6.snp_makeConstraints { make in
             make.width.equalTo(button1.snp_width)
             make.height.equalTo(button1.snp_height)
-            make.left.equalTo(button5.snp_trailing).with.offset(10)
+            make.left.equalTo(button5.snp_trailing).offset(10)
             make.top.equalTo(button4.snp_top)
         }
         
@@ -257,7 +257,7 @@ class TMCashPayView: UIView {
             make.width.equalTo(button1.snp_width)
             make.height.equalTo(button1.snp_height)
             make.left.equalTo(button1.snp_left)
-            make.top.equalTo(button4.snp_bottom).with.offset(10)
+            make.top.equalTo(button4.snp_bottom).offset(10)
         }
         
         var button8 = createNumberButton("8", tag: 8)
@@ -265,7 +265,7 @@ class TMCashPayView: UIView {
         button8.snp_makeConstraints { make in
             make.width.equalTo(button1.snp_width)
             make.height.equalTo(button1.snp_height)
-            make.left.equalTo(button7.snp_trailing).with.offset(10)
+            make.left.equalTo(button7.snp_trailing).offset(10)
             make.top.equalTo(button7.snp_top)
         }
         
@@ -274,7 +274,7 @@ class TMCashPayView: UIView {
         button9.snp_makeConstraints { make in
             make.width.equalTo(button1.snp_width)
             make.height.equalTo(button1.snp_height)
-            make.left.equalTo(button8.snp_trailing).with.offset(10)
+            make.left.equalTo(button8.snp_trailing).offset(10)
             make.top.equalTo(button7.snp_top)
         }
         
@@ -285,7 +285,7 @@ class TMCashPayView: UIView {
             make.width.equalTo(button1.snp_width)
             make.height.equalTo(button1.snp_height)
             make.left.equalTo(button1.snp_left)
-            make.top.equalTo(button7.snp_bottom).with.offset(10)
+            make.top.equalTo(button7.snp_bottom).offset(10)
         }
         
         // 数字0
@@ -294,7 +294,7 @@ class TMCashPayView: UIView {
         button0.snp_makeConstraints { make in
             make.width.equalTo(button1.snp_width)
             make.height.equalTo(button1.snp_height)
-            make.left.equalTo(buttonDot.snp_trailing).with.offset(10)
+            make.left.equalTo(buttonDot.snp_trailing).offset(10)
             make.top.equalTo(buttonDot.snp_top)
         }
         
@@ -304,7 +304,7 @@ class TMCashPayView: UIView {
         buttonDelete.snp_makeConstraints { make in
             make.width.equalTo(button1.snp_width)
             make.height.equalTo(button1.snp_height)
-            make.left.equalTo(button0.snp_trailing).with.offset(10)
+            make.left.equalTo(button0.snp_trailing).offset(10)
             make.top.equalTo(buttonDot.snp_top)
         }
         
@@ -317,7 +317,7 @@ class TMCashPayView: UIView {
             make.width.equalTo(121)
             make.height.equalTo(212)
             make.top.equalTo(button1.snp_top)
-            make.left.equalTo(button3.snp_trailing).with.offset(10)
+            make.left.equalTo(button3.snp_trailing).offset(10)
         }
         
         var buttonCancel = createNumberButton("清空", tag: 22)
@@ -327,8 +327,8 @@ class TMCashPayView: UIView {
         buttonCancel.snp_makeConstraints { make in
             make.width.equalTo(buttonCalculate.snp_width)
             make.height.equalTo(buttonCalculate.snp_height)
-            make.top.equalTo(buttonCalculate.snp_bottom).with.offset(10)
-            make.left.equalTo(button3.snp_trailing).with.offset(10)
+            make.top.equalTo(buttonCalculate.snp_bottom).offset(10)
+            make.left.equalTo(button3.snp_trailing).offset(10)
         }
     }
     
@@ -342,7 +342,7 @@ class TMCashPayView: UIView {
     :returns: 按钮
     */
     func createNumberButton(number: String, tag: Int, reverse: Bool = false) -> UIButton {
-        var button = UIButton.buttonWithType(.Custom) as UIButton
+        var button = UIButton.buttonWithType(.Custom) as! UIButton
         
         if reverse {
             button.setBackgroundImage(UIImage(named: "cash_button"), forState: .Highlighted)
@@ -380,12 +380,12 @@ class TMCashPayView: UIView {
             // 删除
             if tag == 20 {
                 if let text = actualLabel.text {
-                    var length = countElements(text)
+                    var length = count(text)
                     if length >= 1 {
                         actualLabel.text = (text as NSString).substringToIndex(length - 1)
                     }
 
-                    if countElements(actualLabel.text!) == 0 {
+                    if count(actualLabel.text!) == 0 {
                         actualLabel.text = "0"
                     }
                 } else {
@@ -428,10 +428,10 @@ class TMCashPayView: UIView {
 extension TMCashPayView {
     // MARK - UITouch Events
     
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         super.touchesBegan(touches, withEvent: event)
         
-        var touch = touches.anyObject() as UITouch
+        var touch = touches.first as! UITouch
         var point = touch.locationInView(self)
         if CGRectContainsPoint(panelImageView.frame, point) {
             isDraging = true
@@ -439,35 +439,38 @@ extension TMCashPayView {
             panelImageView.highlighted = true
         }
     }
-    
-    override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
+        
+    override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
         super.touchesMoved(touches, withEvent: event)
-        var touch = touches.anyObject() as UITouch
+    
+        var touch = touches.first as! UITouch
         var point = touch.locationInView(self)
         
         if isDraging {
             var distance = point.x
-            
             self.frame.left += distance
         }
         
         println("touchesMoved")
+
     }
     
-    override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
         super.touchesEnded(touches, withEvent: event)
-        var touch = touches.anyObject() as UITouch
+        
+        var touch = touches.first as! UITouch
         var point = touch.locationInView(self)
         isDraging = false
         leftPanelImageView.highlighted = false
         panelImageView.highlighted = false
         println("touchesEnded")
+
     }
     
-    override func touchesCancelled(touches: NSSet!, withEvent event: UIEvent!) {
+    override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
         super.touchesCancelled(touches, withEvent: event)
         
-        var touch = touches.anyObject() as UITouch
+        var touch = touches.first as! UITouch
         var point = touch.locationInView(self)
         
         isDraging = false
@@ -478,4 +481,5 @@ extension TMCashPayView {
         
         println("touchesCancelled")
     }
+
 }

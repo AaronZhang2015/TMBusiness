@@ -36,7 +36,7 @@ class AZPlaceholderTextView: UITextView {
     override var text: String! {
         didSet {
             
-            if countElements(text) > 0 {
+            if count(text) > 0 {
                 placeholderLabel.hidden = true
             } else {
                 placeholderLabel.hidden = false
@@ -54,10 +54,6 @@ class AZPlaceholderTextView: UITextView {
     
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
-    }
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
         
         placeholderLabel = UILabel(frame: CGRectMake(5, 2, width - 10, 30))
         placeholderLabel.textColor = UIColor.lightGrayColor()
@@ -70,6 +66,10 @@ class AZPlaceholderTextView: UITextView {
         font = UIFont.systemFontOfSize(15.0)
     }
 
+    convenience init(frame: CGRect) {
+        self.init(frame: frame, textContainer: nil)
+    }
+
     override func layoutSubviews() {
         super.layoutSubviews()
          placeholderLabel.frame = CGRectMake(5, 2, width - 10, 30)
@@ -79,7 +79,7 @@ class AZPlaceholderTextView: UITextView {
     // MARK: - Notifications
     
     func textViewDidChange(notification: NSNotification) {
-        if countElements(text) > 0 {
+        if count(text) > 0 {
             placeholderLabel.hidden = true
         } else {
             placeholderLabel.hidden = false

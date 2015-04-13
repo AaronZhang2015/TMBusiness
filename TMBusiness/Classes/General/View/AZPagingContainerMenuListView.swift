@@ -70,7 +70,7 @@ extension AZPagingContainerMenuListView: UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(AZPagingContainerMenuListReuseIdentifier, forIndexPath: indexPath) as AZPagingContainerMenuListCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(AZPagingContainerMenuListReuseIdentifier, forIndexPath: indexPath) as! AZPagingContainerMenuListCell
         cell.productNameLabel.text = items[indexPath.row]
         
         return cell

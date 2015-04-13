@@ -48,7 +48,7 @@ class TMTakeOrderDetailView: UIView {
         discountLabel.text = "暂无折扣"
         addSubview(discountLabel)
         discountLabel.snp_makeConstraints { make in
-            make.left.equalTo(discountTitleLabel.snp_trailing).with.offset(22)
+            make.leading.equalTo(discountTitleLabel.snp_trailing).offset(22.0)
             make.top.equalTo(discountTitleLabel.snp_top)
             make.height.equalTo(discountTitleLabel.snp_height)
             make.width.greaterThanOrEqualTo(40)
@@ -60,7 +60,7 @@ class TMTakeOrderDetailView: UIView {
         addSubview(discountAmountTitleLabel)
         discountAmountTitleLabel.snp_makeConstraints { make in
             make.left.equalTo(discountTitleLabel.snp_leading)
-            make.top.equalTo(discountTitleLabel.snp_bottom).with.offset(19)
+            make.top.equalTo(discountTitleLabel.snp_bottom).offset(19)
             make.width.equalTo(discountTitleLabel.snp_width)
             make.height.equalTo(discountTitleLabel.snp_height)
         }
@@ -71,7 +71,7 @@ class TMTakeOrderDetailView: UIView {
         discountAmountLabel.text = "¥0.00"
         addSubview(discountAmountLabel)
         discountAmountLabel.snp_makeConstraints { make in
-            make.left.equalTo(discountAmountTitleLabel.snp_trailing).with.offset(22)
+            make.left.equalTo(discountAmountTitleLabel.snp_trailing).offset(22)
             make.top.equalTo(discountAmountTitleLabel.snp_top)
             make.height.equalTo(discountAmountTitleLabel.snp_height)
             make.width.greaterThanOrEqualTo(40)
@@ -95,7 +95,7 @@ class TMTakeOrderDetailView: UIView {
         consumeAmountLabel.text = "¥0.00"
         addSubview(consumeAmountLabel)
         consumeAmountLabel.snp_makeConstraints { make in
-            make.left.equalTo(consumeAmountTitleLabel.snp_trailing).with.offset(22)
+            make.left.equalTo(consumeAmountTitleLabel.snp_trailing).offset(22)
             make.top.equalTo(consumeAmountTitleLabel.snp_top)
             make.height.equalTo(consumeAmountTitleLabel.snp_height)
             make.width.greaterThanOrEqualTo(40)
@@ -108,7 +108,7 @@ class TMTakeOrderDetailView: UIView {
         addSubview(actualAmountTitleLabel)
         actualAmountTitleLabel.snp_makeConstraints { make in
             make.left.equalTo(consumeAmountTitleLabel.snp_leading)
-            make.top.equalTo(consumeAmountTitleLabel.snp_bottom).with.offset(19)
+            make.top.equalTo(consumeAmountTitleLabel.snp_bottom).offset(19)
             make.width.equalTo(consumeAmountTitleLabel.snp_width)
             make.height.equalTo(consumeAmountTitleLabel.snp_height)
         }
@@ -120,15 +120,15 @@ class TMTakeOrderDetailView: UIView {
         actualAmountLabel.text = "¥0.00"
         addSubview(actualAmountLabel)
         actualAmountLabel.snp_makeConstraints { make in
-            make.left.equalTo(actualAmountTitleLabel.snp_trailing).with.offset(22)
-            make.top.equalTo(actualAmountTitleLabel.snp_top).with.offset(-4)
+            make.left.equalTo(actualAmountTitleLabel.snp_trailing).offset(22)
+            make.top.equalTo(actualAmountTitleLabel.snp_top).offset(-4)
             make.width.greaterThanOrEqualTo(40)
-            make.height.equalTo(actualAmountTitleLabel.snp_height).with.offset(4)
+            make.height.equalTo(actualAmountTitleLabel.snp_height).offset(4)
         }
         
         
         // button
-        resetButton = UIButton.buttonWithType(.Custom) as UIButton
+        resetButton = UIButton.buttonWithType(.Custom) as! UIButton
         
         resetButton.titleLabel?.font = UIFont.systemFontOfSize(22.0)
         resetButton.setBackgroundImage(UIImage(named: "home_order"), forState: .Normal)
@@ -141,12 +141,12 @@ class TMTakeOrderDetailView: UIView {
             make.width.equalTo(131)
             make.height.equalTo(50)
             make.left.equalTo(39)
-            make.top.equalTo(discountAmountTitleLabel.snp_bottom).with.offset(18)
+            make.top.equalTo(discountAmountTitleLabel.snp_bottom).offset(18)
         }
         
         
         // button
-        restingButton = UIButton.buttonWithType(.Custom) as UIButton
+        restingButton = UIButton.buttonWithType(.Custom) as! UIButton
         restingButton.titleLabel?.font = UIFont.systemFontOfSize(22.0)
         restingButton.setBackgroundImage(UIImage(named: "home_order"), forState: .Normal)
         restingButton.setBackgroundImage(UIImage(named: "home_order_on"), forState: .Highlighted)
@@ -157,12 +157,12 @@ class TMTakeOrderDetailView: UIView {
         restingButton.snp_makeConstraints { make in
             make.width.equalTo(106)
             make.height.equalTo(50)
-            make.left.equalTo(self.resetButton.snp_trailing).with.offset(10)
-            make.top.equalTo(discountAmountTitleLabel.snp_bottom).with.offset(18)
+            make.left.equalTo(self.resetButton.snp_trailing).offset(10)
+            make.top.equalTo(discountAmountTitleLabel.snp_bottom).offset(18)
         }
         
         // button
-        takeOrderButton = UIButton.buttonWithType(.Custom) as UIButton
+        takeOrderButton = UIButton.buttonWithType(.Custom) as! UIButton
         takeOrderButton.titleLabel?.font = UIFont.systemFontOfSize(22.0)
         takeOrderButton.setBackgroundImage(UIImage(named: "home_order"), forState: .Normal)
         takeOrderButton.setBackgroundImage(UIImage(named: "home_order_on"), forState: .Highlighted)
@@ -173,8 +173,8 @@ class TMTakeOrderDetailView: UIView {
         takeOrderButton.snp_makeConstraints { make in
             make.width.equalTo(131)
             make.height.equalTo(50)
-            make.left.equalTo(self.restingButton.snp_trailing).with.offset(10)
-            make.top.equalTo(discountAmountTitleLabel.snp_bottom).with.offset(18)
+            make.left.equalTo(self.restingButton.snp_trailing).offset(10)
+            make.top.equalTo(discountAmountTitleLabel.snp_bottom).offset(18)
         }
     }
 

@@ -20,7 +20,7 @@ extension String {
     :returns: 处理后的结果
     */
     func hanldeAmountNumberFormat(text: String) -> String {
-        if countElements(self) > 12 {
+        if count(self) > 12 {
             return self
         }
         
@@ -31,7 +31,7 @@ extension String {
                 return self
             } else {
                 // 如果第一个字符是".",那么添加一个0
-                if countElements(self) == 0 {
+                if count(self) == 0 {
                     return "0"
                 }
             }
@@ -42,13 +42,13 @@ extension String {
             // 小数点后面可以输入几位
             var range = (self as NSString).rangeOfString(".")
             if range.location != NSNotFound{
-                var length = countElements(self)
+                var length = count(self)
                 if (length - range.location - 1) >= 2 {
                     return self
                 }
             }
             // 如果首位是"0"，而第二位不是小数点".", 那么删除"0"字符
-            if countElements(self) == 1 {
+            if count(self) == 1 {
                 if (self as NSString).substringToIndex(1) == "0" {
                     return "\((self as NSString).substringFromIndex(1))\(text)"
                 }

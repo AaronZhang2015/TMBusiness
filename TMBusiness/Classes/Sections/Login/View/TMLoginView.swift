@@ -70,7 +70,7 @@ class TMLoginView: UIView {
         contentView.addSubview(passwordTextField)
         
         // login button
-        loginButton = UIButton.buttonWithType(.Custom) as UIButton
+        loginButton = UIButton.buttonWithType(.Custom) as! UIButton
         loginButton.setTitle("登录", forState: .Normal)
         loginButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         loginButton.titleLabel?.font = UIFont.systemFontOfSize(18.0)

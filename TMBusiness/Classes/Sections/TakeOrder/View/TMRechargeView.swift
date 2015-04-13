@@ -66,7 +66,7 @@ class TMRechargeView: UIView {
         phoneTitleLabel.textColor = UIColor(hex: 0x222222)
         addSubview(phoneTitleLabel)
         phoneTitleLabel.snp_makeConstraints { make in
-            make.leading.equalTo(phoneBackgroundImageView.snp_leading).with.offset(21)
+            make.leading.equalTo(phoneBackgroundImageView.snp_leading).offset(21)
             make.centerY.equalTo(phoneBackgroundImageView.snp_centerY)
             make.width.equalTo(45)
             make.height.equalTo(20)
@@ -77,7 +77,7 @@ class TMRechargeView: UIView {
         var nicknameBackgroundImageView = UIImageView(image: UIImage(named: "cash_input"))
         addSubview(nicknameBackgroundImageView)
         nicknameBackgroundImageView.snp_makeConstraints { make in
-            make.top.equalTo(phoneBackgroundImageView.snp_bottom).with.offset(6)
+            make.top.equalTo(phoneBackgroundImageView.snp_bottom).offset(6)
             make.leading.equalTo(20)
             make.trailing.equalTo(-20)
             make.height.equalTo(45)
@@ -88,7 +88,7 @@ class TMRechargeView: UIView {
         nicknameTitleLabel.textColor = UIColor(hex: 0x222222)
         addSubview(nicknameTitleLabel)
         nicknameTitleLabel.snp_makeConstraints { make in
-            make.leading.equalTo(nicknameBackgroundImageView.snp_leading).with.offset(21)
+            make.leading.equalTo(nicknameBackgroundImageView.snp_leading).offset(21)
             make.centerY.equalTo(nicknameBackgroundImageView.snp_centerY)
             make.width.equalTo(45)
             make.height.equalTo(20)
@@ -99,7 +99,7 @@ class TMRechargeView: UIView {
         rechargeBgImageView.snp_makeConstraints { make in
             make.leading.equalTo(20)
             make.trailing.equalTo(-20)
-            make.top.equalTo(nicknameBackgroundImageView.snp_bottom).with.offset(14)
+            make.top.equalTo(nicknameBackgroundImageView.snp_bottom).offset(14)
             make.height.equalTo(196)
         }
         
@@ -119,7 +119,7 @@ class TMRechargeView: UIView {
         
         tableView.registerClass(TMRechargeTypeCell.self, forCellReuseIdentifier: TMRechargeTypeCellIdentifier)
         
-        var cancelButton = UIButton.buttonWithType(.Custom) as UIButton
+        var cancelButton = UIButton.buttonWithType(.Custom) as! UIButton
         cancelButton.setBackgroundImage(UIImage(named: "recharge_cancel"), forState: .Normal)
         cancelButton.setBackgroundImage(UIImage(named: "recharge_cancel_on"), forState: .Highlighted)
         cancelButton.setTitleColor(UIColor(hex: 0x1E8EBC), forState: .Normal)
@@ -129,11 +129,11 @@ class TMRechargeView: UIView {
         addSubview(cancelButton)
         cancelButton.snp_makeConstraints { make in
             make.leading.equalTo(15)
-            make.top.equalTo(rechargeBgImageView.snp_bottom).with.offset(21)
+            make.top.equalTo(rechargeBgImageView.snp_bottom).offset(21)
             make.size.equalTo(CGSizeMake(110, 50))
         }
         
-        var cashButton = UIButton.buttonWithType(.Custom) as UIButton
+        var cashButton = UIButton.buttonWithType(.Custom) as! UIButton
         cashButton.setBackgroundImage(UIImage(named: "recharge_commit"), forState: .Normal)
         cashButton.setBackgroundImage(UIImage(named: "recharge_commit_on"), forState: .Highlighted)
         cashButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
@@ -141,12 +141,12 @@ class TMRechargeView: UIView {
         cashButton.titleLabel?.font = UIFont.systemFontOfSize(22.0)
         addSubview(cashButton)
         cashButton.snp_makeConstraints { make in
-            make.leading.equalTo(cancelButton.snp_trailing).with.offset(7)
-            make.top.equalTo(rechargeBgImageView.snp_bottom).with.offset(21)
+            make.leading.equalTo(cancelButton.snp_trailing).offset(7)
+            make.top.equalTo(rechargeBgImageView.snp_bottom).offset(21)
             make.size.equalTo(CGSizeMake(110, 50))
         }
         
-        var cardButton = UIButton.buttonWithType(.Custom) as UIButton
+        var cardButton = UIButton.buttonWithType(.Custom) as! UIButton
         cardButton.setBackgroundImage(UIImage(named: "recharge_commit"), forState: .Normal)
         cardButton.setBackgroundImage(UIImage(named: "recharge_commit_on"), forState: .Highlighted)
         cardButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
@@ -154,8 +154,8 @@ class TMRechargeView: UIView {
         cardButton.titleLabel?.font = UIFont.systemFontOfSize(22.0)
         addSubview(cardButton)
         cardButton.snp_makeConstraints { make in
-            make.leading.equalTo(cashButton.snp_trailing).with.offset(7)
-            make.top.equalTo(rechargeBgImageView.snp_bottom).with.offset(21)
+            make.leading.equalTo(cashButton.snp_trailing).offset(7)
+            make.top.equalTo(rechargeBgImageView.snp_bottom).offset(21)
             make.size.equalTo(CGSizeMake(110, 50))
         }
     }
@@ -164,7 +164,7 @@ class TMRechargeView: UIView {
 
 extension TMRechargeView: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cell = tableView.cellForRowAtIndexPath(indexPath) as TMRechargeTypeCell
+        let cell = tableView.cellForRowAtIndexPath(indexPath) as! TMRechargeTypeCell
         cell.rechargeTypeButton.selected = true
     }
 }
@@ -180,7 +180,7 @@ extension TMRechargeView: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(TMRechargeTypeCellIdentifier, forIndexPath: indexPath) as TMRechargeTypeCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(TMRechargeTypeCellIdentifier, forIndexPath: indexPath) as! TMRechargeTypeCell
         return cell
     }
 }
@@ -199,7 +199,7 @@ class TMRechargeTypeCell: UITableViewCell {
         backgroundColor = UIColor.clearColor()
         selectionStyle = .None
         
-        rechargeTypeButton = UIButton.buttonWithType(.Custom) as UIButton
+        rechargeTypeButton = UIButton.buttonWithType(.Custom) as! UIButton
         rechargeTypeButton.setBackgroundImage(UIImage(named: "recharge_cell"), forState: .Normal)
         rechargeTypeButton.setBackgroundImage(UIImage(named: "recharge_cell_on"), forState: .Highlighted)
         rechargeTypeButton.setBackgroundImage(UIImage(named: "recharge_cell_on"), forState: .Selected)

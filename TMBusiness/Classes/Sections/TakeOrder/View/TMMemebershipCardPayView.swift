@@ -81,7 +81,7 @@ class TMMemebershipCardPayView: UIView {
         }
         
         // 返回按钮
-        backButton = UIButton.buttonWithType(.Custom) as UIButton
+        backButton = UIButton.buttonWithType(.Custom) as! UIButton
         backButton.setTitle("返回", forState: .Normal)
         backButton.setTitleColor(UIColor(hex: 0x1E8EBC), forState: .Normal)
         backButton.titleEdgeInsets = UIEdgeInsetsMake(0, -100, 0, 0)
@@ -103,7 +103,7 @@ class TMMemebershipCardPayView: UIView {
         addSubview(phoneBackgroundImageView)
         phoneBackgroundImageView.snp_makeConstraints { make in
             make.leading.equalTo(25)
-            make.top.equalTo(self.backButton.snp_bottom).with.offset(20)
+            make.top.equalTo(self.backButton.snp_bottom).offset(20)
             make.width.equalTo(410)
             make.height.equalTo(45)
         }
@@ -116,24 +116,24 @@ class TMMemebershipCardPayView: UIView {
         phoneNumberTextField.font = UIFont.systemFontOfSize(18.0)
         addSubview(phoneNumberTextField)
         phoneNumberTextField.snp_makeConstraints { make in
-            make.leading.equalTo(phoneBackgroundImageView.snp_leading).with.offset(15.0)
+            make.leading.equalTo(phoneBackgroundImageView.snp_leading).offset(15.0)
             make.height.equalTo(phoneBackgroundImageView.snp_height)
             make.top.equalTo(phoneBackgroundImageView.snp_top)
-            make.trailing.equalTo(phoneBackgroundImageView.snp_trailing).with.offset(-60)
+            make.trailing.equalTo(phoneBackgroundImageView.snp_trailing).offset(-60)
         }
         
         // 中间分割线
         var phoneSeparatorView = UIImageView(image: UIImage(named: "phone_separator"))
         addSubview(phoneSeparatorView)
         phoneSeparatorView.snp_makeConstraints { make in
-            make.trailing.equalTo(phoneBackgroundImageView.snp_trailing).with.offset(-53)
+            make.trailing.equalTo(phoneBackgroundImageView.snp_trailing).offset(-53)
             make.height.equalTo(25.0)
             make.width.equalTo(1.0)
             make.centerY.equalTo(phoneBackgroundImageView.snp_centerY)
         }
         
         // 搜索按钮
-        var searchButton = UIButton.buttonWithType(.Custom) as UIButton
+        var searchButton = UIButton.buttonWithType(.Custom) as! UIButton
         searchButton.setImage(UIImage(named: "search_button"), forState: .Normal)
         searchButton.setImage(UIImage(named: "search_button_on"), forState: .Highlighted)
         addSubview(searchButton)
@@ -144,7 +144,7 @@ class TMMemebershipCardPayView: UIView {
         }
         
         // 扫一扫按钮
-        var scanButton = UIButton.buttonWithType(.Custom) as UIButton
+        var scanButton = UIButton.buttonWithType(.Custom) as! UIButton
         scanButton.setBackgroundImage(UIImage(named: "scan_button"), forState: .Normal)
         scanButton.setBackgroundImage(UIImage(named: "scan_button_on"), forState: .Highlighted)
         scanButton.setTitle("扫一扫", forState: .Normal)
@@ -164,7 +164,7 @@ class TMMemebershipCardPayView: UIView {
         phoneTitleLabel.text = "手机"
         addSubview(phoneTitleLabel)
         phoneTitleLabel.snp_makeConstraints { make in
-            make.top.equalTo(phoneBackgroundImageView.snp_bottom).with.offset(24)
+            make.top.equalTo(phoneBackgroundImageView.snp_bottom).offset(24)
             make.width.equalTo(85.0)
             make.height.equalTo(20.0)
             make.leading.equalTo(41)
@@ -180,7 +180,7 @@ class TMMemebershipCardPayView: UIView {
             make.top.equalTo(phoneTitleLabel.snp_top)
             make.width.equalTo(180.0)
             make.height.equalTo(20.0)
-            make.leading.equalTo(phoneTitleLabel.snp_trailing).with.offset(10.0)
+            make.leading.equalTo(phoneTitleLabel.snp_trailing).offset(10.0)
         }
         
         // 昵称
@@ -194,7 +194,7 @@ class TMMemebershipCardPayView: UIView {
             make.top.equalTo(phoneTitleLabel.snp_top)
             make.width.equalTo(85)
             make.height.equalTo(20.0)
-            make.leading.equalTo(self.phoneNumberLabel.snp_trailing).with.offset(0.0)
+            make.leading.equalTo(self.phoneNumberLabel.snp_trailing).offset(0.0)
         }
         
         nicknameLabel = UILabel()
@@ -205,9 +205,9 @@ class TMMemebershipCardPayView: UIView {
         addSubview(nicknameLabel)
         nicknameLabel.snp_makeConstraints { make in
             make.top.equalTo(phoneTitleLabel.snp_top)
-            make.trailing.equalTo(self.snp_trailing).with.offset(-20)
+            make.trailing.equalTo(self.snp_trailing).offset(-20)
             make.height.equalTo(20.0)
-            make.leading.equalTo(nicknameTitleLabel.snp_trailing).with.offset(10.0)
+            make.leading.equalTo(nicknameTitleLabel.snp_trailing).offset(10.0)
         }
         
         // 余额
@@ -218,7 +218,7 @@ class TMMemebershipCardPayView: UIView {
         balanceTitleLabel.text = "余额"
         addSubview(balanceTitleLabel)
         balanceTitleLabel.snp_makeConstraints { make in
-            make.top.equalTo(phoneTitleLabel.snp_bottom).with.offset(30)
+            make.top.equalTo(phoneTitleLabel.snp_bottom).offset(30)
             make.width.equalTo(85.0)
             make.height.equalTo(20.0)
             make.leading.equalTo(41)
@@ -234,11 +234,11 @@ class TMMemebershipCardPayView: UIView {
             make.top.equalTo(balanceTitleLabel.snp_top)
             make.width.equalTo(82)
             make.height.equalTo(20.0)
-            make.leading.equalTo(balanceTitleLabel.snp_trailing).with.offset(10.0)
+            make.leading.equalTo(balanceTitleLabel.snp_trailing).offset(10.0)
         }
         
         // 充值按钮
-        rechargeButton = UIButton.buttonWithType(.Custom) as UIButton
+        rechargeButton = UIButton.buttonWithType(.Custom) as! UIButton
         rechargeButton.setBackgroundImage(UIImage(named: "recharge_button"), forState: .Normal)
         rechargeButton.setBackgroundImage(UIImage(named: "recharge_button_on"), forState: .Highlighted)
         rechargeButton.setTitle("充值", forState: .Normal)
@@ -247,7 +247,7 @@ class TMMemebershipCardPayView: UIView {
         addSubview(rechargeButton)
         rechargeButton.snp_makeConstraints { make in
             make.size.equalTo(CGSizeMake(80, 45))
-            make.trailing.equalTo(self.snp_trailing).with.offset(-20.0)
+            make.trailing.equalTo(self.snp_trailing).offset(-20.0)
             make.centerY.equalTo(self.balanceLabel.snp_centerY)
         }
         
@@ -259,7 +259,7 @@ class TMMemebershipCardPayView: UIView {
         discountTitleLabel.text = "折扣"
         addSubview(discountTitleLabel)
         discountTitleLabel.snp_makeConstraints { make in
-            make.top.equalTo(balanceTitleLabel.snp_bottom).with.offset(30)
+            make.top.equalTo(balanceTitleLabel.snp_bottom).offset(30)
             make.width.equalTo(85)
             make.height.equalTo(20.0)
             make.leading.equalTo(41)
@@ -275,7 +275,7 @@ class TMMemebershipCardPayView: UIView {
             make.top.equalTo(discountTitleLabel.snp_top)
             make.width.equalTo(60)
             make.height.equalTo(20.0)
-            make.leading.equalTo(discountTitleLabel.snp_trailing).with.offset(10.0)
+            make.leading.equalTo(discountTitleLabel.snp_trailing).offset(10.0)
         }
         
         // checkbox
@@ -288,14 +288,14 @@ class TMMemebershipCardPayView: UIView {
         consumeTitleLabel.text = "消费记录"
         addSubview(consumeTitleLabel)
         consumeTitleLabel.snp_makeConstraints { make in
-            make.top.equalTo(balanceTitleLabel.snp_bottom).with.offset(30)
+            make.top.equalTo(balanceTitleLabel.snp_bottom).offset(30)
             make.width.equalTo(85)
             make.height.equalTo(20.0)
             make.leading.equalTo(nicknameTitleLabel.snp_leading)
         }
         
         // 消费记录查看按钮
-        var consumeButton = UIButton.buttonWithType(.Custom) as UIButton
+        var consumeButton = UIButton.buttonWithType(.Custom) as! UIButton
         consumeButton.setBackgroundImage(UIImage(named: "recharge_button"), forState: .Normal)
         consumeButton.setBackgroundImage(UIImage(named: "recharge_button_on"), forState: .Highlighted)
         consumeButton.setTitle("查看", forState: .Normal)
@@ -304,7 +304,7 @@ class TMMemebershipCardPayView: UIView {
         addSubview(consumeButton)
         consumeButton.snp_makeConstraints { make in
             make.size.equalTo(CGSizeMake(80, 45))
-            make.trailing.equalTo(self.snp_trailing).with.offset(-20.0)
+            make.trailing.equalTo(self.snp_trailing).offset(-20.0)
             make.centerY.equalTo(consumeTitleLabel.snp_centerY)
         }
         
@@ -315,8 +315,8 @@ class TMMemebershipCardPayView: UIView {
         addSubview(consumeDetailImageView)
         consumeDetailImageView.snp_makeConstraints { make in
             make.leading.equalTo(25)
-            make.top.equalTo(discountTitleLabel.snp_bottom).with.offset(24)
-            make.trailing.equalTo(self.snp_trailing).with.offset(-25)
+            make.top.equalTo(discountTitleLabel.snp_bottom).offset(24)
+            make.trailing.equalTo(self.snp_trailing).offset(-25)
             make.height.equalTo(101)
         }
         
@@ -328,7 +328,7 @@ class TMMemebershipCardPayView: UIView {
         consumeAmountTitleLabel.textAlignment = .Left
         addSubview(consumeAmountTitleLabel)
         consumeAmountTitleLabel.snp_makeConstraints { make in
-            make.top.equalTo(consumeDetailImageView.snp_top).with.offset(15)
+            make.top.equalTo(consumeDetailImageView.snp_top).offset(15)
             make.width.equalTo(85)
             make.height.equalTo(20.0)
             make.leading.equalTo(41)
@@ -341,8 +341,8 @@ class TMMemebershipCardPayView: UIView {
         consumeAmountLabel.textAlignment = .Right
         addSubview(consumeAmountLabel)
         consumeAmountLabel.snp_makeConstraints { make in
-            make.trailing.equalTo(nicknameTitleLabel.snp_leading).with.offset(-35)
-            make.leading.equalTo(consumeAmountTitleLabel).width.offset(10)
+            make.trailing.equalTo(nicknameTitleLabel.snp_leading).offset(-35)
+            make.leading.equalTo(consumeAmountTitleLabel).offset(10)
             make.height.equalTo(20.0)
             make.top.equalTo(consumeAmountTitleLabel.snp_top)
         }
@@ -368,10 +368,10 @@ class TMMemebershipCardPayView: UIView {
         discountAmountLabel.textAlignment = .Right
         addSubview(discountAmountLabel)
         discountAmountLabel.snp_makeConstraints { make in
-            make.trailing.equalTo(consumeDetailImageView.snp_trailing).with.offset(-35.0)
+            make.trailing.equalTo(consumeDetailImageView.snp_trailing).offset(-35.0)
             make.height.equalTo(20.0)
             make.top.equalTo(discountAmountTitleLabel.snp_top)
-            make.leading.equalTo(discountAmountTitleLabel.snp_trailing).with.offset(10.0)
+            make.leading.equalTo(discountAmountTitleLabel.snp_trailing).offset(10.0)
         }
         
         // 折后金额
@@ -382,7 +382,7 @@ class TMMemebershipCardPayView: UIView {
         actualAmountTitleLabel.textAlignment = .Left
         addSubview(actualAmountTitleLabel)
         actualAmountTitleLabel.snp_makeConstraints { make in
-            make.bottom.equalTo(consumeDetailImageView.snp_bottom).with.offset(-15)
+            make.bottom.equalTo(consumeDetailImageView.snp_bottom).offset(-15)
             make.width.equalTo(85)
             make.height.equalTo(20.0)
             make.leading.equalTo(41)
@@ -395,10 +395,10 @@ class TMMemebershipCardPayView: UIView {
         actualAmountLabel.textAlignment = .Right
         addSubview(actualAmountLabel)
         actualAmountLabel.snp_makeConstraints { make in
-            make.bottom.equalTo(consumeDetailImageView.snp_bottom).with.offset(-15)
-            make.leading.equalTo(consumeAmountTitleLabel).width.offset(10)
+            make.bottom.equalTo(consumeDetailImageView.snp_bottom).offset(-15)
+            make.leading.equalTo(consumeAmountTitleLabel).offset(10)
             make.height.equalTo(20.0)
-            make.trailing.equalTo(nicknameTitleLabel.snp_leading).with.offset(-35.0)
+            make.trailing.equalTo(nicknameTitleLabel.snp_leading).offset(-35.0)
         }
         
         // 支付方式
@@ -409,14 +409,14 @@ class TMMemebershipCardPayView: UIView {
         payWayTitleLabel.textAlignment = .Left
         addSubview(payWayTitleLabel)
         payWayTitleLabel.snp_makeConstraints { make in
-            make.top.equalTo(consumeDetailImageView.snp_bottom).with.offset(31)
+            make.top.equalTo(consumeDetailImageView.snp_bottom).offset(31)
             make.width.equalTo(85)
             make.height.equalTo(20.0)
             make.leading.equalTo(41)
         }
         
         // 余额按钮
-        var balanceButton = UIButton.buttonWithType(.Custom) as UIButton
+        var balanceButton = UIButton.buttonWithType(.Custom) as! UIButton
         balanceButton.setBackgroundImage(UIImage(named: "payment_button"), forState: .Normal)
         balanceButton.setBackgroundImage(UIImage(named: "payment_button_on"), forState: .Highlighted)
         balanceButton.setBackgroundImage(UIImage(named: "payment_button_on"), forState: .Selected)
@@ -431,12 +431,12 @@ class TMMemebershipCardPayView: UIView {
         balanceButton.snp_makeConstraints { make in
             make.width.equalTo(137.0)
             make.height.equalTo(50.0)
-            make.leading.equalTo(payWayTitleLabel.snp_trailing).with.offset(40.0)
-            make.top.equalTo(consumeDetailImageView.snp_bottom).with.offset(18.0)
+            make.leading.equalTo(payWayTitleLabel.snp_trailing).offset(40.0)
+            make.top.equalTo(consumeDetailImageView.snp_bottom).offset(18.0)
         }
         
         // 盒子支付按钮
-        var cashBoxButton = UIButton.buttonWithType(.Custom) as UIButton
+        var cashBoxButton = UIButton.buttonWithType(.Custom) as! UIButton
         cashBoxButton.setBackgroundImage(UIImage(named: "payment_button"), forState: .Normal)
         cashBoxButton.setBackgroundImage(UIImage(named: "payment_button_on"), forState: .Highlighted)
         cashBoxButton.setBackgroundImage(UIImage(named: "payment_button_on"), forState: .Selected)
@@ -453,12 +453,12 @@ class TMMemebershipCardPayView: UIView {
         cashBoxButton.snp_makeConstraints { make in
             make.width.equalTo(166.0)
             make.height.equalTo(50.0)
-            make.leading.equalTo(balanceButton.snp_trailing).with.offset(28.0)
-            make.top.equalTo(consumeDetailImageView.snp_bottom).with.offset(18.0)
+            make.leading.equalTo(balanceButton.snp_trailing).offset(28.0)
+            make.top.equalTo(consumeDetailImageView.snp_bottom).offset(18.0)
         }
         
         // 现金支付按钮
-        var cashButton = UIButton.buttonWithType(.Custom) as UIButton
+        var cashButton = UIButton.buttonWithType(.Custom) as! UIButton
         cashButton.setBackgroundImage(UIImage(named: "payment_button"), forState: .Normal)
         cashButton.setBackgroundImage(UIImage(named: "payment_button_on"), forState: .Highlighted)
         cashButton.setBackgroundImage(UIImage(named: "payment_button_on"), forState: .Selected)
@@ -473,12 +473,12 @@ class TMMemebershipCardPayView: UIView {
         cashButton.snp_makeConstraints { make in
             make.width.equalTo(137.0)
             make.height.equalTo(50.0)
-            make.leading.equalTo(payWayTitleLabel.snp_trailing).with.offset(40.0)
-            make.top.equalTo(balanceButton.snp_bottom).with.offset(13.0)
+            make.leading.equalTo(payWayTitleLabel.snp_trailing).offset(40.0)
+            make.top.equalTo(balanceButton.snp_bottom).offset(13.0)
         }
         
         // 其他刷卡
-        var otherButton = UIButton.buttonWithType(.Custom) as UIButton
+        var otherButton = UIButton.buttonWithType(.Custom) as! UIButton
         otherButton.setBackgroundImage(UIImage(named: "payment_button"), forState: .Normal)
         otherButton.setBackgroundImage(UIImage(named: "payment_button_on"), forState: .Highlighted)
         otherButton.setBackgroundImage(UIImage(named: "payment_button_on"), forState: .Selected)
@@ -495,8 +495,8 @@ class TMMemebershipCardPayView: UIView {
         otherButton.snp_makeConstraints { make in
             make.width.equalTo(166.0)
             make.height.equalTo(50.0)
-            make.leading.equalTo(cashButton.snp_trailing).with.offset(28.0)
-            make.top.equalTo(balanceButton.snp_bottom).with.offset(13.0)
+            make.leading.equalTo(cashButton.snp_trailing).offset(28.0)
+            make.top.equalTo(balanceButton.snp_bottom).offset(13.0)
         }
         
         // 备注
@@ -508,7 +508,7 @@ class TMMemebershipCardPayView: UIView {
         remarkTitleLabel.textAlignment = .Left
         addSubview(remarkTitleLabel)
         remarkTitleLabel.snp_makeConstraints { make in
-            make.top.equalTo(cashButton.snp_bottom).with.offset(16)
+            make.top.equalTo(cashButton.snp_bottom).offset(16)
             make.width.equalTo(44)
             make.height.equalTo(20.0)
             make.leading.equalTo(41)
@@ -517,9 +517,9 @@ class TMMemebershipCardPayView: UIView {
         var remarkBackgroundImageView = UIImageView(image: UIImage(named: "cash_input"))
         addSubview(remarkBackgroundImageView)
         remarkBackgroundImageView.snp_makeConstraints { make in
-            make.top.equalTo(cashButton.snp_bottom).with.offset(15)
-            make.leading.equalTo(remarkTitleLabel.snp_trailing).with.offset(17.0)
-            make.trailing.equalTo(self.snp_trailing).with.offset(-35.0)
+            make.top.equalTo(cashButton.snp_bottom).offset(15)
+            make.leading.equalTo(remarkTitleLabel.snp_trailing).offset(17.0)
+            make.trailing.equalTo(self.snp_trailing).offset(-35.0)
             make.height.equalTo(72)
         }
         
@@ -530,14 +530,14 @@ class TMMemebershipCardPayView: UIView {
         remarkTextView.textColor = UIColor(hex: 0x222222)
         addSubview(remarkTextView)
         remarkTextView.snp_makeConstraints { make in
-            make.leading.equalTo(remarkBackgroundImageView.snp_leading).with.offset(4)
-            make.trailing.equalTo(remarkBackgroundImageView.snp_trailing).with.offset(-4)
-            make.top.equalTo(remarkBackgroundImageView.snp_top).with.offset(4)
-            make.bottom.equalTo(remarkBackgroundImageView.snp_bottom).with.offset(-4)
+            make.leading.equalTo(remarkBackgroundImageView.snp_leading).offset(4)
+            make.trailing.equalTo(remarkBackgroundImageView.snp_trailing).offset(-4)
+            make.top.equalTo(remarkBackgroundImageView.snp_top).offset(4)
+            make.bottom.equalTo(remarkBackgroundImageView.snp_bottom).offset(-4)
         }
         
         
-        var cancelButton = UIButton.buttonWithType(.Custom) as UIButton
+        var cancelButton = UIButton.buttonWithType(.Custom) as! UIButton
         cancelButton.setBackgroundImage(UIImage(named: "payment_cancel_button"), forState: .Normal)
         cancelButton.setBackgroundImage(UIImage(named: "payment_cancel_button_on"), forState: .Highlighted)
         cancelButton.setTitleColor(UIColor(hex: 0x1E8EBC), forState: .Normal)
@@ -546,11 +546,11 @@ class TMMemebershipCardPayView: UIView {
         addSubview(cancelButton)
         cancelButton.snp_makeConstraints { make in
             make.size.equalTo(CGSizeMake(143, 60))
-            make.bottom.equalTo(self.snp_bottom).with.offset(-22)
-            make.trailing.equalTo(self.snp_centerX).with.offset(-27)
+            make.bottom.equalTo(self.snp_bottom).offset(-22)
+            make.trailing.equalTo(self.snp_centerX).offset(-27)
         }
         
-        var commitButton = UIButton.buttonWithType(.Custom) as UIButton
+        var commitButton = UIButton.buttonWithType(.Custom) as! UIButton
         commitButton.setBackgroundImage(UIImage(named: "payment_commit_button"), forState: .Normal)
         commitButton.setBackgroundImage(UIImage(named: "payment_commit_button_on"), forState: .Highlighted)
         commitButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
@@ -558,8 +558,8 @@ class TMMemebershipCardPayView: UIView {
         addSubview(commitButton)
         commitButton.snp_makeConstraints { make in
             make.size.equalTo(CGSizeMake(143, 60))
-            make.bottom.equalTo(self.snp_bottom).with.offset(-22)
-            make.leading.equalTo(self.snp_centerX).with.offset(27)
+            make.bottom.equalTo(self.snp_bottom).offset(-22)
+            make.leading.equalTo(self.snp_centerX).offset(27)
         }
     }
 
@@ -577,10 +577,10 @@ class TMMemebershipCardPayView: UIView {
 extension TMMemebershipCardPayView {
     // MARK - UITouch Events
     
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         super.touchesBegan(touches, withEvent: event)
         
-        var touch = touches.anyObject() as UITouch
+        var touch = touches.first as! UITouch
         var point = touch.locationInView(self)
         if CGRectContainsPoint(panelImageView.frame, point) {
             isDraging = true
@@ -589,34 +589,37 @@ extension TMMemebershipCardPayView {
         }
     }
     
-    override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
         super.touchesMoved(touches, withEvent: event)
-        var touch = touches.anyObject() as UITouch
+        
+        var touch = touches.first as! UITouch
         var point = touch.locationInView(self)
         
         if isDraging {
             var distance = point.x
-            
             self.frame.left += distance
         }
         
         println("touchesMoved")
+        
     }
     
-    override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
         super.touchesEnded(touches, withEvent: event)
-        var touch = touches.anyObject() as UITouch
+        
+        var touch = touches.first as! UITouch
         var point = touch.locationInView(self)
         isDraging = false
         leftPanelImageView.highlighted = false
         panelImageView.highlighted = false
         println("touchesEnded")
+        
     }
     
-    override func touchesCancelled(touches: NSSet!, withEvent event: UIEvent!) {
+    override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
         super.touchesCancelled(touches, withEvent: event)
         
-        var touch = touches.anyObject() as UITouch
+        var touch = touches.first as! UITouch
         var point = touch.locationInView(self)
         
         isDraging = false

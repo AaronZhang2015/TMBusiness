@@ -128,7 +128,7 @@ class TMTakeOrderViewController: BaseViewController {
         bgView.addSubview(bgImageView)
         
         // 备注按钮
-        remarkButton = UIButton.buttonWithType(.Custom) as UIButton
+        remarkButton = UIButton.buttonWithType(.Custom) as! UIButton
         remarkButton.frame = CGRectMake(350, 2, 70, 30)
         remarkButton.setImage(UIImage(named: "remark_add"), forState: .Normal)
         remarkButton.setTitle("备注", forState: .Normal)
@@ -185,8 +185,8 @@ class TMTakeOrderViewController: BaseViewController {
     func keyboardWillShow(notification: NSNotification) {
         
         if let userInfo = notification.userInfo {
-            let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as Double
-            let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as Int
+            let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as! Double
+            let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as! Int
             
             var rect = remarkView.frame
             if let keyboardHeight = userInfo[UIKeyboardFrameEndUserInfoKey]?.CGRectValue().size.height {
@@ -204,8 +204,8 @@ class TMTakeOrderViewController: BaseViewController {
     
     func keyboardWillHide(notification: NSNotification) {
         if let userInfo = notification.userInfo {
-            let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as Double
-            let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as Int
+            let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as! Double
+            let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as! Int
             
             var rect = remarkView.frame
             rect.center = maskView.center
@@ -264,7 +264,7 @@ class TMTakeOrderViewController: BaseViewController {
         }
         
         // 更新价格
-        orderDetailView.consumeAmountLabel.text = NSString(format: "%.2f", totalPrice.doubleValue)
+        orderDetailView.consumeAmountLabel.text = NSString(format: "%.2f", totalPrice.doubleValue) as String
     }
     
     // MARK: - Actions
@@ -463,7 +463,7 @@ extension TMTakeOrderViewController: UITableViewDelegate {
             }
         }
         
-        let cell = tableView.cellForRowAtIndexPath(indexPath) as TMTakeOrderListCell
+        let cell = tableView.cellForRowAtIndexPath(indexPath) as! TMTakeOrderListCell
         cell.editOrderData(true)
         editIndexPath = indexPath
         editCell = cell
@@ -480,7 +480,7 @@ extension TMTakeOrderViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(takeOrderListCellReuseIdentifier, forIndexPath: indexPath) as TMTakeOrderListCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(takeOrderListCellReuseIdentifier, forIndexPath: indexPath) as! TMTakeOrderListCell
         cell.delegate = self
         cell.configureData(orderProductList[indexPath.row])
         

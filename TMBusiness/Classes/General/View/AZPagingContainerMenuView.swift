@@ -26,7 +26,7 @@ class AZPagingExpandItemView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        expandButton = UIButton.buttonWithType(.Custom) as UIButton
+        expandButton = UIButton.buttonWithType(.Custom) as! UIButton
         expandButton.setBackgroundImage(UIImage(named: "category_expand"), forState: .Normal)
         expandButton.setBackgroundImage(UIImage(named: "category_expand_on"), forState: .Highlighted)
 //        expandButton.addTarget(self, action: "expand", forControlEvents: .TouchUpInside)

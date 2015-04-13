@@ -267,8 +267,9 @@ extension UIView {
         }
     }
     
+    /*
     // The center of the view frame
-    public var center: CGPoint {
+     public var center: CGPoint {
         get {
             return frame.center
         }
@@ -278,6 +279,8 @@ extension UIView {
             self.frame = frame
         }
     }
+    */
+    
     
     // The width of the view frame
     public var width: CGFloat {

@@ -50,14 +50,14 @@ class TMTakeOrderPayWayView: UIView {
         var separatorView = UIImageView(image: UIImage(named: "order_separator"))
         addSubview(separatorView)
         separatorView.snp_makeConstraints { make in
-            make.top.equalTo(self.snp_top).with.offset(14)
+            make.top.equalTo(self.snp_top).offset(14)
             make.width.equalTo(1)
-            make.bottom.equalTo(self.snp_bottom).with.offset(-14)
-            make.left.equalTo(titleLabel.snp_trailing).with.offset(14)
+            make.bottom.equalTo(self.snp_bottom).offset(-14)
+            make.left.equalTo(titleLabel.snp_trailing).offset(14)
         }
         
         // ----
-        balancePayButton = UIButton.buttonWithType(.Custom) as UIButton
+        balancePayButton = UIButton.buttonWithType(.Custom) as! UIButton
         balancePayButton.titleLabel?.font = UIFont.systemFontOfSize(22)
         balancePayButton.setBackgroundImage(UIImage(named: "anniu"), forState: .Normal)
         balancePayButton.setBackgroundImage(UIImage(named: "anniu_on"), forState: .Highlighted)
@@ -67,12 +67,12 @@ class TMTakeOrderPayWayView: UIView {
         addSubview(balancePayButton)
         balancePayButton.snp_makeConstraints { make in
             make.size.equalTo(CGSizeMake(90, 90))
-            make.left.equalTo(separatorView.snp_trailing).with.offset(15)
+            make.left.equalTo(separatorView.snp_trailing).offset(15)
             make.centerY.equalTo(self.snp_centerY)
         }
         
         // -----
-        cashPayButton = UIButton.buttonWithType(.Custom) as UIButton
+        cashPayButton = UIButton.buttonWithType(.Custom) as! UIButton
         cashPayButton.titleLabel?.font = balancePayButton.titleLabel?.font
         cashPayButton.setBackgroundImage(UIImage(named: "anniu"), forState: .Normal)
         cashPayButton.setBackgroundImage(UIImage(named: "anniu_on"), forState: .Highlighted)
@@ -82,12 +82,12 @@ class TMTakeOrderPayWayView: UIView {
         addSubview(cashPayButton)
         cashPayButton.snp_makeConstraints { make in
             make.size.equalTo(CGSizeMake(90, 90))
-            make.left.equalTo(self.balancePayButton.snp_trailing).with.offset(8)
+            make.left.equalTo(self.balancePayButton.snp_trailing).offset(8)
             make.centerY.equalTo(self.snp_centerY)
         }
         
         // -----
-        cardPayButton = UIButton.buttonWithType(.Custom) as UIButton
+        cardPayButton = UIButton.buttonWithType(.Custom) as! UIButton
         cardPayButton.titleLabel?.font = balancePayButton.titleLabel?.font
         cardPayButton.setBackgroundImage(UIImage(named: "anniu"), forState: .Normal)
         cardPayButton.setBackgroundImage(UIImage(named: "anniu_on"), forState: .Highlighted)
@@ -97,12 +97,12 @@ class TMTakeOrderPayWayView: UIView {
         addSubview(cardPayButton)
         cardPayButton.snp_makeConstraints { make in
             make.size.equalTo(CGSizeMake(90, 90))
-            make.left.equalTo(self.cashPayButton.snp_trailing).with.offset(8)
+            make.left.equalTo(self.cashPayButton.snp_trailing).offset(8)
             make.centerY.equalTo(self.snp_centerY)
         }
         
         // -----
-        otherPayButton = UIButton.buttonWithType(.Custom) as UIButton
+        otherPayButton = UIButton.buttonWithType(.Custom) as! UIButton
         otherPayButton.titleLabel?.font = balancePayButton.titleLabel?.font
         otherPayButton.setBackgroundImage(UIImage(named: "anniu"), forState: .Normal)
         otherPayButton.setBackgroundImage(UIImage(named: "anniu_on"), forState: .Highlighted)
@@ -112,7 +112,7 @@ class TMTakeOrderPayWayView: UIView {
         addSubview(otherPayButton)
         otherPayButton.snp_makeConstraints { make in
             make.size.equalTo(CGSizeMake(90, 90))
-            make.left.equalTo(self.cardPayButton.snp_trailing).with.offset(8)
+            make.left.equalTo(self.cardPayButton.snp_trailing).offset(8)
             make.centerY.equalTo(self.snp_centerY)
         }
     }

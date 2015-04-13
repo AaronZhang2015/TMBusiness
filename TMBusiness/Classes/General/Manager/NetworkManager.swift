@@ -68,7 +68,7 @@ public class NetworkManager: NSObject{
         var request = Alamofire.request(method, path, parameters: parameters)
         request.response { (request, response, data, error) -> Void in
             var result: Result
-            let value = JSON(data: data as NSData, options: NSJSONReadingOptions.MutableContainers, error: nil)
+            let value = JSON(data: data as! NSData, options: NSJSONReadingOptions.MutableContainers, error: nil)
             switch value.type {
             case .Null:
                 result = Result(value.error, value)

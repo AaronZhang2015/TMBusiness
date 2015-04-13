@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6B330DC91ADC163C00BBDAF1 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B330DC81ADC163C00BBDAF1 /* SwiftyJSON.swift */; };
 		6B4FBD871ACCDD6F0017CB6F /* TMLoginHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4FBD861ACCDD6F0017CB6F /* TMLoginHeaderView.swift */; };
 		6B4FBD891ACCED500017CB6F /* TMSegmentControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4FBD881ACCED500017CB6F /* TMSegmentControl.swift */; };
 		6B4FBD8C1ACD14AC0017CB6F /* ThingMe.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6B4FBD8A1ACD14AC0017CB6F /* ThingMe.xcdatamodeld */; };
@@ -37,7 +38,6 @@
 		6B5F08341ACC564600CBD3BD /* TMShopDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5F08321ACC564600CBD3BD /* TMShopDataManager.swift */; };
 		6B5F08371ACC565700CBD3BD /* TMNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5F08361ACC565700CBD3BD /* TMNetworkManager.swift */; };
 		6B5F083A1ACC568100CBD3BD /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5F08391ACC568100CBD3BD /* NetworkManager.swift */; };
-		6B5F083E1ACC56D000CBD3BD /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5F083D1ACC56D000CBD3BD /* SwiftyJSON.swift */; };
 		6B5F08421ACC56FB00CBD3BD /* AppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5F08411ACC56FB00CBD3BD /* AppManager.swift */; };
 		6B5F08481ACC573400CBD3BD /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5F08451ACC573400CBD3BD /* BaseNavigationController.swift */; };
 		6B5F08491ACC573400CBD3BD /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5F08461ACC573400CBD3BD /* BaseTableViewController.swift */; };
@@ -163,6 +163,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6B330DC81ADC163C00BBDAF1 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		6B4FBD861ACCDD6F0017CB6F /* TMLoginHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMLoginHeaderView.swift; sourceTree = "<group>"; };
 		6B4FBD881ACCED500017CB6F /* TMSegmentControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMSegmentControl.swift; sourceTree = "<group>"; };
 		6B4FBD8B1ACD14AC0017CB6F /* ThingMe.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ThingMe.xcdatamodel; sourceTree = "<group>"; };
@@ -193,7 +194,6 @@
 		6B5F08321ACC564600CBD3BD /* TMShopDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMShopDataManager.swift; sourceTree = "<group>"; };
 		6B5F08361ACC565700CBD3BD /* TMNetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMNetworkManager.swift; sourceTree = "<group>"; };
 		6B5F08391ACC568100CBD3BD /* NetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
-		6B5F083D1ACC56D000CBD3BD /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		6B5F08411ACC56FB00CBD3BD /* AppManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppManager.swift; sourceTree = "<group>"; };
 		6B5F08451ACC573400CBD3BD /* BaseNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
 		6B5F08461ACC573400CBD3BD /* BaseTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTableViewController.swift; sourceTree = "<group>"; };
@@ -365,8 +365,8 @@
 		6B5F080A1ACC55C800CBD3BD /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				6B330DC81ADC163C00BBDAF1 /* SwiftyJSON.swift */,
 				6B5F08411ACC56FB00CBD3BD /* AppManager.swift */,
-				6B5F083D1ACC56D000CBD3BD /* SwiftyJSON.swift */,
 				6BEF672B1AD4D5CD00EF2BCB /* JSONHelper.swift */,
 				6B62B8041AD66657002F4462 /* String+LangExt.swift */,
 				6B62B80E1AD67281002F4462 /* Double+LangExt.swift */,
@@ -814,6 +814,7 @@
 				6B5F08751ACC5AFA00CBD3BD /* UIColor+LangExt.swift in Sources */,
 				6B5F084A1ACC573400CBD3BD /* BaseViewController.swift in Sources */,
 				6B4FBD8C1ACD14AC0017CB6F /* ThingMe.xcdatamodeld in Sources */,
+				6B330DC91ADC163C00BBDAF1 /* SwiftyJSON.swift in Sources */,
 				6B5F08291ACC561E00CBD3BD /* TMOrderService.swift in Sources */,
 				6B5F08251ACC560F00CBD3BD /* TMUserAccountBalance.swift in Sources */,
 				6B5F08341ACC564600CBD3BD /* TMShopDataManager.swift in Sources */,
@@ -822,7 +823,6 @@
 				6B4FBDB11ACD2CBF0017CB6F /* TMTakeOrderPayWayView.swift in Sources */,
 				6B5F08331ACC564600CBD3BD /* TMDataManager.swift in Sources */,
 				6B4FBDB31ACD439B0017CB6F /* TMProductListViewController.swift in Sources */,
-				6B5F083E1ACC56D000CBD3BD /* SwiftyJSON.swift in Sources */,
 				6B4FBDAF1ACD25410017CB6F /* TMTakeOrderDetailView.swift in Sources */,
 				6B5F08771ACC5B0200CBD3BD /* UIView+Geometry.swift in Sources */,
 				6B5F08481ACC573400CBD3BD /* BaseNavigationController.swift in Sources */,

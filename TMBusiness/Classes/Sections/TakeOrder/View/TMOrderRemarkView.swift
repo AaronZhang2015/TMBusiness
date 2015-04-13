@@ -47,7 +47,7 @@ class TMOrderRemarkView: UIView {
         textView.placeholder = "请输入备注内容"
         addSubview(textView)
         
-        var cancelButton = UIButton.buttonWithType(.Custom) as UIButton
+        var cancelButton = UIButton.buttonWithType(.Custom) as! UIButton
         cancelButton.frame = CGRectMake(72, textViewBg.bottom + 13, 110, 50)
         cancelButton.setBackgroundImage(UIImage(named: "remark_button"), forState: .Normal)
         cancelButton.setBackgroundImage(UIImage(named: "remark_button_on"), forState: .Highlighted)
@@ -58,7 +58,7 @@ class TMOrderRemarkView: UIView {
         cancelButton.setTitleColor(UIColor.whiteColor(), forState: .Highlighted)
         addSubview(cancelButton)
         
-        var commitButton = UIButton.buttonWithType(.Custom) as UIButton
+        var commitButton = UIButton.buttonWithType(.Custom) as! UIButton
         commitButton.frame = CGRectMake(cancelButton.right + 36, textViewBg.bottom + 13, 110, 50)
         commitButton.setBackgroundImage(UIImage(named: "remark_button"), forState: .Normal)
         commitButton.setBackgroundImage(UIImage(named: "remark_button_on"), forState: .Highlighted)

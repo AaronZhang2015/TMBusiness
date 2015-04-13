@@ -43,14 +43,14 @@ class MasterViewController: BaseViewController {
         
         view.backgroundColor = UIColor.whiteColor()
         // 设置按钮
-        var settingButton = UIButton.buttonWithType(UIButtonType.Custom) as UIButton
+        var settingButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
         settingButton.frame = CGRectMake(0, 0, 26, 26)
         settingButton.setBackgroundImage(UIImage(named: "shezhi"), forState: .Normal)
         settingButton.setBackgroundImage(UIImage(named: "shezhi_on"), forState: .Highlighted)
         var settingBarButtonItem = UIBarButtonItem(customView: settingButton)
         
         // 退出按钮
-        var logoutButton = UIButton.buttonWithType(UIButtonType.Custom) as UIButton
+        var logoutButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
         logoutButton.frame = CGRectMake(0, 0, 26, 26)
         logoutButton.setBackgroundImage(UIImage(named: "tuichu"), forState: .Normal)
         logoutButton.setBackgroundImage(UIImage(named: "tuichu_on"), forState: .Highlighted)
@@ -59,7 +59,7 @@ class MasterViewController: BaseViewController {
         navigationItem.rightBarButtonItems = [settingBarButtonItem, logoutBarButtonItem]
         
         // 左边Logo
-        var logoButton = UIButton.buttonWithType(UIButtonType.Custom) as UIButton
+        var logoButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
         logoButton.frame = CGRectMake(0, 0, 165, 32)
         logoButton.setBackgroundImage(UIImage(named: "home_logo"), forState: .Normal)
         logoButton.setBackgroundImage(UIImage(named: "home_logo"), forState: .Highlighted)

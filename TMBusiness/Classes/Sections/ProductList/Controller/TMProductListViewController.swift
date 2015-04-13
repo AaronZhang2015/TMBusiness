@@ -63,7 +63,7 @@ extension TMProductListViewController: UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(productListReuseIdentifier, forIndexPath: indexPath) as TMProductCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(productListReuseIdentifier, forIndexPath: indexPath) as! TMProductCell
         let product = productList[indexPath.row]
         cell.productNameLabel.text = product.product_name
         
