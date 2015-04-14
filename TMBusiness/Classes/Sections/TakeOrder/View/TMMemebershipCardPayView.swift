@@ -48,6 +48,9 @@ class TMMemebershipCardPayView: UIView {
     // 充值按钮
     var rechargeButton: UIButton!
     
+    // 消费记录
+    var consumeButton: UIButton!
+    
     var isDraging: Bool = false
     var backClosure: (() -> ())?
     
@@ -295,7 +298,7 @@ class TMMemebershipCardPayView: UIView {
         }
         
         // 消费记录查看按钮
-        var consumeButton = UIButton.buttonWithType(.Custom) as! UIButton
+        consumeButton = UIButton.buttonWithType(.Custom) as! UIButton
         consumeButton.setBackgroundImage(UIImage(named: "recharge_button"), forState: .Normal)
         consumeButton.setBackgroundImage(UIImage(named: "recharge_button_on"), forState: .Highlighted)
         consumeButton.setTitle("查看", forState: .Normal)

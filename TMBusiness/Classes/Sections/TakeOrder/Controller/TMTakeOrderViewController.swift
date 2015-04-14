@@ -78,7 +78,7 @@ class TMTakeOrderViewController: BaseViewController {
         }
         
         payView.rechargeButton.addTarget(self, action: "showRechargeView", forControlEvents: .TouchUpInside)
-        
+        payView.consumeButton.addTarget(self, action: "showConsumeRecordView", forControlEvents: .TouchUpInside)
         return payView
         }()
     
@@ -87,6 +87,13 @@ class TMTakeOrderViewController: BaseViewController {
         var rechargeView = TMRechargeView(frame: CGRectMake(0, 0, 375, 470))
         
         return rechargeView
+        }()
+    
+    // 消费记录页面
+    private lazy var consumeRecordView: TMConsumeRecordView = {
+        var consumeRecordView = TMConsumeRecordView(frame: CGRectMake(0, 0, 452, 450))
+        
+        return consumeRecordView
         }()
     
     var editCell: TMTakeOrderListCell?
@@ -343,9 +350,50 @@ class TMTakeOrderViewController: BaseViewController {
     隐藏充值页面
     */
     func hideRechargeView() {
-        
+        UIView.animateWithDuration(0.3, delay: 0.0, options: .CurveEaseInOut, animations: { () -> Void in
+            self.rechargeView.alpha = 0.0
+            }) { (finished) -> Void in
+                self.maskView.alpha = 0
+        }
     }
     
+    /**
+    显示消费记录页面
+    */
+    func showConsumeRecordView() {
+        if maskView.superview == nil {
+            view.addSubview(maskView)
+        }
+        
+        if consumeRecordView.superview == nil {
+            view.addSubview(consumeRecordView)
+            consumeRecordView.center = maskView.center
+        }
+        
+        maskView.alpha = 0.4
+        
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.consumeRecordView.alpha = 1.0
+            }) { (finished) -> Void in
+                return
+        }
+        
+        consumeRecordView.transform = CGAffineTransformMakeScale(0.5, 0.5)
+        UIView.animateWithDuration(0.3, delay: 0.0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0.3, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+            self.consumeRecordView.transform = CGAffineTransformIdentity
+            }, completion: nil)
+    }
+    
+    /**
+    隐藏消费记录页面
+    */
+    func hideConsumeRecordVIew() {
+        UIView.animateWithDuration(0.3, delay: 0.0, options: .CurveEaseInOut, animations: { () -> Void in
+            self.consumeRecordView.alpha = 0.0
+            }) { (finished) -> Void in
+                self.maskView.alpha = 0
+        }
+    }
     
     /**
     显示现金支付页面

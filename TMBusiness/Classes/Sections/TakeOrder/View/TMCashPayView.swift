@@ -84,7 +84,7 @@ class TMCashPayView: UIView {
         }
         
         consumeLabel = UILabel()
-        consumeLabel.text = "10000"
+        consumeLabel.text = "0"
         consumeLabel.font = UIFont.systemFontOfSize(20.0)
         consumeLabel.textColor = UIColor(hex: 0x222222)
         consumeLabel.textAlignment = .Left
@@ -409,10 +409,15 @@ class TMCashPayView: UIView {
             if let actualAmount = actualLabel.text  {
                 let consume = (consumeAmount as NSString).doubleValue
                 let actual = (actualAmount as NSString).doubleValue
-                let charge = actual - consume
-                let format = ".2"
                 
-                chargeLabel.text = "\(charge.format(format))"
+                if actual < consume {
+                    chargeLabel.text = "0"
+                } else {
+                    let charge = actual - consume
+                    let format = ".2"
+                    
+                    chargeLabel.text = "\(charge.format(format))"
+                }
             }
         }
     }
