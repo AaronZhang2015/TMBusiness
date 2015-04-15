@@ -65,11 +65,11 @@ class TMShopService: NSObject {
                     var model = TMCategory()
                     var result = data[index]
                     
-                    model.category_id = result["category_id"].string
-                    model.category_pid = result["category_pid"].string
-                    model.category_name = result["category_name"].string
-                    model.is_discount = result["is_discount"].number
-                    model.discount_type = result["discount_type"].string
+                    model.category_id = result["category_id"].stringValue
+                    model.category_pid = result["category_pid"].stringValue
+                    model.category_name = result["category_name"].stringValue
+                    model.is_discount = result["is_discount"].numberValue
+                    model.discount_type = result["discount_type"].stringValue
                     
                     
                     // 解析分类下的商品
@@ -79,29 +79,29 @@ class TMShopService: NSObject {
                     for var productIndex = 0; productIndex < productList.count; ++productIndex {
                         var product = TMProduct()
                         var productResult = productList[productIndex]
-                        product.product_id = productResult["product_id"].string
-                        product.product_name = productResult["product_name"].string
-                        product.product_description = productResult["product_description"].string
-                        product.title_1 = productResult["title_1"].string
-                        product.description_1 = productResult["description_1"].string
-                        product.title_2 = productResult["title_2"].string
-                        product.description_2 = productResult["description_2"].string
-                        product.title_3 = productResult["title_3"].string
-                        product.description_3 = productResult["description_3"].string
-                        product.title_4 = productResult["title_4"].string
-                        product.description_4 = productResult["description_4"].string
-                        product.title_5 = productResult["title_5"].string
-                        product.description_5 = productResult["description_5"].string
-                        product.image_url = productResult["image_url"].string
+                        product.product_id = productResult["product_id"].stringValue
+                        product.product_name = productResult["product_name"].stringValue
+                        product.product_description = productResult["product_description"].stringValue
+                        product.title_1 = productResult["title_1"].stringValue
+                        product.description_1 = productResult["description_1"].stringValue
+                        product.title_2 = productResult["title_2"].stringValue
+                        product.description_2 = productResult["description_2"].stringValue
+                        product.title_3 = productResult["title_3"].stringValue
+                        product.description_3 = productResult["description_3"].stringValue
+                        product.title_4 = productResult["title_4"].stringValue
+                        product.description_4 = productResult["description_4"].stringValue
+                        product.title_5 = productResult["title_5"].stringValue
+                        product.description_5 = productResult["description_5"].stringValue
+                        product.image_url = productResult["image_url"].stringValue
                         product.official_quotation = productResult["official_quotation"].numberValue
-                        product.monetary_unit = productResult["monetary_unit"].string
-                        product.width = productResult["width"].number
-                        product.height = productResult["height"].number
-                        product.category_id = productResult["category_id"].string
-                        product.category_name = productResult["category_name"].string
-                        product.is_discount = productResult["is_discount"].number
-                        product.discount_type = productResult["discount_type"].string
-                        product.aTemplate_examples_plate = productResult["aTemplate_examples_plate"].string
+                        product.monetary_unit = productResult["monetary_unit"].stringValue
+                        product.width = productResult["width"].numberValue
+                        product.height = productResult["height"].numberValue
+                        product.category_id = productResult["category_id"].stringValue
+                        product.category_name = productResult["category_name"].stringValue
+                        product.is_discount = productResult["is_discount"].numberValue
+                        product.discount_type = productResult["discount_type"].stringValue
+                        product.aTemplate_examples_plate = productResult["aTemplate_examples_plate"].stringValue
                         
                         products.append(product)
                     }

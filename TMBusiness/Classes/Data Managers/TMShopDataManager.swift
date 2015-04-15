@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 /**
 *  商户的数据
@@ -38,9 +39,51 @@ class TMShopDataManager: TMDataManager {
         // 首先判断本地数据库是否有数据
         // 如果有数据那么就从本地获取
         
-        
         // 否则就从网络请求，并缓存本地
-        shopService.fetchEntityProductList(shopId, completion: completion)
+//        shopService.fetchEntityProductList(shopId, completion: completion)
+        shopService.fetchEntityProductList(shopId, completion: { (list, error) -> Void in
+            
+            var managedContext = CoreDataStack.sharedInstance.context
+            
+            if error == nil {
+                let categoryEntity = NSEntityDescription.entityForName("TMCategoryManagedObject",
+                    inManagedObjectContext: managedContext)
+                let productEntity = NSEntityDescription.entityForName("TMProductManagedObject",
+                    inManagedObjectContext: managedContext)
+                
+                for var i = 0; i < list!.count; ++i {
+                    var categoryRecord = list![i]
+                    
+                    let category = TMCategoryManagedObject(entity: categoryEntity!,
+                        insertIntoManagedObjectContext: managedContext)
+                    
+                    // ---- 赋值 Category
+                    category.category_id = categoryRecord.category_id!
+                    category.category_name =  categoryRecord.category_name!
+                    // ----
+                    
+                    var productList = categoryRecord.products!
+                    var products = NSMutableSet()
+                    for var m = 0; m < productList.count; ++m {
+                        var productRecord = productList[m]
+                        
+                        let product = TMProductManagedObject(entity: productEntity!,
+                            insertIntoManagedObjectContext: managedContext)
+                    }
+                    
+                    var error: NSError?
+                    if !managedContext.save(&error) {
+                        println("Could not save: \(error)")
+                    }
+                    
+                }
+                
+                //Save the managed object context
+                
+            }
+            
+            completion(list, error)
+        })
         
     }
 }
