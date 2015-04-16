@@ -277,14 +277,14 @@ class TMTakeOrderViewController: BaseViewController {
         // 更新价格
         
         // 消费金额
-        orderDetailView.consumeAmountLabel.text = "¥\(totalPrice.format(format))"//NSString(format: "%.2f", totalPrice.doubleValue) as String
+        orderDetailView.consumeAmountLabel.text = "¥\(totalPrice.format(format))"
         
         // 优惠金额
         
         
         // 折后金额
         actualPrice = totalPrice - discountPrice
-        orderDetailView.actualAmountLabel.text = "\(actualPrice.format(format))"
+        orderDetailView.actualAmountLabel.text = "¥\(actualPrice.format(format))"
     }
     
     // MARK: - Actions
@@ -513,8 +513,10 @@ class TMTakeOrderViewController: BaseViewController {
     }
     
     func fetchEntityInfoAction() {
-//        13770863676
-        TMUserService().fetchEntityAllInfo("18851618829", type: .MobileNumber, shopId: TMShop.sharedInstance.shop_id!, businessId: TMShop.sharedInstance.business_id!, adminId: TMShop.sharedInstance.admin_id!)
+
+//        TMUserService().fetchEntityAllInfo("18851618829", type: .MobileNumber, shopId: TMShop.sharedInstance.shop_id!, businessId: TMShop.sharedInstance.business_id!, adminId: TMShop.sharedInstance.admin_id!)
+        
+        TMUserService().fetchEntityAllInfo("13770863676", type: .MobileNumber, shopId: TMShop.sharedInstance.shop_id!, businessId: TMShop.sharedInstance.business_id!, adminId: TMShop.sharedInstance.admin_id!)
     }
 }
 

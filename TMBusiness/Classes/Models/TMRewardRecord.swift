@@ -13,6 +13,8 @@ import Foundation
 */
 class TMRewardRecord: NSObject {
     
+    // reward
+    
     // 奖励记录的类型（1：签到次数 2:消费奖励）
     var type: NSNumber?
     
@@ -42,6 +44,12 @@ class TMRewardRecord: NSObject {
     
     // 当前消费累计金额
     var consume_number_current: NSNumber?
+    
+    // 消费总次数
+    var consume_count_total: NSNumber?
+    
+    // 消费总金额
+    var consume_number_total: NSNumber?
     
     // 当前消费奖励
     var consume_reward_current: NSNumber?

@@ -54,7 +54,7 @@ class TMUser: NSObject {
     var head_image: String?
     
     // 奖励记录（数组）
-//    var reward_record: []
+    var reward_record: [TMRewardRecord]?
     
     // 多个终端用户账户余额信息实体模型（数组）
     var user_account_balance: [TMUserAccountBalance]?

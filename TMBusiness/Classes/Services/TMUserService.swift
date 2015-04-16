@@ -82,19 +82,95 @@ class TMUserService: NSObject {
                 user.head_image = data["head_image"].string
                 
                 // 解析用户余额
-                var userAccountBalance: TMUserAccountBalance?
+                var userAccountBalanceList: [TMUserAccountBalance]?
                 var user_account_balance = data["user_account_balance"]
                 if  user_account_balance != nil {
-                    userAccountBalance = TMUserAccountBalance()
-                    userAccountBalance!.amount = user_account_balance["amount"].number
-                    userAccountBalance!.business_id = user_account_balance["business_id"].string
+                    userAccountBalanceList = [TMUserAccountBalance]()
+                    for (index: String, subJson: JSON) in user_account_balance {
+                        var userAccountBalance = TMUserAccountBalance()
+                        userAccountBalance.amount = subJson["amount"].numberValue
+                        userAccountBalance.business_id = subJson["business_id"].string
+                        userAccountBalanceList!.append(userAccountBalance)
+                    }
                 }
+                user.user_account_balance = userAccountBalanceList
                 
                 // 解析充值记录
-                var rechargeRecord: [TMRechargeRecord]?
+                var rechargeRecordList: [TMRechargeRecord]?
                 var recharge_record = data["recharge_record"]
+                if recharge_record != nil {
+                    rechargeRecordList = [TMRechargeRecord]()
+                    for (index: String, subJson: JSON) in recharge_record {
+                        var rechargeRecord = TMRechargeRecord()
+                        var previous_recharge_date = subJson["previous_recharge_date"].stringValue
+                        var date = NSDate(fromString: previous_recharge_date, format: .Custom("yyyy-MM-dd HH:mm:ss"))
+                        rechargeRecord.previous_recharge_date = date
+                        
+                        rechargeRecord.previous_recharge_number = subJson["previous_recharge_number"].numberValue
+                        
+                        var recharge_date = subJson["recharge_date"].stringValue
+                        date = NSDate(fromString: recharge_date, format: .Custom("yyyy-MM-dd HH:mm:ss"))
+                        rechargeRecord.recharge_date = date
+                        
+                        // 需要分析如果有数值的时候，是不是为nil
+                        rechargeRecord.recharge_type = subJson["recharge_type"].number
+                        rechargeRecord.actual_amount = subJson["actual_amount"].number
+                        rechargeRecord.total_amount = subJson["total_amount"].number
+                        rechargeRecord.reward_id = subJson["reward_id"].string
+                        
+                        rechargeRecordList!.append(rechargeRecord)
+                    }
+                }
                 
-                println("user_account_balance = \(user_account_balance)")
+                user.recharge_record = rechargeRecordList
+                
+                // 奖励记录
+                var rewardRecordList: [TMRewardRecord]?
+                var reward_record = data["reward_record"]
+                if reward_record != nil {
+                    rewardRecordList = [TMRewardRecord]()
+                    for (index: String, subJson: JSON) in reward_record {
+                        var rewardRecord = TMRewardRecord()
+                        
+                        var sign_previous_date = subJson["sign_previous_date"].stringValue
+                        var date = NSDate(fromString: sign_previous_date, format: .Custom("yyyy-MM-dd HH:mm:ss"))
+                        rewardRecord.sign_previous_date = date
+                        
+                        rewardRecord.sign_number_current = subJson["sign_number_current"].number
+                        rewardRecord.sign_number_next_difference = subJson["sign_number_next_difference"].number
+                        rewardRecord.sign_reward_current = subJson["sign_reward_current"].number
+                        
+                        var sign_reward_current_date = subJson["sign_reward_current_date"].stringValue
+                        date = NSDate(fromString: sign_reward_current_date, format: .Custom("yyyy-MM-dd HH:mm:ss"))
+                        rewardRecord.sign_reward_current_date = date
+                        
+                        rewardRecord.sign_reward_next = subJson["sign_reward_next"].number
+                        rewardRecord.consume_count_current = subJson["consume_count_current"].number
+                        rewardRecord.consume_number_current = subJson["consume_number_current"].number
+                        rewardRecord.consume_count_total = subJson["consume_count_total"].number
+                        rewardRecord.consume_number_total = subJson["consume_number_total"].number
+                        rewardRecord.consume_reward_current = subJson["consume_reward_current"].number
+                        rewardRecord.consume_number_next_difference = subJson["consume_number_next_difference"].number
+                        rewardRecord.consume_reward_next = subJson["consume_reward_next"].number
+                        
+                        var consume_previous_date = subJson["sign_reward_current_date"].stringValue
+                        date = NSDate(fromString: consume_previous_date, format: .Custom("yyyy-MM-dd HH:mm:ss"))
+                        rewardRecord.consume_previous_date = date
+                        
+                        rewardRecord.consume_previous_number = subJson["consume_previous_number"].number
+                        
+                        rewardRecord.reward_record_sign_data_count = subJson["reward_record_sign_data_count"].number
+                        rewardRecord.type = subJson["type"].numberValue
+                        
+                        // 解析shop
+                        var shop = TMShop()
+                        shop.shop_id = subJson["shop"]["shop_id"].stringValue
+                        shop.shop_name = subJson["shop"]["shop_name"].stringValue
+                        shop.admin_id = subJson["shop"]["admin_id"].stringValue
+                        shop.address = subJson["shop"]["address"].string
+                        shop.business_id = subJson["shop"]["business_id"].stringValue
+                    }
+                }
                 
                 println(data)
             }

@@ -40,6 +40,15 @@ class TMShop: NSObject {
     // 结束时间
     var end_time: NSDate?
     
+    // 签到奖励时间期限
+    var deadline: NSNumber?
+    
+    // 消费奖励时间期限
+    var deadline_consume: NSNumber?
+    
+    // 有效到访时间
+    var residence_time: NSNumber?
+    
     // 商铺管理员编号
     var admin_id: String?
     

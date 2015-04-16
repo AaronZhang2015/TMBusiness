@@ -63,6 +63,7 @@
 		6B7852631ACC353D008F1A49 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B7852611ACC353D008F1A49 /* LaunchScreen.xib */; };
 		6B78526F1ACC353D008F1A49 /* TMBusinessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B78526E1ACC353D008F1A49 /* TMBusinessTests.swift */; };
 		6B805C201AD4206500F2D968 /* AZPlaceholderTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B805C1F1AD4206500F2D968 /* AZPlaceholderTextView.swift */; };
+		6B8A0B021AE00FA000CD2100 /* NSDate+LangExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B8A0B011AE00FA000CD2100 /* NSDate+LangExt.swift */; };
 		6B9DEDAE1ADB996B00090163 /* TMRechargeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B9DEDAD1ADB996B00090163 /* TMRechargeView.swift */; };
 		6B9DEDB61ADBBD4F00090163 /* TMConsumeRecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B9DEDB51ADBBD4F00090163 /* TMConsumeRecordView.swift */; };
 		6BA06F7E1ACE6E4600DDA62E /* AZPagingContainerMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BA06F7C1ACE6E4600DDA62E /* AZPagingContainerMenuView.swift */; };
@@ -228,6 +229,7 @@
 		6B78526D1ACC353D008F1A49 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6B78526E1ACC353D008F1A49 /* TMBusinessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMBusinessTests.swift; sourceTree = "<group>"; };
 		6B805C1F1AD4206500F2D968 /* AZPlaceholderTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZPlaceholderTextView.swift; sourceTree = "<group>"; };
+		6B8A0B011AE00FA000CD2100 /* NSDate+LangExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+LangExt.swift"; sourceTree = "<group>"; };
 		6B9DEDAD1ADB996B00090163 /* TMRechargeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMRechargeView.swift; sourceTree = "<group>"; };
 		6B9DEDB51ADBBD4F00090163 /* TMConsumeRecordView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMConsumeRecordView.swift; sourceTree = "<group>"; };
 		6BA06F7C1ACE6E4600DDA62E /* AZPagingContainerMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZPagingContainerMenuView.swift; sourceTree = "<group>"; };
@@ -375,6 +377,7 @@
 		6B5F080A1ACC55C800CBD3BD /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				6B8A0B011AE00FA000CD2100 /* NSDate+LangExt.swift */,
 				6B330DC81ADC163C00BBDAF1 /* SwiftyJSON.swift */,
 				6B64DB5C1ADE462100192C7B /* JSONHelper.swift */,
 				6B5F08411ACC56FB00CBD3BD /* AppManager.swift */,
@@ -832,6 +835,7 @@
 				6B5F084A1ACC573400CBD3BD /* BaseViewController.swift in Sources */,
 				6B64DB671ADE4EDE00192C7B /* TMProduct.swift in Sources */,
 				6B330DC91ADC163C00BBDAF1 /* SwiftyJSON.swift in Sources */,
+				6B8A0B021AE00FA000CD2100 /* NSDate+LangExt.swift in Sources */,
 				6B5F08291ACC561E00CBD3BD /* TMOrderService.swift in Sources */,
 				6B5F08251ACC560F00CBD3BD /* TMUserAccountBalance.swift in Sources */,
 				6B3DB47A1ADF883D00ACC391 /* TMCacheService.swift in Sources */,
