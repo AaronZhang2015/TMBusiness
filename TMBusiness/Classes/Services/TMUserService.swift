@@ -9,6 +9,11 @@
 import UIKit
 import Alamofire
 
+enum TMConditionType: Int {
+    case MobileNumber = 1
+    case UserId = 2
+}
+
 class TMUserService: NSObject {
     
     lazy var manager: TMNetworkManager = {
@@ -49,6 +54,50 @@ class TMUserService: NSObject {
                 println(data)
             }
             
+        }
+    }
+    
+    func fetchEntityAllInfo(condition: String, type: TMConditionType, shopId: String, businessId: String, adminId: String) {
+        manager.request(.POST, relativePath: "user_getEntityAllInfo", parameters: ["condition": condition, "type": type.rawValue, "shop_id": shopId, "business_id": businessId, "admin_id": adminId, "device_type" : AppManager.platform().rawValue]) { (result) -> Void in
+            switch result {
+            case let .Error(e):
+                println(e)
+            case let .Value(json):
+                // 解析数据
+                let data = json["data"]
+                
+                var user = TMUser()
+                user.user_id = data["user_id"].string
+                user.real_name = data["real_name"].string
+                user.nick_name = data["nick_name"].string
+                user.landline_number = data["landline_number"].string
+                user.mobile_number = data["mobile_number"].string
+                user.qq = data["qq"].string
+                user.email = data["email"].string
+                user.province = data["province"].string
+                user.city = data["city"].string
+                user.weixin = data["weixin"].string
+                user.weibo = data["weibo"].string
+                user.renren = data["renren"].string
+                user.head_image = data["head_image"].string
+                
+                // 解析用户余额
+                var userAccountBalance: TMUserAccountBalance?
+                var user_account_balance = data["user_account_balance"]
+                if  user_account_balance != nil {
+                    userAccountBalance = TMUserAccountBalance()
+                    userAccountBalance!.amount = user_account_balance["amount"].number
+                    userAccountBalance!.business_id = user_account_balance["business_id"].string
+                }
+                
+                // 解析充值记录
+                var rechargeRecord: [TMRechargeRecord]?
+                var recharge_record = data["recharge_record"]
+                
+                println("user_account_balance = \(user_account_balance)")
+                
+                println(data)
+            }
         }
     }
 }

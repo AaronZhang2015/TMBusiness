@@ -60,7 +60,7 @@ class TMUser: NSObject {
     var user_account_balance: [TMUserAccountBalance]?
     
     // 多个充值记录实体模型（数组）
-//    var recharge_record: []?
+    var recharge_record: [TMRechargeRecord]?
     
     class var sharedInstance: TMUser {
         struct Singleton {

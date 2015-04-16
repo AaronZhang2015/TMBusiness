@@ -79,6 +79,8 @@ class TMTakeOrderViewController: BaseViewController {
         
         payView.rechargeButton.addTarget(self, action: "showRechargeView", forControlEvents: .TouchUpInside)
         payView.consumeButton.addTarget(self, action: "showConsumeRecordView", forControlEvents: .TouchUpInside)
+        payView.searchButton.addTarget(self, action: "fetchEntityInfoAction", forControlEvents: .TouchUpInside)
+        
         return payView
         }()
     
@@ -263,15 +265,26 @@ class TMTakeOrderViewController: BaseViewController {
     更新价格之类的详情
     */
     func updateOrderDetail() {
-        var totalPrice: NSNumber = 0.00
+        var totalPrice: Double = 0.00
+        var discountPrice: Double = 0.00
+        var actualPrice: Double = 0.00
         for var index = 0; index < orderProductList.count; ++index {
             var product = orderProductList[index]
-            var price = product.official_quotation.doubleValue * product.quantity.doubleValue + totalPrice.doubleValue
-            totalPrice = NSNumber(double: price)
+            totalPrice += product.official_quotation.doubleValue * product.quantity.doubleValue
         }
         
+        let format = ".2"
         // 更新价格
-        orderDetailView.consumeAmountLabel.text = NSString(format: "%.2f", totalPrice.doubleValue) as String
+        
+        // 消费金额
+        orderDetailView.consumeAmountLabel.text = "¥\(totalPrice.format(format))"//NSString(format: "%.2f", totalPrice.doubleValue) as String
+        
+        // 优惠金额
+        
+        
+        // 折后金额
+        actualPrice = totalPrice - discountPrice
+        orderDetailView.actualAmountLabel.text = "\(actualPrice.format(format))"
     }
     
     // MARK: - Actions
@@ -445,6 +458,8 @@ class TMTakeOrderViewController: BaseViewController {
         }
     }
     
+    // MARK: - 会员支付页面功能
+    
     /**
     显示会员支付页面
     */
@@ -496,8 +511,15 @@ class TMTakeOrderViewController: BaseViewController {
                 self.membershipCardPayView.removeFromSuperview()
         }
     }
+    
+    func fetchEntityInfoAction() {
+//        13770863676
+        TMUserService().fetchEntityAllInfo("18851618829", type: .MobileNumber, shopId: TMShop.sharedInstance.shop_id!, businessId: TMShop.sharedInstance.business_id!, adminId: TMShop.sharedInstance.admin_id!)
+    }
 }
 
+
+// MARK: - UITableViewDelegate
 extension TMTakeOrderViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         println("didSelectRowAtIndexPath")
@@ -518,6 +540,7 @@ extension TMTakeOrderViewController: UITableViewDelegate {
     }
 }
 
+// MARK: - UITableViewDataSource
 extension TMTakeOrderViewController: UITableViewDataSource {
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1

@@ -51,6 +51,9 @@ class TMMemebershipCardPayView: UIView {
     // 消费记录
     var consumeButton: UIButton!
     
+    // 搜索按钮
+    var searchButton: UIButton!
+    
     var isDraging: Bool = false
     var backClosure: (() -> ())?
     
@@ -136,7 +139,7 @@ class TMMemebershipCardPayView: UIView {
         }
         
         // 搜索按钮
-        var searchButton = UIButton.buttonWithType(.Custom) as! UIButton
+        searchButton = UIButton.buttonWithType(.Custom) as! UIButton
         searchButton.setImage(UIImage(named: "search_button"), forState: .Normal)
         searchButton.setImage(UIImage(named: "search_button_on"), forState: .Highlighted)
         addSubview(searchButton)

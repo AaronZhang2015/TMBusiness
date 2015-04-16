@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7549" systemVersion="14C2513" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="TMCacheManagedObject" representedClassName="PRODUCT_MODULE_NAME.TMCacheManagedObject" syncable="YES">
+        <attribute name="cache_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="table_name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="TMCategoryManagedObject" representedClassName="TMBusiness.TMCategoryManagedObject" syncable="YES">
         <attribute name="category_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="category_name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="category_pid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="discount_type" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="is_discount" optional="YES" attributeType="Integer 64" defaultValueString="0.0" syncable="YES"/>
-        <relationship name="products" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TMProductManagedObject" inverseName="category" inverseEntity="TMProductManagedObject" syncable="YES"/>
+        <relationship name="products" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="TMProductManagedObject" inverseName="category" inverseEntity="TMProductManagedObject" syncable="YES"/>
     </entity>
     <entity name="TMProductManagedObject" representedClassName="TMBusiness.TMProductManagedObject" syncable="YES">
         <attribute name="aTemplate_examples_plate" optional="YES" attributeType="String" syncable="YES"/>
@@ -35,7 +39,8 @@
         <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TMCategoryManagedObject" inverseName="products" inverseEntity="TMCategoryManagedObject" syncable="YES"/>
     </entity>
     <elements>
-        <element name="TMProductManagedObject" positionX="306" positionY="0" width="128" height="58"/>
-        <element name="TMCategoryManagedObject" positionX="-18" positionY="27" width="128" height="133"/>
+        <element name="TMCategoryManagedObject" positionX="-18" positionY="27" width="128" height="135"/>
+        <element name="TMProductManagedObject" positionX="306" positionY="0" width="128" height="403"/>
+        <element name="TMCacheManagedObject" positionX="144" positionY="153" width="128" height="75"/>
     </elements>
 </model>

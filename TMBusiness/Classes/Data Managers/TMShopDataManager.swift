@@ -17,6 +17,10 @@ class TMShopDataManager: TMDataManager {
         return TMShopService()
         }()
     
+    lazy var cacheService: TMCacheService = {
+        return TMCacheService()
+        }()
+    
     /**
     商家登录
     
@@ -38,52 +42,178 @@ class TMShopDataManager: TMDataManager {
         
         // 首先判断本地数据库是否有数据
         // 如果有数据那么就从本地获取
+        var categories = fetchCategoryAndProductFromCache()
         
-        // 否则就从网络请求，并缓存本地
-//        shopService.fetchEntityProductList(shopId, completion: completion)
-        shopService.fetchEntityProductList(shopId, completion: { (list, error) -> Void in
-            
-            var managedContext = CoreDataStack.sharedInstance.context
-            
-            if error == nil {
-                let categoryEntity = NSEntityDescription.entityForName("TMCategoryManagedObject",
-                    inManagedObjectContext: managedContext)
-                let productEntity = NSEntityDescription.entityForName("TMProductManagedObject",
-                    inManagedObjectContext: managedContext)
+        if categories.count > 0 {
+            completion(categories, nil)
+        } else {
+            // 否则就从网络请求，并缓存本地
+            shopService.fetchEntityProductList(shopId, completion: { (list, error) -> Void in
                 
-                for var i = 0; i < list!.count; ++i {
-                    var categoryRecord = list![i]
-                    
-                    let category = TMCategoryManagedObject(entity: categoryEntity!,
-                        insertIntoManagedObjectContext: managedContext)
-                    
-                    // ---- 赋值 Category
-                    category.category_id = categoryRecord.category_id!
-                    category.category_name =  categoryRecord.category_name!
-                    // ----
-                    
-                    var productList = categoryRecord.products!
-                    var products = NSMutableSet()
-                    for var m = 0; m < productList.count; ++m {
-                        var productRecord = productList[m]
-                        
-                        let product = TMProductManagedObject(entity: productEntity!,
-                            insertIntoManagedObjectContext: managedContext)
-                    }
-                    
-                    var error: NSError?
-                    if !managedContext.save(&error) {
-                        println("Could not save: \(error)")
-                    }
-                    
+                // 缓存数据
+                if error == nil {
+                    self.cacheCategoryAndProduct(list!)
+                    var result = self.fetchCategoryAndProductFromCache()
+                    completion(result, nil)
+                } else {
+                    completion(list, error)
                 }
+            })
+        }
+    }
+    
+    
+    func cacheCategoryAndProduct(list: [TMCategory]) {
+        
+        clearCategoryAndProduct()
+        
+        var managedContext = CoreDataStack.sharedInstance.context
+        
+        let categoryEntity = NSEntityDescription.entityForName("TMCategoryManagedObject",
+            inManagedObjectContext: managedContext)
+        let productEntity = NSEntityDescription.entityForName("TMProductManagedObject",
+            inManagedObjectContext: managedContext)
+        
+        for var i = 0; i < list.count; ++i {
+            var categoryRecord = list[i]
+            
+            let category = TMCategoryManagedObject(entity: categoryEntity!,
+                insertIntoManagedObjectContext: managedContext)
+            
+            // ---- 赋值 Category
+            category.category_id = categoryRecord.category_id!
+            category.category_name =  categoryRecord.category_name!
+            category.category_pid = categoryRecord.category_pid!
+            category.is_discount = categoryRecord.is_discount!
+            category.discount_type = categoryRecord.discount_type!
+            // ----
+            
+            // ---- 赋值 Product
+            var productList = categoryRecord.products!
+            var products = NSMutableOrderedSet()//NSMutableSet()
+            for var m = 0; m < productList.count; ++m {
+                var productRecord = productList[m]
                 
-                //Save the managed object context
+                let product = TMProductManagedObject(entity: productEntity!,
+                    insertIntoManagedObjectContext: managedContext)
                 
+                product.product_id = productRecord.product_id!
+                product.product_name = productRecord.product_name!
+                product.product_description = productRecord.product_description!
+                product.title_1 = productRecord.title_1!
+                product.title_2 = productRecord.title_2!
+                product.title_3 = productRecord.title_3!
+                product.title_4 = productRecord.title_4!
+                product.title_5 = productRecord.title_5!
+                product.description_1 = productRecord.description_1!
+                product.description_2 = productRecord.description_2!
+                product.description_3 = productRecord.description_3!
+                product.description_4 = productRecord.description_4!
+                product.description_5 = productRecord.description_5!
+                product.image_url = productRecord.image_url!
+                product.official_quotation = productRecord.official_quotation
+                product.monetary_unit = productRecord.monetary_unit!
+                product.width = productRecord.width!
+                product.height = productRecord.height!
+                product.category_id = productRecord.category_id!
+                product.category_name = productRecord.category_name!
+                product.is_discount = productRecord.is_discount!
+                product.discount_type = productRecord.discount_type!
+                product.aTemplate_examples_plate = productRecord.aTemplate_examples_plate!
+                products.addObject(product)
             }
             
-            completion(list, error)
-        })
+            category.products = products
+        }
         
+        //Save the managed object context
+        var error: NSError?
+        if !managedContext.save(&error) {
+            println("Could not save: \(error)")
+        }
+    }
+    
+    func clearCategoryAndProduct() {
+        var managedContext = CoreDataStack.sharedInstance.context
+        let categoryFetch = NSFetchRequest(entityName: "TMCategoryManagedObject")
+        var error: NSError?
+        let result = managedContext.executeFetchRequest(categoryFetch, error: &error) as! [TMCategoryManagedObject]
+        for category in result {
+            managedContext.deleteObject(category)
+            
+            for product in category.products {
+                managedContext.deleteObject(product as! TMProductManagedObject)
+            }
+        }
+        
+        //Save the managed object context
+        if !managedContext.save(&error) {
+            println("Could not save: \(error)")
+        }
+    }
+    
+    func fetchCategoryAndProductFromCache() -> [TMCategory] {
+        var categoryList = [TMCategory]()
+        
+        var managedContext = CoreDataStack.sharedInstance.context
+        let categoryFetch = NSFetchRequest(entityName: "TMCategoryManagedObject")
+        
+        var nameDescriptor = NSSortDescriptor(key: "category_name", ascending: false)
+        categoryFetch.sortDescriptors = [nameDescriptor]
+        
+        var error: NSError?
+        let result = managedContext.executeFetchRequest(categoryFetch, error: &error) as! [TMCategoryManagedObject]
+        
+        for var i = 0; i < result.count; i++ {
+            var categoryRecord = result[i]
+            var category = TMCategory()
+            
+            // ---- 赋值 Category
+            category.category_id = categoryRecord.category_id
+            category.category_name =  categoryRecord.category_name
+            category.category_pid = categoryRecord.category_pid
+            category.is_discount = categoryRecord.is_discount
+            category.discount_type = categoryRecord.discount_type
+            // ----
+            
+            // ---- 赋值 Product
+            var productList = categoryRecord.products.array as! [TMProductManagedObject]
+            
+            var products = [TMProduct]()
+            for var m = 0; m < productList.count; ++m {
+                var productRecord = productList[m]
+                var product = TMProduct()
+                product.product_id = productRecord.product_id
+                product.product_name = productRecord.product_name
+                product.product_description = productRecord.product_description
+                product.title_1 = productRecord.title_1
+                product.title_2 = productRecord.title_2
+                product.title_3 = productRecord.title_3
+                product.title_4 = productRecord.title_4
+                product.title_5 = productRecord.title_5
+                product.description_1 = productRecord.description_1
+                product.description_2 = productRecord.description_2
+                product.description_3 = productRecord.description_3
+                product.description_4 = productRecord.description_4
+                product.description_5 = productRecord.description_5
+                product.image_url = productRecord.image_url
+                product.official_quotation = productRecord.official_quotation
+                product.monetary_unit = productRecord.monetary_unit
+                product.width = productRecord.width
+                product.height = productRecord.height
+                product.category_id = productRecord.category_id
+                product.category_name = productRecord.category_name
+                product.is_discount = productRecord.is_discount
+                product.discount_type = productRecord.discount_type
+                product.aTemplate_examples_plate = productRecord.aTemplate_examples_plate
+                
+                products.append(product)
+            }
+            
+            category.products = products
+            categoryList.append(category)
+        }
+        
+        return categoryList
     }
 }

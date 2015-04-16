@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		6B330DC91ADC163C00BBDAF1 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B330DC81ADC163C00BBDAF1 /* SwiftyJSON.swift */; };
+		6B3DB4761ADF4F9200ACC391 /* TMProductManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B3DB4751ADF4F9200ACC391 /* TMProductManagedObject.swift */; };
+		6B3DB4781ADF4F9200ACC391 /* TMCategoryManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B3DB4771ADF4F9200ACC391 /* TMCategoryManagedObject.swift */; };
+		6B3DB47A1ADF883D00ACC391 /* TMCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B3DB4791ADF883D00ACC391 /* TMCacheService.swift */; };
 		6B4FBD871ACCDD6F0017CB6F /* TMLoginHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4FBD861ACCDD6F0017CB6F /* TMLoginHeaderView.swift */; };
 		6B4FBD891ACCED500017CB6F /* TMSegmentControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4FBD881ACCED500017CB6F /* TMSegmentControl.swift */; };
 		6B4FBD911ACD16290017CB6F /* TMTakeOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4FBD901ACD16290017CB6F /* TMTakeOrderViewController.swift */; };
@@ -45,6 +48,7 @@
 		6B5F08751ACC5AFA00CBD3BD /* UIColor+LangExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5F08741ACC5AFA00CBD3BD /* UIColor+LangExt.swift */; };
 		6B5F08771ACC5B0200CBD3BD /* UIView+Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5F08761ACC5B0200CBD3BD /* UIView+Geometry.swift */; };
 		6B5F08791ACC5C1200CBD3BD /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5F08781ACC5C1200CBD3BD /* MasterViewController.swift */; };
+		6B6093FB1ADFA54F00739652 /* TMCacheManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B6093FA1ADFA54F00739652 /* TMCacheManagedObject.swift */; };
 		6B62B8051AD66657002F4462 /* String+LangExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B62B8041AD66657002F4462 /* String+LangExt.swift */; };
 		6B62B80F1AD67281002F4462 /* Double+LangExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B62B80E1AD67281002F4462 /* Double+LangExt.swift */; };
 		6B64DB5D1ADE462100192C7B /* JSONHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B64DB5C1ADE462100192C7B /* JSONHelper.swift */; };
@@ -52,8 +56,6 @@
 		6B64DB661ADE4EDE00192C7B /* TMCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B64DB641ADE4EDE00192C7B /* TMCategory.swift */; };
 		6B64DB671ADE4EDE00192C7B /* TMProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B64DB651ADE4EDE00192C7B /* TMProduct.swift */; };
 		6B64DB731ADE62D000192C7B /* Thing Me.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6B64DB711ADE62D000192C7B /* Thing Me.xcdatamodeld */; };
-		6B64DB751ADE642700192C7B /* TMProductManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B64DB741ADE642700192C7B /* TMProductManagedObject.swift */; };
-		6B64DB771ADE642800192C7B /* TMCategoryManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B64DB761ADE642800192C7B /* TMCategoryManagedObject.swift */; };
 		6B6EC8E91AD779C000A85B2B /* TMMemebershipCardPayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B6EC8E81AD779C000A85B2B /* TMMemebershipCardPayView.swift */; };
 		6B7852591ACC353C008F1A49 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B7852581ACC353C008F1A49 /* AppDelegate.swift */; };
 		6B78525E1ACC353D008F1A49 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6B78525C1ACC353D008F1A49 /* Main.storyboard */; };
@@ -167,6 +169,9 @@
 
 /* Begin PBXFileReference section */
 		6B330DC81ADC163C00BBDAF1 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
+		6B3DB4751ADF4F9200ACC391 /* TMProductManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMProductManagedObject.swift; sourceTree = "<group>"; };
+		6B3DB4771ADF4F9200ACC391 /* TMCategoryManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMCategoryManagedObject.swift; sourceTree = "<group>"; };
+		6B3DB4791ADF883D00ACC391 /* TMCacheService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMCacheService.swift; sourceTree = "<group>"; };
 		6B4FBD861ACCDD6F0017CB6F /* TMLoginHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMLoginHeaderView.swift; sourceTree = "<group>"; };
 		6B4FBD881ACCED500017CB6F /* TMSegmentControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMSegmentControl.swift; sourceTree = "<group>"; };
 		6B4FBD901ACD16290017CB6F /* TMTakeOrderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMTakeOrderViewController.swift; sourceTree = "<group>"; };
@@ -204,6 +209,7 @@
 		6B5F08741ACC5AFA00CBD3BD /* UIColor+LangExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+LangExt.swift"; sourceTree = "<group>"; };
 		6B5F08761ACC5B0200CBD3BD /* UIView+Geometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Geometry.swift"; sourceTree = "<group>"; };
 		6B5F08781ACC5C1200CBD3BD /* MasterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
+		6B6093FA1ADFA54F00739652 /* TMCacheManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMCacheManagedObject.swift; sourceTree = "<group>"; };
 		6B62B8041AD66657002F4462 /* String+LangExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+LangExt.swift"; sourceTree = "<group>"; };
 		6B62B80E1AD67281002F4462 /* Double+LangExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Double+LangExt.swift"; sourceTree = "<group>"; };
 		6B64DB5C1ADE462100192C7B /* JSONHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONHelper.swift; sourceTree = "<group>"; };
@@ -211,8 +217,6 @@
 		6B64DB641ADE4EDE00192C7B /* TMCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMCategory.swift; sourceTree = "<group>"; };
 		6B64DB651ADE4EDE00192C7B /* TMProduct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMProduct.swift; sourceTree = "<group>"; };
 		6B64DB721ADE62D000192C7B /* Thing Me.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Thing Me.xcdatamodel"; sourceTree = "<group>"; };
-		6B64DB741ADE642700192C7B /* TMProductManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMProductManagedObject.swift; sourceTree = "<group>"; };
-		6B64DB761ADE642800192C7B /* TMCategoryManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMCategoryManagedObject.swift; sourceTree = "<group>"; };
 		6B6EC8E81AD779C000A85B2B /* TMMemebershipCardPayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMMemebershipCardPayView.swift; sourceTree = "<group>"; };
 		6B7852531ACC353C008F1A49 /* TMBusiness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TMBusiness.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B7852571ACC353C008F1A49 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -384,8 +388,9 @@
 		6B5F080B1ACC55C800CBD3BD /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				6B64DB761ADE642800192C7B /* TMCategoryManagedObject.swift */,
-				6B64DB741ADE642700192C7B /* TMProductManagedObject.swift */,
+				6B3DB4771ADF4F9200ACC391 /* TMCategoryManagedObject.swift */,
+				6B6093FA1ADFA54F00739652 /* TMCacheManagedObject.swift */,
+				6B3DB4751ADF4F9200ACC391 /* TMProductManagedObject.swift */,
 				6B64DB641ADE4EDE00192C7B /* TMCategory.swift */,
 				6B64DB651ADE4EDE00192C7B /* TMProduct.swift */,
 				6B5F08131ACC560F00CBD3BD /* TMOrder.swift */,
@@ -437,6 +442,7 @@
 				6B5F08261ACC561E00CBD3BD /* TMOrderService.swift */,
 				6B5F08271ACC561E00CBD3BD /* TMShopService.swift */,
 				6B5F08281ACC561E00CBD3BD /* TMUserService.swift */,
+				6B3DB4791ADF883D00ACC391 /* TMCacheService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -812,6 +818,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B6093FB1ADFA54F00739652 /* TMCacheManagedObject.swift in Sources */,
 				6B5F083A1ACC568100CBD3BD /* NetworkManager.swift in Sources */,
 				6B4FBD871ACCDD6F0017CB6F /* TMLoginHeaderView.swift in Sources */,
 				6B64DB661ADE4EDE00192C7B /* TMCategory.swift in Sources */,
@@ -827,13 +834,14 @@
 				6B330DC91ADC163C00BBDAF1 /* SwiftyJSON.swift in Sources */,
 				6B5F08291ACC561E00CBD3BD /* TMOrderService.swift in Sources */,
 				6B5F08251ACC560F00CBD3BD /* TMUserAccountBalance.swift in Sources */,
+				6B3DB47A1ADF883D00ACC391 /* TMCacheService.swift in Sources */,
 				6B64DB5F1ADE4AF700192C7B /* CoreDataStack.swift in Sources */,
 				6B5F08341ACC564600CBD3BD /* TMShopDataManager.swift in Sources */,
 				6B4FBD9E1ACD16F50017CB6F /* TMProductCell.swift in Sources */,
 				6B4FBDB11ACD2CBF0017CB6F /* TMTakeOrderPayWayView.swift in Sources */,
 				6B5F08331ACC564600CBD3BD /* TMDataManager.swift in Sources */,
 				6B4FBDB31ACD439B0017CB6F /* TMProductListViewController.swift in Sources */,
-				6B64DB751ADE642700192C7B /* TMProductManagedObject.swift in Sources */,
+				6B3DB4761ADF4F9200ACC391 /* TMProductManagedObject.swift in Sources */,
 				6B4FBDAF1ACD25410017CB6F /* TMTakeOrderDetailView.swift in Sources */,
 				6B64DB5D1ADE462100192C7B /* JSONHelper.swift in Sources */,
 				6B5F08771ACC5B0200CBD3BD /* UIView+Geometry.swift in Sources */,
@@ -859,7 +867,7 @@
 				6B64DB731ADE62D000192C7B /* Thing Me.xcdatamodeld in Sources */,
 				6BA06F8B1ACE88BB00DDA62E /* AZPagingContainerMenuListView.swift in Sources */,
 				6BA06F7F1ACE6E4600DDA62E /* AZPagingContainerViewController.swift in Sources */,
-				6B64DB771ADE642800192C7B /* TMCategoryManagedObject.swift in Sources */,
+				6B3DB4781ADF4F9200ACC391 /* TMCategoryManagedObject.swift in Sources */,
 				6B4FBD911ACD16290017CB6F /* TMTakeOrderViewController.swift in Sources */,
 				6B5F08231ACC560F00CBD3BD /* TMShop.swift in Sources */,
 				6B4FBDA91ACD1C3A0017CB6F /* TMTakeOrderListHeaderView.swift in Sources */,
