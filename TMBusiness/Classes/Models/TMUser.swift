@@ -27,7 +27,7 @@ class TMUser: NSObject {
     var landline_number: String?
     
     // 手机号
-    var mobile_number: String?
+    var mobile_number: String!
     
     // QQ
     var qq: String?

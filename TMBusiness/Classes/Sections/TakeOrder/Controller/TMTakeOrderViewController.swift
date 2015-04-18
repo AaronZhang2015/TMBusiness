@@ -17,6 +17,8 @@ class TMTakeOrderViewController: BaseViewController {
         return TMShopDataManager()
         }()
     
+    private lazy var userDataManager: TMUserDataManager = TMUserDataManager()
+    
     // 备注操作
     private var remarkButton: UIButton!
     
@@ -513,10 +515,17 @@ class TMTakeOrderViewController: BaseViewController {
     }
     
     func fetchEntityInfoAction() {
+        
+        var condition = membershipCardPayView.phoneNumberTextField.text
+        condition = "13770863676"
 
+        userDataManager.fetchEntityAllInfo(condition, type: .MobileNumber, shopId: TMShop.sharedInstance.shop_id, businessId: TMShop.sharedInstance.business_id, adminId: TMShop.sharedInstance.admin_id) { (user, error) -> Void in
+            
+        }
+        
 //        TMUserService().fetchEntityAllInfo("18851618829", type: .MobileNumber, shopId: TMShop.sharedInstance.shop_id!, businessId: TMShop.sharedInstance.business_id!, adminId: TMShop.sharedInstance.admin_id!)
         
-        TMUserService().fetchEntityAllInfo("13770863676", type: .MobileNumber, shopId: TMShop.sharedInstance.shop_id!, businessId: TMShop.sharedInstance.business_id!, adminId: TMShop.sharedInstance.admin_id!)
+//        userDataManager.fetchEntityAllInfo.fetchEntityAllInfo("13770863676", type: .MobileNumber, shopId: TMShop.sharedInstance.shop_id!, businessId: TMShop.sharedInstance.business_id!, adminId: TMShop.sharedInstance.admin_id!)
     }
 }
 

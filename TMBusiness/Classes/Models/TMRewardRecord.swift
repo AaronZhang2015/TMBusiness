@@ -8,6 +8,7 @@
 
 import Foundation
 
+
 /**
 *  奖励记录信息实体模型
 */
@@ -15,7 +16,7 @@ class TMRewardRecord: NSObject {
     
     // reward
     
-    // 奖励记录的类型（1：签到次数 2:消费奖励）
+    // 奖励记录的类型（1：签到次数 2:消费奖励 3:充值）
     var type: NSNumber?
     
     // 商铺信息实体模型

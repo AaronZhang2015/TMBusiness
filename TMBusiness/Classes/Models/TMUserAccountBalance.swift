@@ -13,7 +13,7 @@ import Foundation
 */
 class TMUserAccountBalance: NSObject {
     // 账户余额
-    var amount: NSNumber?
+    var amount: NSNumber!
     
     // 商户编号
     var business_id: String?

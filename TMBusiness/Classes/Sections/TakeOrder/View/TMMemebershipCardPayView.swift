@@ -578,6 +578,26 @@ class TMMemebershipCardPayView: UIView {
             backClosure()
         }
     }
+    
+    
+    func updateEntityAllInfo(user: TMUser) {
+        let format = ".2"
+        phoneNumberLabel.text = user.mobile_number
+        if let nickname = user.nick_name {
+            nicknameLabel.text = nickname
+        } else {
+            nicknameLabel.text = user.mobile_number
+        }
+        
+        if let user_account_balance = user.user_account_balance {
+            var balance = user_account_balance[0].amount.doubleValue
+            balanceLabel.text = "\(balance.format(format))"
+        } else {
+            balanceLabel.text = "0.00"
+        }
+        
+        
+    }
 }
 
 extension TMMemebershipCardPayView {

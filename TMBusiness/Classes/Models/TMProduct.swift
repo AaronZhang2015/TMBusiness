@@ -76,7 +76,7 @@ class TMProduct: NSObject {
     // 商品分类名称
     var category_name: String?
     
-    // 是否参与打折（0：不参与任何打折类型  1：参与全部打折类型  2：参与部分打折类型）
+    // 是否参与打折（0：不参与任何打折类型  1：参与全部打折类型  2：参与部分打折类型  3：继承该商品分类的优惠设置）
     var is_discount: NSNumber?
     
     // 折扣/打折类型

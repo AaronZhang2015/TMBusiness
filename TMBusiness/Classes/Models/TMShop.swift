@@ -11,10 +11,10 @@ import UIKit
 class TMShop: NSObject {
     
     // 商铺编号
-    var shop_id: String?
+    var shop_id: String!
     
     // 商户编号
-    var business_id: String?
+    var business_id: String!
     
     // 商铺名称
     var shop_name: String?
@@ -49,9 +49,17 @@ class TMShop: NSObject {
     // 有效到访时间
     var residence_time: NSNumber?
     
-    // 商铺管理员编号
-    var admin_id: String?
+    // 奖励迭代模式
+    var combination: String!
     
+    // T+0模式
+    var immediate: String?
+    
+    // 商铺管理员编号
+    var admin_id: String!
+    
+    // 商铺管理员姓名
+    var admin_name: String?
     
     class var sharedInstance: TMShop {
         struct Singleton {

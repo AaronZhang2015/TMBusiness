@@ -57,11 +57,11 @@ class TMUserService: NSObject {
         }
     }
     
-    func fetchEntityAllInfo(condition: String, type: TMConditionType, shopId: String, businessId: String, adminId: String) {
+    func fetchEntityAllInfo(condition: String, type: TMConditionType, shopId: String, businessId: String, adminId: String, completion: (TMUser?, NSError?) -> Void) {
         manager.request(.POST, relativePath: "user_getEntityAllInfo", parameters: ["condition": condition, "type": type.rawValue, "shop_id": shopId, "business_id": businessId, "admin_id": adminId, "device_type" : AppManager.platform().rawValue]) { (result) -> Void in
             switch result {
             case let .Error(e):
-                println(e)
+                completion(nil, e)
             case let .Value(json):
                 // 解析数据
                 let data = json["data"]
@@ -169,10 +169,16 @@ class TMUserService: NSObject {
                         shop.admin_id = subJson["shop"]["admin_id"].stringValue
                         shop.address = subJson["shop"]["address"].string
                         shop.business_id = subJson["shop"]["business_id"].stringValue
+                        shop.combination = subJson["shop"]["combination"].stringValue
+                        shop.immediate = subJson["shop"]["immediate"].stringValue
+                        
+                        rewardRecord.shop = shop
+                        rewardRecordList!.append(rewardRecord)
                     }
                 }
+                user.reward_record = rewardRecordList
                 
-                println(data)
+                completion(user, nil)
             }
         }
     }

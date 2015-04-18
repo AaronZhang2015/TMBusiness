@@ -69,6 +69,8 @@
 		6BA06F7E1ACE6E4600DDA62E /* AZPagingContainerMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BA06F7C1ACE6E4600DDA62E /* AZPagingContainerMenuView.swift */; };
 		6BA06F7F1ACE6E4600DDA62E /* AZPagingContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BA06F7D1ACE6E4600DDA62E /* AZPagingContainerViewController.swift */; };
 		6BA06F8B1ACE88BB00DDA62E /* AZPagingContainerMenuListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BA06F8A1ACE88BB00DDA62E /* AZPagingContainerMenuListView.swift */; };
+		6BB4CA391AE0EC4200F407E2 /* TMTakeOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB4CA381AE0EC4200F407E2 /* TMTakeOrder.swift */; };
+		6BB65AE51AE0AAF400BD924A /* TMUserDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB65AE41AE0AAF400BD924A /* TMUserDataManager.swift */; };
 		6BEF67221AD3B36400EF2BCB /* TMOrderRemarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEF67211AD3B36400EF2BCB /* TMOrderRemarkView.swift */; };
 		6BEF67341AD52C2700EF2BCB /* TMCashPayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEF67331AD52C2700EF2BCB /* TMCashPayView.swift */; };
 /* End PBXBuildFile section */
@@ -235,6 +237,8 @@
 		6BA06F7C1ACE6E4600DDA62E /* AZPagingContainerMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZPagingContainerMenuView.swift; sourceTree = "<group>"; };
 		6BA06F7D1ACE6E4600DDA62E /* AZPagingContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZPagingContainerViewController.swift; sourceTree = "<group>"; };
 		6BA06F8A1ACE88BB00DDA62E /* AZPagingContainerMenuListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZPagingContainerMenuListView.swift; sourceTree = "<group>"; };
+		6BB4CA381AE0EC4200F407E2 /* TMTakeOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMTakeOrder.swift; sourceTree = "<group>"; };
+		6BB65AE41AE0AAF400BD924A /* TMUserDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMUserDataManager.swift; sourceTree = "<group>"; };
 		6BEF67211AD3B36400EF2BCB /* TMOrderRemarkView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMOrderRemarkView.swift; sourceTree = "<group>"; };
 		6BEF67331AD52C2700EF2BCB /* TMCashPayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMCashPayView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -404,6 +408,7 @@
 				6B5F08191ACC560F00CBD3BD /* TMShop.swift */,
 				6B5F081A1ACC560F00CBD3BD /* TMUser.swift */,
 				6B5F081B1ACC560F00CBD3BD /* TMUserAccountBalance.swift */,
+				6BB4CA381AE0EC4200F407E2 /* TMTakeOrder.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -462,6 +467,7 @@
 			children = (
 				6B5F08311ACC564600CBD3BD /* TMDataManager.swift */,
 				6B5F08321ACC564600CBD3BD /* TMShopDataManager.swift */,
+				6BB65AE41AE0AAF400BD924A /* TMUserDataManager.swift */,
 			);
 			path = "Data Managers";
 			sourceTree = "<group>";
@@ -839,6 +845,7 @@
 				6B5F08291ACC561E00CBD3BD /* TMOrderService.swift in Sources */,
 				6B5F08251ACC560F00CBD3BD /* TMUserAccountBalance.swift in Sources */,
 				6B3DB47A1ADF883D00ACC391 /* TMCacheService.swift in Sources */,
+				6BB4CA391AE0EC4200F407E2 /* TMTakeOrder.swift in Sources */,
 				6B64DB5F1ADE4AF700192C7B /* CoreDataStack.swift in Sources */,
 				6B5F08341ACC564600CBD3BD /* TMShopDataManager.swift in Sources */,
 				6B4FBD9E1ACD16F50017CB6F /* TMProductCell.swift in Sources */,
@@ -870,6 +877,7 @@
 				6B4FBDA61ACD186B0017CB6F /* AAContainerViewController.swift in Sources */,
 				6B64DB731ADE62D000192C7B /* Thing Me.xcdatamodeld in Sources */,
 				6BA06F8B1ACE88BB00DDA62E /* AZPagingContainerMenuListView.swift in Sources */,
+				6BB65AE51AE0AAF400BD924A /* TMUserDataManager.swift in Sources */,
 				6BA06F7F1ACE6E4600DDA62E /* AZPagingContainerViewController.swift in Sources */,
 				6B3DB4781ADF4F9200ACC391 /* TMCategoryManagedObject.swift in Sources */,
 				6B4FBD911ACD16290017CB6F /* TMTakeOrderViewController.swift in Sources */,
