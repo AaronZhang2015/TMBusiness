@@ -61,6 +61,9 @@ class TMShop: NSObject {
     // 商铺管理员姓名
     var admin_name: String?
     
+    // 奖励信息实体
+    var rewards: [TMReward]?
+    
     class var sharedInstance: TMShop {
         struct Singleton {
             static let instance = TMShop()

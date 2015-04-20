@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6B330DC91ADC163C00BBDAF1 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B330DC81ADC163C00BBDAF1 /* SwiftyJSON.swift */; };
+		6B3C129C1AE4743F00D5A8B9 /* AZCodeScannerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B3C129B1AE4743F00D5A8B9 /* AZCodeScannerManager.swift */; };
 		6B3DB4761ADF4F9200ACC391 /* TMProductManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B3DB4751ADF4F9200ACC391 /* TMProductManagedObject.swift */; };
 		6B3DB4781ADF4F9200ACC391 /* TMCategoryManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B3DB4771ADF4F9200ACC391 /* TMCategoryManagedObject.swift */; };
 		6B3DB47A1ADF883D00ACC391 /* TMCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B3DB4791ADF883D00ACC391 /* TMCacheService.swift */; };
@@ -172,6 +173,7 @@
 
 /* Begin PBXFileReference section */
 		6B330DC81ADC163C00BBDAF1 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
+		6B3C129B1AE4743F00D5A8B9 /* AZCodeScannerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZCodeScannerManager.swift; sourceTree = "<group>"; };
 		6B3DB4751ADF4F9200ACC391 /* TMProductManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMProductManagedObject.swift; sourceTree = "<group>"; };
 		6B3DB4771ADF4F9200ACC391 /* TMCategoryManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMCategoryManagedObject.swift; sourceTree = "<group>"; };
 		6B3DB4791ADF883D00ACC391 /* TMCacheService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMCacheService.swift; sourceTree = "<group>"; };
@@ -484,6 +486,7 @@
 			isa = PBXGroup;
 			children = (
 				6B5F08391ACC568100CBD3BD /* NetworkManager.swift */,
+				6B3C129B1AE4743F00D5A8B9 /* AZCodeScannerManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -866,6 +869,7 @@
 				6B5F08201ACC560F00CBD3BD /* TMRechargeRecord.swift in Sources */,
 				6B5F08421ACC56FB00CBD3BD /* AppManager.swift in Sources */,
 				6B5F08221ACC560F00CBD3BD /* TMRewardRecord.swift in Sources */,
+				6B3C129C1AE4743F00D5A8B9 /* AZCodeScannerManager.swift in Sources */,
 				6B5F08731ACC5A7100CBD3BD /* TMLoginView.swift in Sources */,
 				6B5F08211ACC560F00CBD3BD /* TMReward.swift in Sources */,
 				6BEF67341AD52C2700EF2BCB /* TMCashPayView.swift in Sources */,

@@ -108,6 +108,9 @@ class TMTakeOrderViewController: BaseViewController {
     
     // 点单列表
     private var orderProductList: [TMProduct] = [TMProduct]()
+    
+    // 点单计算算法
+    private var takeOrderCompute: TMTakeOrderCompute = TMTakeOrderCompute()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -558,13 +561,13 @@ extension TMTakeOrderViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return orderProductList.count
+        return takeOrderCompute.getProducts().count//orderProductList.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(takeOrderListCellReuseIdentifier, forIndexPath: indexPath) as! TMTakeOrderListCell
         cell.delegate = self
-        cell.configureData(orderProductList[indexPath.row])
+        cell.configureData(takeOrderCompute.getProducts()[indexPath.row])
         
         if let editIndexPath = self.editIndexPath {
             if editIndexPath.row == indexPath.row && editIndexPath.section == editIndexPath.section {
@@ -579,44 +582,37 @@ extension TMTakeOrderViewController: UITableViewDataSource {
 extension TMTakeOrderViewController: TMTakeOrderListCellDelegate {
     func orderListDidDelete(product: TMProduct) {
         
-        var index = 0
-        for ; index < orderProductList.count; ++index {
-            if orderProductList[index] == product {
-                break
-            }
+        var (success, index) = takeOrderCompute.deleteProduct(product)
+        
+        if success {
+            editCell = nil
+            editIndexPath = nil
+            tableView.beginUpdates()
+            tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Left)
+            tableView.endUpdates()
         }
-        
-        orderProductList.removeAtIndex(index)
-        tableView.beginUpdates()
-        tableView.deleteRowsAtIndexPaths([editIndexPath!], withRowAnimation: UITableViewRowAnimation.Left)
-        tableView.endUpdates()
-        
-        editCell = nil
-        editIndexPath = nil
-        updateOrderDetail()
     }
     
     func orderListDidSubtract(product: TMProduct) {
-        var quantity = product.quantity.integerValue - 1
         
-        if quantity < 1 {
-            quantity = 1
+        var (success, index) = takeOrderCompute.subtractProduct(product)
+        
+        if success {
+            if index == -1 {
+                editCell = nil
+                editIndexPath = nil
+                tableView.reloadData()
+            } else {
+                tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)], withRowAnimation: UITableViewRowAnimation.None)
+                tableView.selectRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0), animated: false, scrollPosition: .None)
+            }
         }
-        
-        product.quantity = NSNumber(integer: quantity)
-        tableView.reloadRowsAtIndexPaths([editIndexPath!], withRowAnimation: UITableViewRowAnimation.None)
-        tableView.selectRowAtIndexPath(editIndexPath, animated: false, scrollPosition: .None)
-        updateOrderDetail()
     }
     
     func orderListDidPlus(product: TMProduct) {
-        var quantity = product.quantity.integerValue + 1
-        
-        product.quantity = NSNumber(integer: quantity)
-        tableView.reloadRowsAtIndexPaths([editIndexPath!], withRowAnimation: UITableViewRowAnimation.None)
-        tableView.selectRowAtIndexPath(editIndexPath, animated: false, scrollPosition: .None)
-        
-        updateOrderDetail()
+        var index = takeOrderCompute.addProduct(product)
+        tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)], withRowAnimation: UITableViewRowAnimation.None)
+        tableView.selectRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0), animated: false, scrollPosition: .None)
     }
 }
 
@@ -626,28 +622,7 @@ extension TMTakeOrderViewController: TMProductListViewControllerDelegate {
     
     func productListViewController(viewController: TMProductListViewController, didSelectedProduct: TMProduct) {
         
-        var orderProduct: TMProduct?
-        
-        var index = 0
-        for ; index < orderProductList.count; ++index {
-            var record = orderProductList[index]
-            if record.product_id == didSelectedProduct.product_id {
-                orderProduct = record
-                break
-            }
-        }
-        
-        if orderProduct != nil {
-            var quantity: Int = orderProduct!.quantity.integerValue
-            quantity += 1
-            orderProduct!.quantity = NSNumber(integer: quantity)
-//            tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)], withRowAnimation: UITableViewRowAnimation.None)
-        } else {
-            orderProduct = didSelectedProduct
-            orderProduct?.quantity = 1
-            orderProductList.append(orderProduct!)
-//            tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Bottom)
-        }
+        var index = takeOrderCompute.addProduct(didSelectedProduct)
         
         updateOrderDetail()
         

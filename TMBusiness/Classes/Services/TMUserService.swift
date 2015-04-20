@@ -171,6 +171,21 @@ class TMUserService: NSObject {
                         shop.business_id = subJson["shop"]["business_id"].stringValue
                         shop.combination = subJson["shop"]["combination"].stringValue
                         shop.immediate = subJson["shop"]["immediate"].stringValue
+                        // 解析奖励规则
+                        var rewards = subJson["shop"]["rewards"]
+                        var rewardsList = [TMReward]()
+                        for (index: String, subJson: JSON) in rewards {
+                            var reward = TMReward()
+                            reward.reward_id = subJson["reward_id"].string
+                            reward.type = subJson["type"].numberValue
+                            reward.current_number_min = subJson["current_number_min"].number
+                            reward.current_number_max = subJson["current_number_max"].number
+                            reward.total_number_min = subJson["total_number_min"].number
+                            reward.total_number_max = subJson["total_number_max"].number
+                            reward.reward_description = subJson["reward_description"].string
+                            rewardsList.append(reward)
+                        }
+                        shop.rewards = rewardsList
                         
                         rewardRecord.shop = shop
                         rewardRecordList!.append(rewardRecord)
