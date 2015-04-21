@@ -54,6 +54,17 @@ class TMMemebershipCardPayView: UIView {
     // 搜索按钮
     var searchButton: UIButton!
     
+    // 二维码扫描
+    var scanButton: UIButton!
+    
+    var balanceButton: UIButton!
+    
+    var cashBoxButton: UIButton!
+    
+    var cashButton: UIButton!
+    
+    var otherButton: UIButton!
+    
     var isDraging: Bool = false
     var backClosure: (() -> ())?
     
@@ -150,7 +161,7 @@ class TMMemebershipCardPayView: UIView {
         }
         
         // 扫一扫按钮
-        var scanButton = UIButton.buttonWithType(.Custom) as! UIButton
+        scanButton = UIButton.buttonWithType(.Custom) as! UIButton
         scanButton.setBackgroundImage(UIImage(named: "scan_button"), forState: .Normal)
         scanButton.setBackgroundImage(UIImage(named: "scan_button_on"), forState: .Highlighted)
         scanButton.setTitle("扫一扫", forState: .Normal)
@@ -238,7 +249,7 @@ class TMMemebershipCardPayView: UIView {
         addSubview(balanceLabel)
         balanceLabel.snp_makeConstraints { make in
             make.top.equalTo(balanceTitleLabel.snp_top)
-            make.width.equalTo(82)
+            make.width.greaterThanOrEqualTo(100)
             make.height.equalTo(20.0)
             make.leading.equalTo(balanceTitleLabel.snp_trailing).offset(10.0)
         }
@@ -422,7 +433,7 @@ class TMMemebershipCardPayView: UIView {
         }
         
         // 余额按钮
-        var balanceButton = UIButton.buttonWithType(.Custom) as! UIButton
+        balanceButton = UIButton.buttonWithType(.Custom) as! UIButton
         balanceButton.setBackgroundImage(UIImage(named: "payment_button"), forState: .Normal)
         balanceButton.setBackgroundImage(UIImage(named: "payment_button_on"), forState: .Highlighted)
         balanceButton.setBackgroundImage(UIImage(named: "payment_button_on"), forState: .Selected)
@@ -433,6 +444,7 @@ class TMMemebershipCardPayView: UIView {
         balanceButton.setTitleColor(UIColor(hex: 0x1E8EBC), forState: .Normal)
         balanceButton.setTitleColor(UIColor.whiteColor(), forState: .Highlighted)
         balanceButton.setTitleColor(UIColor.whiteColor(), forState: .Selected)
+        balanceButton.addTarget(self, action: "handleTransactionButtonState:", forControlEvents: .TouchUpInside)
         addSubview(balanceButton)
         balanceButton.snp_makeConstraints { make in
             make.width.equalTo(137.0)
@@ -442,7 +454,7 @@ class TMMemebershipCardPayView: UIView {
         }
         
         // 盒子支付按钮
-        var cashBoxButton = UIButton.buttonWithType(.Custom) as! UIButton
+        cashBoxButton = UIButton.buttonWithType(.Custom) as! UIButton
         cashBoxButton.setBackgroundImage(UIImage(named: "payment_button"), forState: .Normal)
         cashBoxButton.setBackgroundImage(UIImage(named: "payment_button_on"), forState: .Highlighted)
         cashBoxButton.setBackgroundImage(UIImage(named: "payment_button_on"), forState: .Selected)
@@ -454,7 +466,7 @@ class TMMemebershipCardPayView: UIView {
         cashBoxButton.setTitleColor(UIColor(hex: 0x1E8EBC), forState: .Normal)
         cashBoxButton.setTitleColor(UIColor.whiteColor(), forState: .Highlighted)
         cashBoxButton.setTitleColor(UIColor.whiteColor(), forState: .Selected)
-        
+        cashBoxButton.addTarget(self, action: "handleTransactionButtonState:", forControlEvents: .TouchUpInside)
         addSubview(cashBoxButton)
         cashBoxButton.snp_makeConstraints { make in
             make.width.equalTo(166.0)
@@ -464,7 +476,7 @@ class TMMemebershipCardPayView: UIView {
         }
         
         // 现金支付按钮
-        var cashButton = UIButton.buttonWithType(.Custom) as! UIButton
+        cashButton = UIButton.buttonWithType(.Custom) as! UIButton
         cashButton.setBackgroundImage(UIImage(named: "payment_button"), forState: .Normal)
         cashButton.setBackgroundImage(UIImage(named: "payment_button_on"), forState: .Highlighted)
         cashButton.setBackgroundImage(UIImage(named: "payment_button_on"), forState: .Selected)
@@ -475,6 +487,8 @@ class TMMemebershipCardPayView: UIView {
         cashButton.setTitleColor(UIColor(hex: 0x1E8EBC), forState: .Normal)
         cashButton.setTitleColor(UIColor.whiteColor(), forState: .Highlighted)
         cashButton.setTitleColor(UIColor.whiteColor(), forState: .Selected)
+        
+        cashButton.addTarget(self, action: "handleTransactionButtonState:", forControlEvents: .TouchUpInside)
         addSubview(cashButton)
         cashButton.snp_makeConstraints { make in
             make.width.equalTo(137.0)
@@ -484,7 +498,7 @@ class TMMemebershipCardPayView: UIView {
         }
         
         // 其他刷卡
-        var otherButton = UIButton.buttonWithType(.Custom) as! UIButton
+        otherButton = UIButton.buttonWithType(.Custom) as! UIButton
         otherButton.setBackgroundImage(UIImage(named: "payment_button"), forState: .Normal)
         otherButton.setBackgroundImage(UIImage(named: "payment_button_on"), forState: .Highlighted)
         otherButton.setBackgroundImage(UIImage(named: "payment_button_on"), forState: .Selected)
@@ -496,7 +510,7 @@ class TMMemebershipCardPayView: UIView {
         otherButton.setTitleColor(UIColor(hex: 0x1E8EBC), forState: .Normal)
         otherButton.setTitleColor(UIColor.whiteColor(), forState: .Highlighted)
         otherButton.setTitleColor(UIColor.whiteColor(), forState: .Selected)
-        
+        otherButton.addTarget(self, action: "handleTransactionButtonState:", forControlEvents: .TouchUpInside)
         addSubview(otherButton)
         otherButton.snp_makeConstraints { make in
             make.width.equalTo(166.0)
@@ -580,23 +594,92 @@ class TMMemebershipCardPayView: UIView {
     }
     
     
-    func updateEntityAllInfo(user: TMUser) {
+    /**
+    更新数据
+
+    :param: compute 数据结构
+    */
+    func updateEntityAllInfo(compute: TMTakeOrderCompute) {
         let format = ".2"
-        phoneNumberLabel.text = user.mobile_number
-        if let nickname = user.nick_name {
-            nicknameLabel.text = nickname
+        
+        // 手机号码
+        phoneNumberLabel.text = compute.getUserMobilePhoneNumber()
+
+        // 昵称
+        nicknameLabel.text = compute.getUserNickname()
+
+        // 余额
+        var balance = compute.getUserBalance().doubleValue
+        balanceLabel.text = "\(balance.format(format))"
+        
+        let format1 = ".1"
+        // 折扣
+        
+        if compute.getMaxDiscount() == 1.0 {
+            discountLabel.text = "无折扣"
         } else {
-            nicknameLabel.text = user.mobile_number
+            discountLabel.text = "\((compute.getMaxDiscount() * 10).format(format1))折"
         }
         
-        if let user_account_balance = user.user_account_balance {
-            var balance = user_account_balance[0].amount.doubleValue
-            balanceLabel.text = "\(balance.format(format))"
-        } else {
-            balanceLabel.text = "0.00"
+        // 消费总额
+        consumeAmountLabel.text = "¥\(compute.getConsumeAmount().format(format))"
+        
+        // 优惠金额
+        var discountAmount = compute.getActualAmount() - compute.getConsumeAmount()
+        discountAmountLabel.text = "¥\(discountAmount.format(format))"
+        
+        // 折后金额
+        actualAmountLabel.text = "¥\(compute.getActualAmount().format(format))"
+        
+        // 设置支付方式
+        
+        var transactionMode = compute.getAutoTransactionMode()
+
+        clearTransactionButtonState()
+        switch transactionMode {
+        case .Cash:
+            cashButton.selected = true
+        case .Balance:
+            balanceButton.selected = true
+        case .CashAndBalance:
+            cashButton.selected = true
+            balanceButton.selected = true
+        case .Other:
+            otherButton.selected = true
+        case .IBoxPay:
+            cashBoxButton.selected = true
+        }
+    }
+    
+    /**
+    处理支付按钮状态
+    
+    :param: sender 按钮
+    */
+    func handleTransactionButtonState(sender: UIButton) {
+        if sender.selected == true {
+            sender.selected = false
+            return
         }
         
+        if sender == cashButton || sender == balanceButton {
+            otherButton.selected = false
+            cashBoxButton.selected = false
+        } else if sender == otherButton || sender == cashBoxButton {
+            clearTransactionButtonState()
+        }
         
+        sender.selected = true
+    }
+    
+    /**
+    重置支付按钮状态
+    */
+    func clearTransactionButtonState() {
+        cashBoxButton.selected = false
+        otherButton.selected = false
+        cashButton.selected = false
+        balanceButton.selected = false
     }
 }
 
@@ -625,9 +708,6 @@ extension TMMemebershipCardPayView {
             var distance = point.x
             self.frame.left += distance
         }
-        
-        println("touchesMoved")
-        
     }
     
     override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
@@ -638,8 +718,6 @@ extension TMMemebershipCardPayView {
         isDraging = false
         leftPanelImageView.highlighted = false
         panelImageView.highlighted = false
-        println("touchesEnded")
-        
     }
     
     override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
@@ -651,9 +729,5 @@ extension TMMemebershipCardPayView {
         isDraging = false
         leftPanelImageView.highlighted = false
         panelImageView.highlighted = false
-        
-        println("point = \(point)")
-        
-        println("touchesCancelled")
     }
 }

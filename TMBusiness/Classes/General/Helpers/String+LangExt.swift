@@ -57,4 +57,20 @@ extension String {
             return "\(self)\(text)"
         }
     }
+    
+    var doubleValue: Double {
+        if let number = NSNumberFormatter().numberFromString(self) {
+            return number.doubleValue
+        }
+        
+        return 0
+    }
+    
+    var toNumber: NSNumber? {
+        if let number = NSNumberFormatter().numberFromString(self) {
+            return number
+        }
+        
+        return nil
+    }
 }

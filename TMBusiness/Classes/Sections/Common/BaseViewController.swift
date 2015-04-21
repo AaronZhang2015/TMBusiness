@@ -21,6 +21,11 @@ class BaseViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    
+    func presentInfoAlertView(message: String) {
+        var alertView = UIAlertView(title: "提示", message: message, delegate: nil, cancelButtonTitle: "确定")
+        alertView.show()
+    }
 
     /*
     // MARK: - Navigation

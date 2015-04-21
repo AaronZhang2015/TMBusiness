@@ -49,8 +49,10 @@ class TMTakeOrderViewController: BaseViewController {
     private lazy var remarkView: TMOrderRemarkView = {
         var remark = TMOrderRemarkView(frame: CGRectMake(0, 0, 405, 300))
         remark.alpha = 0
-        remark.orderRemarkViewClosure = { index in
-            self.hideRemarkView()
+        remark.orderRemarkViewClosure = { [weak self] index in
+            if let strongSelf = self {
+                strongSelf.hideRemarkView()
+            }
         }
         return remark
         }()
@@ -60,8 +62,11 @@ class TMTakeOrderViewController: BaseViewController {
     private lazy var cashPayView: TMCashPayView = {
         var payView = TMCashPayView(frame: CGRectZero)
         
-        payView.backClosure = {
-            self.hideCashPayView(true)
+        payView.backClosure = { [weak self] in
+            
+            if let strongSelf = self {
+                strongSelf.hideCashPayView(true)
+            }
         }
         
         payView.calculateClosure = {
@@ -75,13 +80,17 @@ class TMTakeOrderViewController: BaseViewController {
     private lazy var membershipCardPayView: TMMemebershipCardPayView = {
         var payView = TMMemebershipCardPayView(frame: CGRectZero)
         
-        payView.backClosure = {
-            self.hideMembershipCardPayView(true)
+        payView.backClosure = { [weak self] in
+            
+            if let strongSelf = self {
+                strongSelf.hideMembershipCardPayView(true)
+            }
         }
         
-        payView.rechargeButton.addTarget(self, action: "showRechargeView", forControlEvents: .TouchUpInside)
+        payView.rechargeButton.addTarget(self, action: "hanldeRechargeAction", forControlEvents: .TouchUpInside)
         payView.consumeButton.addTarget(self, action: "showConsumeRecordView", forControlEvents: .TouchUpInside)
         payView.searchButton.addTarget(self, action: "fetchEntityInfoAction", forControlEvents: .TouchUpInside)
+        payView.scanButton.addTarget(self, action: "showCodeScanView", forControlEvents: .TouchUpInside)
         
         return payView
         }()
@@ -89,7 +98,7 @@ class TMTakeOrderViewController: BaseViewController {
     // 充值页面
     private lazy var rechargeView: TMRechargeView = {
         var rechargeView = TMRechargeView(frame: CGRectMake(0, 0, 375, 470))
-        
+        rechargeView.cancelButton.addTarget(self, action: "hideRechargeView", forControlEvents: .TouchUpInside)
         return rechargeView
         }()
     
@@ -100,6 +109,26 @@ class TMTakeOrderViewController: BaseViewController {
         return consumeRecordView
         }()
     
+    // 二维码扫描页面
+    private lazy var codeScanView: TMCodeScanView = {
+        var codeScanView = TMCodeScanView(frame: CGRectZero)
+        codeScanView.backClosure = { [weak self] in
+            
+            if let strongSelf = self {
+                strongSelf.hideCodeScanView(true)
+            }
+        }
+        
+        codeScanView.inputClosure = { [weak self] in
+            
+            if let strongSelf = self {
+                strongSelf.hideCodeScanView(true)
+            }
+        }
+        
+        return codeScanView
+    }()
+
     var editCell: TMTakeOrderListCell?
     var editIndexPath: NSIndexPath?
     
@@ -110,7 +139,33 @@ class TMTakeOrderViewController: BaseViewController {
     private var orderProductList: [TMProduct] = [TMProduct]()
     
     // 点单计算算法
-    private var takeOrderCompute: TMTakeOrderCompute = TMTakeOrderCompute()
+    private lazy var takeOrderCompute: TMTakeOrderCompute = {
+        var compute = TMTakeOrderCompute()
+        
+        compute.refreshDataClosure = { [weak self] compute in
+            
+            if let strongSelf = self {
+                strongSelf.membershipCardPayView.updateEntityAllInfo(compute)
+                strongSelf.orderDetailView.updateOrderDetail(compute)
+                strongSelf.cashPayView.updateEntityAllInfo(compute)
+                strongSelf.rechargeView.updateRechargeDetail(compute)
+            }
+        
+        }
+        
+        compute.clearAllDataClosure = { [weak self] compute in
+            
+            if let strongSelf = self {
+                strongSelf.membershipCardPayView.updateEntityAllInfo(compute)
+                strongSelf.orderDetailView.updateOrderDetail(compute)
+                strongSelf.cashPayView.updateEntityAllInfo(compute)
+                strongSelf.tableView.reloadData()
+            }
+            
+        }
+        
+        return compute
+        }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -172,6 +227,7 @@ class TMTakeOrderViewController: BaseViewController {
         tableView.registerClass(TMTakeOrderListCell.self, forCellReuseIdentifier: takeOrderListCellReuseIdentifier)
         
         orderDetailView = TMTakeOrderDetailView(frame: CGRectMake(0, 399, 444, 171))
+        orderDetailView.resetButton.addTarget(self, action: "handleResetProductList", forControlEvents: .TouchUpInside)
         bgView.addSubview(orderDetailView)
         
         orderPayWayView = TMTakeOrderPayWayView(frame: CGRectMake(0, bgView.bottom, 558, view.height - 64 - bgView.bottom))
@@ -194,6 +250,10 @@ class TMTakeOrderViewController: BaseViewController {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidHide:", name: UIKeyboardDidHideNotification, object: nil)
         */
+    }
+    
+    override func supportedInterfaceOrientations() -> Int {
+        return UIInterfaceOrientation.LandscapeLeft.rawValue & UIInterfaceOrientation.LandscapeRight.rawValue
     }
     
     func keyboardWillShow(notification: NSNotification) {
@@ -266,30 +326,10 @@ class TMTakeOrderViewController: BaseViewController {
         })
     }
     
-    /**
-    更新价格之类的详情
-    */
-    func updateOrderDetail() {
-        var totalPrice: Double = 0.00
-        var discountPrice: Double = 0.00
-        var actualPrice: Double = 0.00
-        for var index = 0; index < orderProductList.count; ++index {
-            var product = orderProductList[index]
-            totalPrice += product.official_quotation.doubleValue * product.quantity.doubleValue
-        }
-        
-        let format = ".2"
-        // 更新价格
-        
-        // 消费金额
-        orderDetailView.consumeAmountLabel.text = "¥\(totalPrice.format(format))"
-        
-        // 优惠金额
-        
-        
-        // 折后金额
-        actualPrice = totalPrice - discountPrice
-        orderDetailView.actualAmountLabel.text = "¥\(actualPrice.format(format))"
+    
+    // MARK: - 点单按钮事件
+    func handleResetProductList() {
+        takeOrderCompute.clearAllData()
     }
     
     // MARK: - Actions
@@ -335,6 +375,16 @@ class TMTakeOrderViewController: BaseViewController {
         }) { (finished) -> Void in
             self.maskView.alpha = 0
         }
+    }
+    
+    // MARK: -
+    func hanldeRechargeAction() {
+        if let user = takeOrderCompute.user {
+            showRechargeView()
+            return
+        }
+        
+        presentInfoAlertView("请先查询用户信息")
     }
     
     /**
@@ -485,6 +535,7 @@ class TMTakeOrderViewController: BaseViewController {
             self.membershipCardPayView.frame = rect
             }) { finished in
                 self.hideCashPayView(false)
+                self.hideCodeScanView(false)
         }
     }
     
@@ -517,18 +568,71 @@ class TMTakeOrderViewController: BaseViewController {
         }
     }
     
+    /**
+    获取用户信息以及奖励信息
+    */
     func fetchEntityInfoAction() {
         
         var condition = membershipCardPayView.phoneNumberTextField.text
-        condition = "13770863676"
+        
+        if count(condition) == 0 {
+            condition = "13770863676"
+        }
 
         userDataManager.fetchEntityAllInfo(condition, type: .MobileNumber, shopId: TMShop.sharedInstance.shop_id, businessId: TMShop.sharedInstance.business_id, adminId: TMShop.sharedInstance.admin_id) { (user, error) -> Void in
             
+            if error == nil {
+                if let user = user {
+                    self.takeOrderCompute.setUserDetail(user, hasProducts: true)
+                }
+            }
+        }
+    }
+    
+    
+    // MARK: - 二维码扫描
+    func showCodeScanView() {
+        if codeScanView.superview == nil {
+            view.addSubview(codeScanView)
+            codeScanView.frame = productListContainerView.frame
+            codeScanView.left = view.width
         }
         
-//        TMUserService().fetchEntityAllInfo("18851618829", type: .MobileNumber, shopId: TMShop.sharedInstance.shop_id!, businessId: TMShop.sharedInstance.business_id!, adminId: TMShop.sharedInstance.admin_id!)
+        if CGRectEqualToRect(codeScanView.frame, productListContainerView.frame) {
+            return
+        }
         
-//        userDataManager.fetchEntityAllInfo.fetchEntityAllInfo("13770863676", type: .MobileNumber, shopId: TMShop.sharedInstance.shop_id!, businessId: TMShop.sharedInstance.business_id!, adminId: TMShop.sharedInstance.admin_id!)
+        var rect = productListContainerView.frame
+        
+        UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseInOut, animations: { () -> Void in
+            self.codeScanView.frame = rect
+            }) { finished in
+//                self.hideMembershipCardPayView(false)
+        }
+    }
+    
+    func hideCodeScanView(animated: Bool) {
+        if codeScanView.superview == nil {
+            return
+        }
+        
+        if !animated {
+            codeScanView.removeFromSuperview()
+            return
+        }
+        
+        if codeScanView.left >= view.width {
+            return
+        }
+        
+        var rect = productListContainerView.frame
+        rect.left = view.width
+        
+        UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseInOut, animations: { () -> Void in
+            self.codeScanView.frame = rect
+            }) {finished in
+                self.codeScanView.removeFromSuperview()
+        }
     }
 }
 
@@ -536,14 +640,13 @@ class TMTakeOrderViewController: BaseViewController {
 // MARK: - UITableViewDelegate
 extension TMTakeOrderViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        println("didSelectRowAtIndexPath")
-        if editCell != nil {
-            if editIndexPath != nil {
-                if editIndexPath != indexPath {
-                    editCell!.editOrderData(false)
-                } else {
-                    return
-                }
+        
+        if let editIndexPath = editIndexPath {
+            if editIndexPath != indexPath {
+                let cell = tableView.cellForRowAtIndexPath(editIndexPath) as! TMTakeOrderListCell
+                cell.editOrderData(false)
+            } else{
+                return
             }
         }
         
@@ -578,6 +681,8 @@ extension TMTakeOrderViewController: UITableViewDataSource {
         return cell
     }
 }
+
+// MARK: - TMTakeOrderListCellDelegate
 
 extension TMTakeOrderViewController: TMTakeOrderListCellDelegate {
     func orderListDidDelete(product: TMProduct) {
@@ -623,8 +728,6 @@ extension TMTakeOrderViewController: TMProductListViewControllerDelegate {
     func productListViewController(viewController: TMProductListViewController, didSelectedProduct: TMProduct) {
         
         var index = takeOrderCompute.addProduct(didSelectedProduct)
-        
-        updateOrderDetail()
         
         tableView.reloadData()
         if editIndexPath != nil {

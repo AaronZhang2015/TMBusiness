@@ -22,6 +22,16 @@ class TMRechargeView: UIView {
     
     var tableView: UITableView!
     
+    var currentSelectedIndex: Int = 0
+    
+    var cancelButton: UIButton!
+    
+    var cashButton: UIButton!
+    
+    var cardButton: UIButton!
+    
+    var data = [TMReward]()
+    
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -72,6 +82,16 @@ class TMRechargeView: UIView {
             make.height.equalTo(20)
         }
         
+        phoneLabel = UILabel()
+        phoneLabel.text = ""
+        phoneLabel.textColor = UIColor(hex: 0x222222)
+        addSubview(phoneLabel)
+        phoneLabel.snp_makeConstraints { make in
+            make.leading.equalTo(phoneTitleLabel.snp_trailing).offset(2)
+            make.centerY.equalTo(phoneBackgroundImageView.snp_centerY)
+            make.width.greaterThanOrEqualTo(45)
+            make.height.equalTo(20)
+        }
         
         // 昵称
         var nicknameBackgroundImageView = UIImageView(image: UIImage(named: "cash_input"))
@@ -91,6 +111,17 @@ class TMRechargeView: UIView {
             make.leading.equalTo(nicknameBackgroundImageView.snp_leading).offset(21)
             make.centerY.equalTo(nicknameBackgroundImageView.snp_centerY)
             make.width.equalTo(45)
+            make.height.equalTo(20)
+        }
+        
+        nicknameLabel = UILabel()
+        nicknameLabel.text = ""
+        nicknameLabel.textColor = UIColor(hex: 0x222222)
+        addSubview(nicknameLabel)
+        nicknameLabel.snp_makeConstraints { make in
+            make.leading.equalTo(nicknameTitleLabel.snp_trailing).offset(2)
+            make.centerY.equalTo(nicknameBackgroundImageView.snp_centerY)
+            make.width.greaterThanOrEqualTo(45)
             make.height.equalTo(20)
         }
         
@@ -119,7 +150,7 @@ class TMRechargeView: UIView {
         
         tableView.registerClass(TMRechargeTypeCell.self, forCellReuseIdentifier: TMRechargeTypeCellIdentifier)
         
-        var cancelButton = UIButton.buttonWithType(.Custom) as! UIButton
+        cancelButton = UIButton.buttonWithType(.Custom) as! UIButton
         cancelButton.setBackgroundImage(UIImage(named: "recharge_cancel"), forState: .Normal)
         cancelButton.setBackgroundImage(UIImage(named: "recharge_cancel_on"), forState: .Highlighted)
         cancelButton.setTitleColor(UIColor(hex: 0x1E8EBC), forState: .Normal)
@@ -133,7 +164,7 @@ class TMRechargeView: UIView {
             make.size.equalTo(CGSizeMake(110, 50))
         }
         
-        var cashButton = UIButton.buttonWithType(.Custom) as! UIButton
+        cashButton = UIButton.buttonWithType(.Custom) as! UIButton
         cashButton.setBackgroundImage(UIImage(named: "recharge_commit"), forState: .Normal)
         cashButton.setBackgroundImage(UIImage(named: "recharge_commit_on"), forState: .Highlighted)
         cashButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
@@ -146,7 +177,7 @@ class TMRechargeView: UIView {
             make.size.equalTo(CGSizeMake(110, 50))
         }
         
-        var cardButton = UIButton.buttonWithType(.Custom) as! UIButton
+        cardButton = UIButton.buttonWithType(.Custom) as! UIButton
         cardButton.setBackgroundImage(UIImage(named: "recharge_commit"), forState: .Normal)
         cardButton.setBackgroundImage(UIImage(named: "recharge_commit_on"), forState: .Highlighted)
         cardButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
@@ -160,12 +191,52 @@ class TMRechargeView: UIView {
         }
     }
     
+    func updateRechargeDetail(compute: TMTakeOrderCompute) {
+        phoneLabel.text = compute.getUserMobilePhoneNumber()
+        nicknameLabel.text = compute.getUserNickname()
+        
+        if let user = compute.user, reward_record_list = user.reward_record {
+            
+            var reward_record: TMRewardRecord!
+            
+            for record in reward_record_list {
+                if record.type?.integerValue == TMRewardType.Recharge.rawValue {
+                    reward_record = record
+                    break
+                }
+            }
+            
+            if let reward_record = reward_record, rewards = reward_record.shop?.rewards {
+                data = rewards
+                tableView.reloadData()
+                if data.count > 0 {
+                    currentSelectedIndex = 0
+                    var indexPath = NSIndexPath(forRow: 0, inSection: 0)
+                    let cell = tableView.cellForRowAtIndexPath(indexPath) as! TMRechargeTypeCell
+                    cell.rechargeTypeButton.selected = true
+                }
+            }
+        }
+        
+    }
+    
 }
 
 extension TMRechargeView: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cell = tableView.cellForRowAtIndexPath(indexPath) as! TMRechargeTypeCell
-        cell.rechargeTypeButton.selected = true
+        
+        if indexPath.row != currentSelectedIndex {
+            var currentSelectedIndexPath = NSIndexPath(forRow: currentSelectedIndex, inSection: 0)
+            let currentSelectedCell = tableView.cellForRowAtIndexPath(currentSelectedIndexPath) as?TMRechargeTypeCell
+            
+            if  let currentSelectedCell = currentSelectedCell {
+                currentSelectedCell.rechargeTypeButton.selected = false
+            }
+            
+            let cell = tableView.cellForRowAtIndexPath(indexPath) as! TMRechargeTypeCell
+            cell.rechargeTypeButton.selected = true
+            currentSelectedIndex = indexPath.row
+        }
     }
 }
 
@@ -176,11 +247,16 @@ extension TMRechargeView: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return data.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(TMRechargeTypeCellIdentifier, forIndexPath: indexPath) as! TMRechargeTypeCell
+        var reward = data[indexPath.row]
+        cell.title = "充\(reward.current_number_max!)送\(reward.reward_description!)元"
+        if currentSelectedIndex == indexPath.row {
+            cell.rechargeTypeButton.selected = true
+        }
         return cell
     }
 }
@@ -189,6 +265,17 @@ extension TMRechargeView: UITableViewDataSource {
 class TMRechargeTypeCell: UITableViewCell {
     
     var rechargeTypeButton: UIButton!
+    
+    var title: String = "" {
+        didSet {
+            rechargeTypeButton.setTitle(title, forState: .Normal)
+        }
+    }
+    
+    
+    override func prepareForReuse() {
+        rechargeTypeButton.selected = false
+    }
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -204,14 +291,16 @@ class TMRechargeTypeCell: UITableViewCell {
         rechargeTypeButton.setBackgroundImage(UIImage(named: "recharge_cell_on"), forState: .Highlighted)
         rechargeTypeButton.setBackgroundImage(UIImage(named: "recharge_cell_on"), forState: .Selected)
         rechargeTypeButton.setBackgroundImage(UIImage(named: "recharge_cell"), forState: .Selected | .Highlighted)
+        rechargeTypeButton.setTitleColor(UIColor(hex: 0x1E8EBC), forState: .Normal)
+        rechargeTypeButton.setTitleColor(UIColor.whiteColor(), forState: .Selected)
         rechargeTypeButton.userInteractionEnabled = false
         addSubview(rechargeTypeButton)
         
         rechargeTypeButton.snp_makeConstraints { make in
-            make.leading.equalTo(17.0)
-            make.trailing.equalTo(-17.0)
-            make.top.equalTo(12.0)
+            make.left.equalTo(snp_left).offset(17)
+            make.top.equalTo(snp_top).offset(12)
             make.height.equalTo(50.0)
+            make.width.equalTo(305.0)
         }
     }
 }

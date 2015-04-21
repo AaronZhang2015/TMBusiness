@@ -45,7 +45,7 @@ class TMTakeOrderDetailView: UIView {
         discountLabel = UILabel()//(frame: CGRectMake(94, 65, 142, 22))
         discountLabel.font = UIFont.systemFontOfSize(18.0)
         discountLabel.textAlignment = .Left
-        discountLabel.text = "暂无折扣"
+        discountLabel.text = "无折扣"
         addSubview(discountLabel)
         discountLabel.snp_makeConstraints { make in
             make.leading.equalTo(discountTitleLabel.snp_trailing).offset(22.0)
@@ -180,6 +180,32 @@ class TMTakeOrderDetailView: UIView {
 
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+    }
+    
+    func updateOrderDetail(compute: TMTakeOrderCompute) {
+        let format = ".2"
+        
+        // 折扣信息
+        let format1 = ".1"
+        // 折扣
+        
+        if compute.getMaxDiscount() == 1.0 {
+            discountLabel.text = "无折扣"
+        } else {
+            discountLabel.text = "\((compute.getMaxDiscount() * 10).format(format1))折"
+        }
+        
+        
+        var consumeAmount = compute.getConsumeAmount()
+        // 消费总额
+        consumeAmountLabel.text = "¥\(compute.getConsumeAmount().format(format))"
+        
+        // 优惠金额
+        var discountAmount = compute.getActualAmount() - compute.getConsumeAmount()
+        discountAmountLabel.text = "¥\(discountAmount.format(format))"
+        
+        // 折后金额
+        actualAmountLabel.text = "¥\(compute.getActualAmount().format(format))"
     }
 
 }

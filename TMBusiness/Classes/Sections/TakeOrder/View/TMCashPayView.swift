@@ -401,6 +401,22 @@ class TMCashPayView: UIView {
         updateAmountDetail()
     }
     
+
+    /**
+    更新数据
+    
+    :param: compute 数据结构
+    */
+    func updateEntityAllInfo(compute: TMTakeOrderCompute) {
+        let format = ".2"
+        
+        // 消费总额
+        consumeLabel.text = "\(compute.getConsumeAmount().format(format))"
+        
+        updateAmountDetail()
+    }
+
+    
     /**
     刷新金额详情
     */
@@ -455,9 +471,6 @@ extension TMCashPayView {
             var distance = point.x
             self.frame.left += distance
         }
-        
-        println("touchesMoved")
-
     }
     
     override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
@@ -468,8 +481,6 @@ extension TMCashPayView {
         isDraging = false
         leftPanelImageView.highlighted = false
         panelImageView.highlighted = false
-        println("touchesEnded")
-
     }
     
     override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
@@ -481,10 +492,6 @@ extension TMCashPayView {
         isDraging = false
         leftPanelImageView.highlighted = false
         panelImageView.highlighted = false
-        
-        println("point = \(point)")
-        
-        println("touchesCancelled")
     }
 
 }

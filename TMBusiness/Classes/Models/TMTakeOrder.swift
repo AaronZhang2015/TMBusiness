@@ -42,6 +42,19 @@ enum TMDiscountType: Int {
 }
 
 /**
+奖励类型
+
+- Sign:    签到
+- Consume: 消费
+- Recharge: 充值
+*/
+enum TMRewardType: Int {
+    case Sign = 1
+    case Consume = 2
+    case Recharge = 3
+}
+
+/**
 消费奖励生效规则
 
 - Now:  T+0,即时生效
@@ -77,7 +90,7 @@ enum TMRuleType: Int {
 
 // MARK: - 点单数据结构
 
-struct TMTakeOrder {
+class TMTakeOrder {
     
     // 订单列表
     lazy var list = [TMProduct]()
@@ -97,12 +110,15 @@ struct TMTakeOrder {
     // 当前折扣
     var currentDiscount: Double = 1.0
     
+    // 当前最大折扣
+    var maxDiscount: Double = 1.0
+    
     /**
     计算未打折的总金额
     
     :returns: 消费金额
     */
-    mutating func calculateTotalConsumeAmount() -> Double {
+    func calculateTotalConsumeAmount() -> Double {
         var total: Double = 0.0
         
         for product in list {
@@ -115,17 +131,53 @@ struct TMTakeOrder {
     }
     
     /**
+    计算已选择商品的折后金额
+    
+    :returns: 折后金额
+    */
+    func calculateDiscountConsumeAmount() -> Double {
+        var total: Double = 0.0
+        
+        for product in list {
+            // 判断商品是否打折
+            var productDiscount = 0.0
+            
+            if product.is_discount == nil || product.is_discount?.integerValue == 0 {
+                productDiscount = 1.0
+            } else {
+                productDiscount = maxDiscount
+            }
+            
+            // 价钱 * 折扣 * 数量
+            
+            var quantity = product.quantity.doubleValue
+            var quotation = product.official_quotation.doubleValue
+            total += quantity * quotation * productDiscount
+        }
+        
+        return total
+    }
+    
+    /**
     获取已输入金额的折后金额
     
     :returns: 折后金额
     */
-    mutating func calculateDiscountConsumeAmount() -> Double {
+    func calculateDiscountConsumeAmountForEdit() -> Double {
         return consumeAmount * currentDiscount
+    }
+    
+    func clearAllData() {
+        currentDiscount = 1.0
+        maxDiscount = 1.0
+        balanceAmount = 0.0
+        consumeAmount = 0.0
+        list.removeAll(keepCapacity: false)
     }
 }
 
 // MARK: - 点单规则
-struct TMTakeOrderRule {
+class TMTakeOrderRule {
     
     // 消费奖励计算规则
     var immediate: TMImmediateType = .Now
@@ -141,12 +193,20 @@ struct TMTakeOrderRule {
     
     // 商品规则类型
     var ruleType: TMRuleType = .Default
+    
+    func clearAllData() {
+        immediate = .Now
+        combinationMode = .Single
+        signDiscount = 1.0
+        consumeDiscount = 1.0
+        ruleType = .Default
+    }
 }
 
 
 // MARK: - 点单算法
 
-struct TMTakeOrderCompute {
+class TMTakeOrderCompute {
     
     // 点单数据结构
     lazy var takeOrder = TMTakeOrder()
@@ -155,11 +215,18 @@ struct TMTakeOrderCompute {
     lazy var takeOrderRule = TMTakeOrderRule()
     
     // 用户实体信息
-    var user: TMUser!
+    var user: TMUser?
     
-    var shop: TMShop!
+    var shop: TMShop?
     
-    mutating func getProducts() -> [TMProduct] {
+    // 刷新数据事件
+    var refreshDataClosure: ((TMTakeOrderCompute) -> ())?
+    
+    // 清除事件
+    var clearAllDataClosure: ((TMTakeOrderCompute) -> ())?
+
+    
+    func getProducts() -> [TMProduct] {
         return takeOrder.list
     }
     
@@ -170,7 +237,7 @@ struct TMTakeOrderCompute {
     
     :returns: 索引
     */
-    mutating func addProduct(product: TMProduct) -> Int {
+    func addProduct(product: TMProduct) -> Int {
         var index = 0
         if takeOrder.list.count == 0 {
             product.quantity = 1
@@ -199,6 +266,10 @@ struct TMTakeOrderCompute {
         
         // 刷新数据
         
+        if let closure = refreshDataClosure {
+            closure(self)
+        }
+        
         return index
     }
     
@@ -209,7 +280,7 @@ struct TMTakeOrderCompute {
     
     :returns: 是否操作成功
     */
-    mutating func subtractProduct(product: TMProduct) -> (Bool, Int) {
+    func subtractProduct(product: TMProduct) -> (Bool, Int) {
         
         var success = false
         var returnIndex = 0
@@ -233,6 +304,9 @@ struct TMTakeOrderCompute {
         }
         
         // 刷新数据
+        if let closure = refreshDataClosure {
+            closure(self)
+        }
         
         return (success, returnIndex)
     }
@@ -245,7 +319,7 @@ struct TMTakeOrderCompute {
     
     :returns: 操作状态
     */
-    mutating func deleteProduct(product: TMProduct) -> (Bool, Int) {
+    func deleteProduct(product: TMProduct) -> (Bool, Int) {
         var success = false
         var returnIndex = 0
         for var index = 0; index < takeOrder.list.count; ++index {
@@ -263,8 +337,38 @@ struct TMTakeOrderCompute {
         }
         
         // 刷新数据
+        if let closure = refreshDataClosure {
+            closure(self)
+        }
         
         return (success, returnIndex)
+    }
+    
+    /**
+    清空点单
+    */
+    func clearProductList() {
+        for var index = takeOrder.list.count - 1; index >= 0; --index {
+            var product = takeOrder.list[index]
+            product.quantity = 0
+        }
+        
+        takeOrder.list.removeAll(keepCapacity: false)
+    }
+    
+    /**
+    全部清空，置为初始状态
+    */
+    func clearAllData() {
+        user = nil
+        shop = nil
+        takeOrder.clearAllData()
+        takeOrderRule.clearAllData()
+        clearProductList()
+        
+        if let closure = clearAllDataClosure {
+            closure(self)
+        }
     }
     
     /**
@@ -273,7 +377,7 @@ struct TMTakeOrderCompute {
     根据是否有商品来计算
     :returns: 商品的总金额
     */
-    mutating func getConsumeAmount() -> Double {
+    func getConsumeAmount() -> Double {
         var amount = 0.0
         // 如果是有商品的计算
         if takeOrderRule.ruleType == TMRuleType.Default {
@@ -291,7 +395,7 @@ struct TMTakeOrderCompute {
     
     :returns: 折扣率
     */
-    mutating func getMaxDiscount() -> Double {
+    func getMaxDiscount() -> Double {
         if takeOrderRule.consumeDiscount <= takeOrderRule.signDiscount {
             return takeOrderRule.consumeDiscount
         }
@@ -307,7 +411,7 @@ struct TMTakeOrderCompute {
     *无商品：根据商家输入的订单总额 * 当前选择的折扣= 应付金额
     :returns: 实际支付金额
     */
-    mutating func calculateActualAmount() -> Double {
+    func getActualAmount() -> Double {
         var actualAmount = 0.0
         if takeOrderRule.ruleType == .Default {
             return takeOrder.calculateDiscountConsumeAmount()
@@ -318,7 +422,7 @@ struct TMTakeOrderCompute {
     
     // MARK: - 配置规则和算法
     
-    mutating func setRuleDetail(shop: TMShop, hasProduct: Bool) {
+    func setRuleDetail(shop: TMShop, hasProduct: Bool) {
         self.shop = shop
         
         // 组合模式
@@ -352,6 +456,9 @@ struct TMTakeOrderCompute {
         }
         
         // 刷新数据
+        if let closure = refreshDataClosure {
+            closure(self)
+        }
     }
     
     /**
@@ -362,7 +469,7 @@ struct TMTakeOrderCompute {
     :param: user 用户信息以及shop信息
     :param: hasProducts 是否有商品计算规则
     */
-    mutating func setUserDetail(user: TMUser, hasProducts: Bool) {
+    func setUserDetail(user: TMUser, hasProducts: Bool) {
         self.user = user
         if let reward_record = user.reward_record {
             if reward_record.count > 0 {
@@ -394,16 +501,23 @@ struct TMTakeOrderCompute {
             }
         }
         
+        // 设置最大折扣
+        takeOrder.maxDiscount = getMaxDiscount()
+        
         // 余额
         if let user_account_balance = user.user_account_balance {
             if user_account_balance.count > 0 {
                 var balance = user_account_balance[0].amount.doubleValue
                 takeOrder.balanceAmount = balance
             }
+        } else {
+            takeOrder.balanceAmount = 0
         }
         
         // 刷新数据
-        // TODO
+        if let closure = refreshDataClosure {
+            closure(self)
+        }
     }
     
     
@@ -416,7 +530,7 @@ struct TMTakeOrderCompute {
     
     :returns: 实际消费折扣
     */
-    mutating func getCurrentConsumeDiscount(reward_records: [TMRewardRecord]?) -> Double {
+    func getCurrentConsumeDiscount(reward_records: [TMRewardRecord]?) -> Double {
         var discount = 1.0
         
         if reward_records == nil || reward_records?.count == 0 {
@@ -438,7 +552,7 @@ struct TMTakeOrderCompute {
                     for reward in rewards {
                         if let type = reward.type, current_number_min = reward.current_number_min, current_number_max = reward.current_number_max {
                             if type.integerValue == TMDiscountType.Consume.rawValue {
-                                var minPrice = current_number_max.doubleValue
+                                var minPrice = current_number_min.doubleValue
                                 var maxPrice = current_number_max.doubleValue
                                 
                                 if maxPrice == -1 {
@@ -461,11 +575,68 @@ struct TMTakeOrderCompute {
         return discount
     }
     
+    // MARK: - 用户状态信息
+    
+    /**
+    返回用户的手机号码
+    
+    :returns: 手机号码
+    */
     func getUserMobilePhoneNumber() -> String {
-        if user == nil {
+        if let user = user {
+            return user.mobile_number
+        } else {
             return ""
         }
+    }
+    
+    /**
+    返回用户的昵称
+    如果没有，那么返回手机号码
+    
+    :returns: 昵称
+    */
+    func getUserNickname() -> String {
         
-        return user.mobile_number
+        if let user = user {
+            if user.nick_name == nil || count(user.nick_name!) == 0 {
+                return user.mobile_number
+            } else {
+                return user.nick_name!
+            }
+        } else {
+            return ""
+        }
+    }
+    
+    
+    /**
+    返回用户的余额
+    
+    :returns: 用户余额
+    */
+    func getUserBalance() -> NSNumber {
+        
+        if let user = user, user_account_balance = user.user_account_balance  {
+            return user_account_balance[0].amount
+        } else {
+            return 0
+        }
+    }
+    
+    
+    /**
+    自动计算交易方式
+    
+    :returns: 交易方式
+    */
+    func getAutoTransactionMode() -> TMTransactionMode {
+        if takeOrder.balanceAmount == 0.0 {
+            return TMTransactionMode.Cash
+        } else if (takeOrder.balanceAmount - getActualAmount()) >= 0.0 {
+            return TMTransactionMode.Balance
+        }
+        
+        return TMTransactionMode.CashAndBalance
     }
 }
