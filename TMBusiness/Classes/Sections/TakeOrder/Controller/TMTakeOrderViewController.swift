@@ -99,6 +99,7 @@ class TMTakeOrderViewController: BaseViewController {
     private lazy var rechargeView: TMRechargeView = {
         var rechargeView = TMRechargeView(frame: CGRectMake(0, 0, 375, 470))
         rechargeView.cancelButton.addTarget(self, action: "hideRechargeView", forControlEvents: .TouchUpInside)
+//        rechargeView.cashButton.addTarget(self, action: "handleRechargeWithCashAction", forControlEvents: .TouchUpInside)
         return rechargeView
         }()
     
@@ -611,6 +612,12 @@ class TMTakeOrderViewController: BaseViewController {
         }
     }
     
+    
+    /**
+    隐藏二维码扫描页面
+    
+    :param: animated 是否有动画
+    */
     func hideCodeScanView(animated: Bool) {
         if codeScanView.superview == nil {
             return
@@ -632,6 +639,47 @@ class TMTakeOrderViewController: BaseViewController {
             self.codeScanView.frame = rect
             }) {finished in
                 self.codeScanView.removeFromSuperview()
+        }
+    }
+    
+    /**
+    现金充值
+    */
+    func handleRechargeWithCashAction() {
+        
+//        var alertView = UIAlertView(title: "充值提示", message: "", delegate: <#UIAlertViewDelegate?#>, cancelButtonTitle: <#String?#>, otherButtonTitles: <#String#>, <#moreButtonTitles: String#>...))
+        
+//        return
+        var reward = rechargeView.data[rechargeView.currentSelectedIndex]
+        if let user_id = takeOrderCompute.user?.user_id, reward_id = reward.reward_id, current_number_max = reward.current_number_max {
+            var reward_number = reward.reward_description?.toNumber
+            
+            var totalAmount = current_number_max.integerValue
+            if let reward_number = reward.reward_description?.toNumber {
+                totalAmount += reward_number.integerValue
+            }
+            
+            userDataManager.doUserRechargeWithCash(userId: user_id, rewardId: reward_id, totalAmount: NSNumber(integer: totalAmount), actualAmount: current_number_max, actualType: .Cash, shopId: TMShop.sharedInstance.shop_id, businessId: TMShop.sharedInstance.business_id, adminId: TMShop.sharedInstance.admin_id, completion: { [weak self] (error) -> Void in
+                
+                // 充值出错
+                if let e = error {
+                    
+                } else {
+                    // 充值成功
+                    // 刷新用户数据
+                    if let strongSelf = self {
+                        strongSelf.userDataManager.fetchEntityAllInfo(user_id, type: TMConditionType.UserId, shopId: TMShop.sharedInstance.shop_id, businessId: TMShop.sharedInstance.business_id, adminId: TMShop.sharedInstance.admin_id, completion: { (user, error) -> Void in
+                            
+                            if error == nil {
+                                if let user = user {
+                                    strongSelf.takeOrderCompute.setUserDetail(user, hasProducts: true)
+                                }
+                            }
+                            
+                        })
+                    }
+                }
+            })
         }
     }
 }

@@ -73,4 +73,15 @@ extension String {
         
         return nil
     }
+    
+    static func generateString(number: Int) -> String {
+        var temp = ""
+        for var index = 0; index < number; ++index {
+            var randomNumber = arc4random() % 75 + 48
+            var character = Character(UnicodeScalar(randomNumber))
+            temp = "\(temp)\(character)"
+        }
+        
+        return temp
+    }
 }

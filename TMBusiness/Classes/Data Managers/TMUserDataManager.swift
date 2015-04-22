@@ -26,4 +26,37 @@ class TMUserDataManager: TMDataManager {
     func fetchEntityAllInfo(condition: String, type: TMConditionType, shopId: String, businessId: String, adminId: String, completion: (TMUser?, NSError?) -> Void) {
         userService.fetchEntityAllInfo(condition, type: type, shopId: shopId, businessId: businessId, adminId: adminId, completion: completion)
     }
+    
+    /**
+    会员充值接口
+    
+    :param: rechargeId    充值单号
+    :param: userId        用户终身号
+    :param: rewardId      奖励设置编号
+    :param: totalAmount   到账金额
+    :param: actualAmount  实际充值金额
+    :param: actualType    充值方式1：现金 2：支付宝3：网银支付 4：盒子支付 9：其他（默认2，不必填）
+    :param: flag          记录表示 1：充值 2：提现（默认1，不必填）
+    :param: shopId        商铺编号
+    :param: businessId    商户编号
+    :param: errorStatus   支付状态
+    :param: recommendCode 推荐人编码
+    :param: adminId       商铺管理员编号
+    :param: completion 回调
+    */
+    func doUserRechargeWithCash(rechargeId: String = "", userId: String, rewardId: String = "", totalAmount: NSNumber, actualAmount: NSNumber, actualType: TMRechargeType, flag: TMRechargeFlag = .Recharge, shopId: String, businessId: String, errorStatus: String = "", recommendCode: String = "", adminId: String = "", completion: (NSError?) -> Void) {
+        userService.doUserRecharge(rechargeId, userId: userId, rewardId: rewardId, totalAmount: totalAmount, actualAmount: actualAmount, actualType: actualType, flag: flag, shopId: shopId, businessId: businessId, errorStatus: errorStatus, recommendCode: recommendCode, adminId: adminId) { [weak self] (recharge_id, error) -> Void in
+            if let e = error {
+                // 错误
+                completion(e)
+            } else {
+                if let strongSelf = self {
+                    strongSelf.userService.doUserRecharge(recharge_id!, userId: userId, rewardId: rewardId, totalAmount: totalAmount, actualAmount: actualAmount, actualType: actualType, flag: flag, shopId: shopId, businessId: businessId, errorStatus: errorStatus, recommendCode: recommendCode, adminId: adminId, completion: { (_, error) -> Void in
+                        completion(error)
+                    })
+                }
+            }
+        }
+    }
+
 }

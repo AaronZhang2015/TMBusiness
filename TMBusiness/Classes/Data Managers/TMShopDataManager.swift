@@ -62,7 +62,11 @@ class TMShopDataManager: TMDataManager {
         }
     }
     
+    /**
+    缓存商品分类以及商品数据
     
+    :param: list 商品分类
+    */
     func cacheCategoryAndProduct(list: [TMCategory]) {
         
         clearCategoryAndProduct()
@@ -133,6 +137,9 @@ class TMShopDataManager: TMDataManager {
         }
     }
     
+    /**
+    清楚缓存商品分类数据
+    */
     func clearCategoryAndProduct() {
         var managedContext = CoreDataStack.sharedInstance.context
         let categoryFetch = NSFetchRequest(entityName: "TMCategoryManagedObject")
@@ -152,6 +159,12 @@ class TMShopDataManager: TMDataManager {
         }
     }
     
+    
+    /**
+    从缓存中加载商品分类
+    
+    :returns: 商品分类
+    */
     func fetchCategoryAndProductFromCache() -> [TMCategory] {
         var categoryList = [TMCategory]()
         
