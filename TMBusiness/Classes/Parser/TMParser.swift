@@ -216,4 +216,71 @@ class TMParser: NSObject {
         return rewardsList
     }
     
+    /**
+    解析消费记录
+    
+    :param: data 待解析数据
+    
+    :returns: 订单记录
+    */
+    class func parseOrder(data: JSON) -> TMOrder {
+        var order = TMOrder()
+        order.order_id = data["order_id"].string
+        order.order_index = data["order_index"].string
+        order.user_id = data["user_id"].string
+        order.shop_id = data["shop_id"].string
+        order.transaction_mode = data["transaction_mode"].string?.toNumber
+        order.register_type = data["register_type"].string?.toNumber
+        order.payable_amount = data["payable_amount"].string?.toNumber
+        order.actual_amount = data["actual_amount"].string?.toNumber
+        order.coupon_id = data["coupon_id"].string
+        order.discount = data["discount"].string?.toNumber
+        order.discount_type = data["discount_type"].string?.toNumber
+        order.register_time = parseDate(data["register_time"].string)
+        order.status = data["status"].string
+        order.user_mobile_number = data["user_mobile_number"].string
+        order.order_description = data["description"].string
+        
+        // 解析订单商品详情
+        var productRecordList = [TMProductRecord]()
+        for (index: String, subJson: JSON) in data["product_record"] {
+            var productRecord = parseProductRecord(subJson)
+            productRecordList.append(productRecord)
+        }
+        order.product_records = productRecordList
+        
+        return order
+    }
+    
+    
+    /**
+    解析订单商品记录
+    
+    :param: data 待解析数据
+    
+    :returns: 订单商品记录
+    */
+    class func parseProductRecord(data: JSON) -> TMProductRecord {
+        var productRecord = TMProductRecord()
+        productRecord.product_id = data["product_id"].string
+        productRecord.product_name = data["product_name"].string
+        productRecord.price = data["price"].string?.toNumber
+        productRecord.quantity = data["quantity"].string?.toNumber
+        productRecord.actual_amount = data["actual_amount"].string?.toNumber
+        
+        return productRecord
+    }
+    
+    
+    
+    // MARK: - Helper
+    
+    class func parseDate(dateString: String?) -> NSDate? {
+        if let dateString = dateString {
+            var date = NSDate(fromString: dateString, format: .Custom("yyyy-MM-dd HH:mm:ss"))
+            return date
+        }
+        
+        return nil
+    }
 }

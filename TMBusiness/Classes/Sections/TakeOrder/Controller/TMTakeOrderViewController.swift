@@ -88,7 +88,7 @@ class TMTakeOrderViewController: BaseViewController {
         }
         
         payView.rechargeButton.addTarget(self, action: "hanldeRechargeAction", forControlEvents: .TouchUpInside)
-        payView.consumeButton.addTarget(self, action: "showConsumeRecordView", forControlEvents: .TouchUpInside)
+        payView.consumeButton.addTarget(self, action: "handleConsumeAction", forControlEvents: .TouchUpInside)
         payView.searchButton.addTarget(self, action: "fetchEntityInfoAction", forControlEvents: .TouchUpInside)
         payView.scanButton.addTarget(self, action: "showCodeScanView", forControlEvents: .TouchUpInside)
         
@@ -98,14 +98,17 @@ class TMTakeOrderViewController: BaseViewController {
     // 充值页面
     private lazy var rechargeView: TMRechargeView = {
         var rechargeView = TMRechargeView(frame: CGRectMake(0, 0, 375, 470))
-        rechargeView.cancelButton.addTarget(self, action: "hideRechargeView", forControlEvents: .TouchUpInside)
-//        rechargeView.cashButton.addTarget(self, action: "handleRechargeWithCashAction", forControlEvents: .TouchUpInside)
+        rechargeView.rechargeClosure = { [weak self] (reward) in
+            if let strongSelf = self {
+                strongSelf.rechargeWithCash()
+            }
+        }
         return rechargeView
         }()
     
     // 消费记录页面
     private lazy var consumeRecordView: TMConsumeRecordView = {
-        var consumeRecordView = TMConsumeRecordView(frame: CGRectMake(0, 0, 452, 450))
+        var consumeRecordView = TMConsumeRecordView(frame: CGRectMake(0, 0, 452 + 18, 450 + 10))
         
         return consumeRecordView
         }()
@@ -378,92 +381,51 @@ class TMTakeOrderViewController: BaseViewController {
         }
     }
     
-    // MARK: -
+    // MARK: - 充值
+    
+    /**
+    处理充值按钮点击事件
+    */
     func hanldeRechargeAction() {
         if let user = takeOrderCompute.user {
-            showRechargeView()
+            rechargeView.show()
             return
         }
         
         presentInfoAlertView("请先查询用户信息")
     }
     
-    /**
-    显示充值页面
-    */
-    func showRechargeView() {
-        if maskView.superview == nil {
-            view.addSubview(maskView)
-        }
-        
-        if rechargeView.superview == nil {
-            view.addSubview(rechargeView)
-            rechargeView.center = maskView.center
-        }
-        
-        maskView.alpha = 0.4
-        
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.rechargeView.alpha = 1.0
-            }) { (finished) -> Void in
-                return
-        }
-        
-        remarkView.transform = CGAffineTransformMakeScale(0.5, 0.5)
-        UIView.animateWithDuration(0.3, delay: 0.0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0.3, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
-            self.rechargeView.transform = CGAffineTransformIdentity
-            }, completion: nil)
-    }
+    
+    // MARK: - 消费记录
     
     /**
-    隐藏充值页面
+    处理消费记录按钮点击事件
     */
-    func hideRechargeView() {
-        UIView.animateWithDuration(0.3, delay: 0.0, options: .CurveEaseInOut, animations: { () -> Void in
-            self.rechargeView.alpha = 0.0
-            }) { (finished) -> Void in
-                self.maskView.alpha = 0
+    func handleConsumeAction() {
+        if let user = takeOrderCompute.user {
+            consumeRecordView.show()
+            // 加载消费记录数据
+            fetchUserOrderList()
+            return
+        }
+        presentInfoAlertView("请先查询用户信息")
+    }
+    
+    
+    /**
+    获取用户消费记录
+    */
+    func fetchUserOrderList() {
+        userDataManager.fetchUserEntityOrder(TMShop.sharedInstance.shop_id, businessId: TMShop.sharedInstance.business_id, type: .Shop, userId: takeOrderCompute.user!.user_id!, startIndex: consumeRecordView.data.count, adminId: TMShop.sharedInstance.admin_id) { [weak self] (list, errir) -> Void in
+            
+            if let strongSelf = self {
+                strongSelf.consumeRecordView.updateData(list!)
+            }
         }
     }
     
-    /**
-    显示消费记录页面
-    */
-    func showConsumeRecordView() {
-        if maskView.superview == nil {
-            view.addSubview(maskView)
-        }
-        
-        if consumeRecordView.superview == nil {
-            view.addSubview(consumeRecordView)
-            consumeRecordView.center = maskView.center
-        }
-        
-        maskView.alpha = 0.4
-        
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.consumeRecordView.alpha = 1.0
-            }) { (finished) -> Void in
-                return
-        }
-        
-        consumeRecordView.transform = CGAffineTransformMakeScale(0.5, 0.5)
-        UIView.animateWithDuration(0.3, delay: 0.0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0.3, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
-            self.consumeRecordView.transform = CGAffineTransformIdentity
-            }, completion: nil)
-    }
     
-    /**
-    隐藏消费记录页面
-    */
-    func hideConsumeRecordVIew() {
-        UIView.animateWithDuration(0.3, delay: 0.0, options: .CurveEaseInOut, animations: { () -> Void in
-            self.consumeRecordView.alpha = 0.0
-            }) { (finished) -> Void in
-                self.maskView.alpha = 0
-        }
-    }
-    
+    // MARK: - 现金支付页面功能
     /**
     显示现金支付页面
     */
@@ -590,6 +552,13 @@ class TMTakeOrderViewController: BaseViewController {
         }
     }
     
+     /**
+    结账
+    */
+    func settleBill() {
+        
+    }
+    
     
     // MARK: - 二维码扫描
     func showCodeScanView() {
@@ -645,11 +614,7 @@ class TMTakeOrderViewController: BaseViewController {
     /**
     现金充值
     */
-    func handleRechargeWithCashAction() {
-        
-//        var alertView = UIAlertView(title: "充值提示", message: "", delegate: <#UIAlertViewDelegate?#>, cancelButtonTitle: <#String?#>, otherButtonTitles: <#String#>, <#moreButtonTitles: String#>...))
-        
-//        return
+    func rechargeWithCash() {
         var reward = rechargeView.data[rechargeView.currentSelectedIndex]
         if let user_id = takeOrderCompute.user?.user_id, reward_id = reward.reward_id, current_number_max = reward.current_number_max {
             var reward_number = reward.reward_description?.toNumber
@@ -679,7 +644,7 @@ class TMTakeOrderViewController: BaseViewController {
                         })
                     }
                 }
-            })
+                })
         }
     }
 }

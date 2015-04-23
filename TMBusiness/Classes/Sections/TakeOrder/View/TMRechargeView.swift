@@ -15,7 +15,7 @@ import Snap
 
 let TMRechargeTypeCellIdentifier = "TMRechargeTypeCell"
 
-class TMRechargeView: UIView {
+class TMRechargeView: TMModalView {
     
     var phoneLabel: UILabel!
     var nicknameLabel: UILabel!
@@ -24,13 +24,13 @@ class TMRechargeView: UIView {
     
     var currentSelectedIndex: Int = 0
     
-    var cancelButton: UIButton!
-    
-    var cashButton: UIButton!
-    
     var cardButton: UIButton!
     
     var data = [TMReward]()
+    
+    var rechargeClosure: ((TMReward) -> Void)!
+    
+//    var cancelClosure: (() -> ())!
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -150,13 +150,14 @@ class TMRechargeView: UIView {
         
         tableView.registerClass(TMRechargeTypeCell.self, forCellReuseIdentifier: TMRechargeTypeCellIdentifier)
         
-        cancelButton = UIButton.buttonWithType(.Custom) as! UIButton
+        var cancelButton = UIButton.buttonWithType(.Custom) as! UIButton
         cancelButton.setBackgroundImage(UIImage(named: "recharge_cancel"), forState: .Normal)
         cancelButton.setBackgroundImage(UIImage(named: "recharge_cancel_on"), forState: .Highlighted)
         cancelButton.setTitleColor(UIColor(hex: 0x1E8EBC), forState: .Normal)
         cancelButton.setTitleColor(UIColor.whiteColor(), forState: .Highlighted)
         cancelButton.setTitle("取消", forState: .Normal)
         cancelButton.titleLabel?.font = UIFont.systemFontOfSize(22.0)
+        cancelButton.addTarget(self, action: "handleCancelRechargeAction", forControlEvents: .TouchUpInside)
         addSubview(cancelButton)
         cancelButton.snp_makeConstraints { make in
             make.leading.equalTo(15)
@@ -164,7 +165,7 @@ class TMRechargeView: UIView {
             make.size.equalTo(CGSizeMake(110, 50))
         }
         
-        cashButton = UIButton.buttonWithType(.Custom) as! UIButton
+        var cashButton = UIButton.buttonWithType(.Custom) as! UIButton
         cashButton.setBackgroundImage(UIImage(named: "recharge_commit"), forState: .Normal)
         cashButton.setBackgroundImage(UIImage(named: "recharge_commit_on"), forState: .Highlighted)
         cashButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
@@ -222,20 +223,80 @@ class TMRechargeView: UIView {
     }
     
     
-    // MARk: - Actions
+    // MARK: - Actions
     
     func handleCashRechargeAction() {
+        hide()
         var reward = data[currentSelectedIndex]
         var message = "确认充\(reward.current_number_max!)送\(reward.reward_description!)元"
         var alertView = UIAlertView(title: "充值提示", message: message, delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "确认")
         alertView.show()
     }
     
+    func handleCancelRechargeAction() {
+        hide()
+        maskModalView.removeFromSuperview()
+        removeFromSuperview()
+    }
+}
+
+
+extension TMRechargeView {
+    
+    /**
+    显示页面
+    */
+    func show() {
+        var window = UIApplication.sharedApplication().keyWindow
+        if maskModalView.superview == nil {
+            window?.addSubview(maskModalView)
+        }
+        
+        if superview == nil {
+            window?.addSubview(self)
+            center = maskModalView.center
+        }
+        maskModalView.alpha = 0.4
+        
+        UIView.animateWithDuration(0.3, animations: { [weak self] () -> Void in
+            if let strongSelf = self {
+                strongSelf.alpha = 1.0
+            }
+            }) { (finished) -> Void in
+                return
+        }
+    }
+    
+    /**
+    隐藏页面
+    */
+    func hide() {
+        UIView.animateWithDuration(0.3, delay: 0.0, options: .CurveEaseInOut, animations: { [weak self] () -> Void in
+            if let strongSelf = self {
+                strongSelf.alpha = 0.0
+            }
+            }) { [weak self] (finished) -> Void in
+                if let strongSelf = self {
+                    strongSelf.maskModalView.alpha = 0.0
+                }
+        }
+    }
 }
 
 extension TMRechargeView: UIAlertViewDelegate {
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
-        
+        if buttonIndex == 0 {
+            show()
+            return
+        } else {
+            maskModalView.removeFromSuperview()
+            removeFromSuperview()
+            
+            if let rechargeClosure = rechargeClosure {
+                var reward = data[currentSelectedIndex]
+                rechargeClosure(reward)
+            }
+        }
     }
 }
 

@@ -23,6 +23,11 @@ enum TMRechargeFlag: Int {
     case Withdraw = 2
 }
 
+enum TMShopType: Int {
+    case Business = 1
+    case Shop = 2
+}
+
 class TMUserService: NSObject {
     
     lazy var manager: TMNetworkManager = {
@@ -139,5 +144,42 @@ class TMUserService: NSObject {
         }
     }
     
-    // MARk: - Helper
+    /**
+    根据终身号、商铺编号、商户编号获取该品牌下所有的消费记录或该品牌下某商铺的消费记录
+    
+    :param: shopId     商铺编号
+    :param: businessId 商户编号
+    :param: type       是商铺到访，还是商户到访
+    :param: userId     用户终身号
+    :param: startIndex 起始记录条数
+    :param: pageSize   每页多少条记录，默认10条
+    :param: adminId    管理员编号
+    */
+    func fetchUserOrderList(shopId: String, businessId: String = "", type: TMShopType = .Shop, userId: String, startIndex: Int, pageSize: Int = 10, adminId: String, completion: ([TMOrder]?, NSError?) -> Void) {
+        var parameters = ["shop_id": shopId,
+            "business_id": businessId,
+            "type": "\(type.rawValue)",
+            "user_id": userId,
+            "page_index": "\(startIndex)",
+            "page_size": "\(pageSize)",
+            "admin_id": adminId,
+            "device_type" : "\(AppManager.platform().rawValue)"]
+        
+        manager.request(.POST, relativePath: "user_getEntityOrder", parameters: parameters) { (result) -> Void in
+            switch result {
+            case let .Error(e):
+                completion(nil, e)
+            case let .Value(json):
+                // 解析数据
+                let data = json["data"]
+                
+                var orderList = [TMOrder]()
+                for (index: String, subJson: JSON) in data {
+                    var order = TMParser.parseOrder(subJson)
+                    orderList.append(order)
+                }
+                completion(orderList, nil)
+            }
+        }
+    }
 }

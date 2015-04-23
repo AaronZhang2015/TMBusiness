@@ -556,13 +556,12 @@ class TMMemebershipCardPayView: UIView {
             make.bottom.equalTo(remarkBackgroundImageView.snp_bottom).offset(-4)
         }
         
-        
         var cancelButton = UIButton.buttonWithType(.Custom) as! UIButton
         cancelButton.setBackgroundImage(UIImage(named: "payment_cancel_button"), forState: .Normal)
         cancelButton.setBackgroundImage(UIImage(named: "payment_cancel_button_on"), forState: .Highlighted)
         cancelButton.setTitleColor(UIColor(hex: 0x1E8EBC), forState: .Normal)
         cancelButton.setTitleColor(UIColor.whiteColor(), forState: .Highlighted)
-        cancelButton.setTitle("取消", forState: .Normal)
+        cancelButton.setTitle("清空", forState: .Normal)
         addSubview(cancelButton)
         cancelButton.snp_makeConstraints { make in
             make.size.equalTo(CGSizeMake(143, 60))

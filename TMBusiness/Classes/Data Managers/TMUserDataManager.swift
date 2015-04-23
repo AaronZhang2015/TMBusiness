@@ -58,5 +58,21 @@ class TMUserDataManager: TMDataManager {
             }
         }
     }
+    
+    
+    /**
+    根据终身号、商铺编号、商户编号获取该品牌下所有的消费记录或该品牌下某商铺的消费记录
+    
+    :param: shopId     商铺编号
+    :param: businessId 商户编号
+    :param: type       是商铺到访，还是商户到访
+    :param: userId     用户终身号
+    :param: startIndex 起始记录条数
+    :param: pageSize   每页多少条记录，默认10条
+    :param: adminId    管理员编号
+    */
+    func fetchUserEntityOrder(shopId: String, businessId: String = "", type: TMShopType = .Shop, userId: String, startIndex: Int, pageSize: Int = 10, adminId: String, completion: ([TMOrder]?, NSError?) -> Void) {
+        userService.fetchUserOrderList(shopId, businessId: businessId, type: type, userId: userId, startIndex: startIndex, pageSize: pageSize, adminId: adminId, completion: completion)
+    }
 
 }
