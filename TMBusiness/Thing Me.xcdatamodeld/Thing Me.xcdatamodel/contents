@@ -38,9 +38,39 @@
         <attribute name="width" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TMCategoryManagedObject" inverseName="products" inverseEntity="TMCategoryManagedObject" syncable="YES"/>
     </entity>
+    <entity name="TMProductRecordManagedObject" representedClassName="TMBusiness.TMProductRecordManagedObject" syncable="YES">
+        <attribute name="actual_amount" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="price" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="product_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="product_name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="quantity" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <relationship name="restingOrder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TMRestingOrderManagedObject" inverseName="product_records" inverseEntity="TMRestingOrderManagedObject" syncable="YES"/>
+    </entity>
+    <entity name="TMRestingOrderManagedObject" representedClassName="TMBusiness.TMRestingOrderManagedObject" syncable="YES">
+        <attribute name="actual_amount" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="admin_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="business_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="coupon_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="discount" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="discount_type" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="order_description" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="order_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="order_index" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="payable_amount" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="register_time" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="register_type" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="shop_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="transaction_mode" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="user_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="user_mobile_number" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="product_records" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="TMProductRecordManagedObject" inverseName="restingOrder" inverseEntity="TMProductRecordManagedObject" syncable="YES"/>
+    </entity>
     <elements>
+        <element name="TMCacheManagedObject" positionX="144" positionY="153" width="128" height="75"/>
         <element name="TMCategoryManagedObject" positionX="-18" positionY="27" width="128" height="135"/>
         <element name="TMProductManagedObject" positionX="306" positionY="0" width="128" height="403"/>
-        <element name="TMCacheManagedObject" positionX="144" positionY="153" width="128" height="75"/>
+        <element name="TMRestingOrderManagedObject" positionX="144" positionY="153" width="128" height="315"/>
+        <element name="TMProductRecordManagedObject" positionX="153" positionY="162" width="128" height="135"/>
     </elements>
 </model>

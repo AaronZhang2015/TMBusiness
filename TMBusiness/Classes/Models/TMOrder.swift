@@ -25,17 +25,23 @@ class TMOrder: NSObject {
     // 商铺编号
     var shop_id: String?
     
+    // 商户编号
+    var business_id: String?
+    
+    // 商铺管理员编号
+    var admin_id: String?
+    
     // 交易方式（1：现金）
-    var transaction_mode: NSNumber?
+    var transaction_mode: TMTransactionMode = .Cash
     
     // 登记方式（1：手动 2：自动）
-    var register_type: NSNumber?
+    var register_type: TMRegisterType = .Manually
     
     // 应付金额
-    var payable_amount: NSNumber?
+    var payable_amount: NSNumber = 0.0
     
     // 实际支付金额
-    var actual_amount: NSNumber?
+    var actual_amount: NSNumber = 0.0
 
     // 优惠券编号
     var coupon_id: String?
@@ -44,13 +50,13 @@ class TMOrder: NSObject {
     var discount: NSNumber?
     
     // 折扣类型（1：签到）
-    var discount_type: NSNumber?
+    var discount_type: TMDiscountType = .Sign
     
     // 登记时间
     var register_time: NSDate?
     
     // 状态
-    var status: String?
+    var status: TMOrderStatus = TMOrderStatus.Take
     
     // 会员手机号码
     var user_mobile_number: String?
@@ -59,7 +65,7 @@ class TMOrder: NSObject {
     var order_description: String?
     
     // 商品实体集合
-    var product_records: [TMProductRecord]?
+    var product_records: [TMProductRecord]!
 }
 
 

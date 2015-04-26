@@ -13,11 +13,11 @@ let takeOrderListCellReuseIdentifier = "TakeOriderListCell"
 
 class TMTakeOrderViewController: BaseViewController {
     
-    private lazy var shopDataManager: TMShopDataManager = {
-        return TMShopDataManager()
-        }()
+    private lazy var shopDataManager: TMShopDataManager = TMShopDataManager()
     
     private lazy var userDataManager: TMUserDataManager = TMUserDataManager()
+    
+    private lazy var orderDataManager: TMOrderDataManager = TMOrderDataManager()
     
     // 备注操作
     private var remarkButton: UIButton!
@@ -91,7 +91,7 @@ class TMTakeOrderViewController: BaseViewController {
         payView.consumeButton.addTarget(self, action: "handleConsumeAction", forControlEvents: .TouchUpInside)
         payView.searchButton.addTarget(self, action: "fetchEntityInfoAction", forControlEvents: .TouchUpInside)
         payView.scanButton.addTarget(self, action: "showCodeScanView", forControlEvents: .TouchUpInside)
-        
+        payView.commitButton.addTarget(self, action: "settleBill", forControlEvents: .TouchUpInside)
         return payView
         }()
     
@@ -392,7 +392,7 @@ class TMTakeOrderViewController: BaseViewController {
             return
         }
         
-        presentInfoAlertView("请先查询用户信息")
+        presentInfoAlertView("请先获取用户信息")
     }
     
     
@@ -408,7 +408,7 @@ class TMTakeOrderViewController: BaseViewController {
             fetchUserOrderList()
             return
         }
-        presentInfoAlertView("请先查询用户信息")
+        presentInfoAlertView("请先获取用户信息")
     }
     
     
@@ -556,6 +556,41 @@ class TMTakeOrderViewController: BaseViewController {
     结账
     */
     func settleBill() {
+        
+        if let order = membershipCardPayView.getOrder() {
+            if membershipCardPayView.getSelectedCount() == 0 {
+                presentInfoAlertView("请先选择支付方式")
+                return
+            }
+            
+            if order.payable_amount.doubleValue > 0 {
+                orderDataManager.addOrderEntityInfo(order, completion: { [weak self] (orderId, error) in
+                    if let strongSelf = self {
+                        // 订单成功
+                        if let e = error {
+                            // 提示错误
+                            
+                            // 采取挂单
+                            strongSelf.orderDataManager.cacheRestingOrder(order)
+                        } else {
+                            // 提示操作成功
+                            strongSelf.hideMembershipCardPayView(true)
+                            // 清空之前用户数据
+                            strongSelf.takeOrderCompute.clearAllData()
+                        }
+                    }
+                })
+            }
+            
+        } else {
+            presentInfoAlertView("请先获取用户信息")
+        }
+    }
+    
+    // MARK: - 订单操作
+    
+    // 挂单操作
+    func handleRestingOrderAction() {
         
     }
     

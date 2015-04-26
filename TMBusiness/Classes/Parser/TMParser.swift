@@ -229,15 +229,42 @@ class TMParser: NSObject {
         order.order_index = data["order_index"].string
         order.user_id = data["user_id"].string
         order.shop_id = data["shop_id"].string
-        order.transaction_mode = data["transaction_mode"].string?.toNumber
-        order.register_type = data["register_type"].string?.toNumber
-        order.payable_amount = data["payable_amount"].string?.toNumber
-        order.actual_amount = data["actual_amount"].string?.toNumber
+        
+        if let transaction_mode = data["transaction_mode"].string?.toNumber?.integerValue {
+            if let mode =  TMTransactionMode(rawValue: transaction_mode) {
+                order.transaction_mode = mode
+            }
+        }
+        
+        if let register_type = data["register_type"].string?.toNumber?.integerValue {
+            if let type = TMRegisterType(rawValue: register_type) {
+                order.register_type = type
+            }
+        }
+        
+        if let payable_amount = data["payable_amount"].string?.toNumber {
+            order.payable_amount = payable_amount
+        }
+        
+        if let actual_amount = data["actual_amount"].string?.toNumber {
+            order.actual_amount = actual_amount
+        }
+        
+        if let discount_type = data["discount_type"].string?.toNumber?.integerValue {
+            if let type = TMDiscountType(rawValue: discount_type) {
+                order.discount_type = type
+            }
+        }
+        
+        if let order_status = data["status"].string?.toNumber?.integerValue {
+            if let status = TMOrderStatus(rawValue: order_status) {
+                order.status = status
+            }
+        }
+        
         order.coupon_id = data["coupon_id"].string
         order.discount = data["discount"].string?.toNumber
-        order.discount_type = data["discount_type"].string?.toNumber
         order.register_time = parseDate(data["register_time"].string)
-        order.status = data["status"].string
         order.user_mobile_number = data["user_mobile_number"].string
         order.order_description = data["description"].string
         
@@ -264,9 +291,9 @@ class TMParser: NSObject {
         var productRecord = TMProductRecord()
         productRecord.product_id = data["product_id"].string
         productRecord.product_name = data["product_name"].string
-        productRecord.price = data["price"].string?.toNumber
-        productRecord.quantity = data["quantity"].string?.toNumber
-        productRecord.actual_amount = data["actual_amount"].string?.toNumber
+        productRecord.price = data["price"].stringValue.toNumber
+        productRecord.quantity = data["quantity"].stringValue.toNumber
+        productRecord.actual_amount = data["actual_amount"].stringValue.toNumber
         
         return productRecord
     }
@@ -274,7 +301,6 @@ class TMParser: NSObject {
     
     
     // MARK: - Helper
-    
     class func parseDate(dateString: String?) -> NSDate? {
         if let dateString = dateString {
             var date = NSDate(fromString: dateString, format: .Custom("yyyy-MM-dd HH:mm:ss"))

@@ -321,7 +321,7 @@ class TMConsumeRecordHeaderView: UIView {
         var date = order.register_time?.toString(format: .Custom("yyyy-MM-dd"))
         dateLabel.text = date
         let format = ".2"
-        amountLabel.text = "\(order.actual_amount!.doubleValue.format(format))元"
+        amountLabel.text = "\(order.actual_amount.doubleValue.format(format))元"
         
     }
 }

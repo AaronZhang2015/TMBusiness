@@ -20,13 +20,13 @@ class TMProductRecord: NSObject {
     var product_name: String?
     
     // 商品单价
-    var price: NSNumber?
+    var price: NSNumber! = 0
     
     // 数量
-    var quantity: NSNumber?
+    var quantity: NSNumber! = 0
     
     // 实付金额
-    var actual_amount: NSNumber?
+    var actual_amount: NSNumber! = 0
 }
 
 

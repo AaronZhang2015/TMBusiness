@@ -102,10 +102,10 @@ class TMTakeOrder {
     var consumeAmount: Double = 0.0
     
     // 交易方式
-    var transactionMode: TMTransactionMode?
+    var transactionMode: TMTransactionMode! = .Cash
     
     // 当前折扣类型
-    var currentDiscountType: TMDiscountType?
+    var currentDiscountType: TMDiscountType! = .Sign
     
     // 当前折扣
     var currentDiscount: Double = 1.0
@@ -632,11 +632,63 @@ class TMTakeOrderCompute {
     */
     func getAutoTransactionMode() -> TMTransactionMode {
         if takeOrder.balanceAmount == 0.0 {
-            return TMTransactionMode.Cash
+            takeOrder.transactionMode = TMTransactionMode.Cash
         } else if (takeOrder.balanceAmount - getActualAmount()) >= 0.0 {
-            return TMTransactionMode.Balance
+            takeOrder.transactionMode = TMTransactionMode.Balance
+        } else {
+            takeOrder.transactionMode = TMTransactionMode.CashAndBalance
         }
         
-        return TMTransactionMode.CashAndBalance
+        return takeOrder.transactionMode!
+    }
+    
+    
+    /**
+    获取交易方式
+    
+    :returns: 交易方式
+    */
+    func getTransactionMode() -> TMTransactionMode {
+        return takeOrder.transactionMode!
+    }
+    
+    /**
+    设置交易方式
+    
+    :param: transactionMode 交易方式
+    */
+    func setTransactionMode(transactionMode: TMTransactionMode) {
+        takeOrder.transactionMode = transactionMode
+    }
+    
+    /**
+    获取折扣类型
+    
+    :returns: 折扣类型
+    */
+    func getDiscountType() -> TMDiscountType {
+        return takeOrder.currentDiscountType
+    }
+    
+    
+    /**
+    获取订单商品记录
+    
+    :returns: 订单商品记录
+    */
+    func getProductRecords() -> [TMProductRecord] {
+        var productRecords = [TMProductRecord]()
+        
+        for product in takeOrder.list {
+            var productRecord = TMProductRecord()
+            productRecord.product_id = product.product_id
+            productRecord.product_name = product.product_name
+            productRecord.price = product.official_quotation
+            productRecord.quantity = product.quantity
+            
+            productRecords.append(productRecord)
+        }
+        
+        return productRecords
     }
 }

@@ -28,12 +28,50 @@ class TMOrderService: NSObject {
         }()
    
     
-    func addOrderEntityInfo(userId: String, shopId: String, transactionMode: TMTransactionMode, registerType: TMRegisterType, payableAmount: NSNumber, actualAmount: NSNumber, couponId: String = "", discount: String = "", discountType: String = "", description: String = "", businessId: String, orderStatus: TMOrderStatus, productList: [TMProduct], adminId: String) {
+    func addOrderEntityInfo(#userId: String, shopId: String, transactionMode: TMTransactionMode, registerType: TMRegisterType, payableAmount: NSNumber, actualAmount: NSNumber, couponId: String, discount: String, discountType: TMDiscountType, description: String, businessId: String, orderStatus: TMOrderStatus, productList: [TMProductRecord], adminId: String, completion:(String?, NSError?) -> Void) {
         let format = ".2"
+        var productListJsonString = "["
         // 拼接商品内容
-//        var json: JSON = JSON()
-        for product in productList {
-            var subjson:JSON = ["product_id": product.product_id!, "quantity": "\(product.quantity.integerValue)", "price": "\(product.official_quotation.doubleValue.format(format))"]
+        for var index = 0; index < productList.count; ++index {
+            var product = productList[index]
+            if let product_id = product.product_id {
+                var productString = "{\"product_id\":\"\(product.product_id!)\", \"quantity\":\"\(product.quantity.integerValue)\", \"price\":\"\(product.price.doubleValue.format(format))\"}"
+                
+                productListJsonString = "\(productListJsonString)\(productString)"
+                println(productString)
+            }
+            
+            if index != productList.count - 1 {
+                productListJsonString = "\(productListJsonString),"
+            }
+        }
+        productListJsonString = "\(productListJsonString)]"
+        
+        var parameters = ["user_id": userId,
+            "shop_id": shopId,
+            "transaction_mode": "\(transactionMode.rawValue)",
+            "register_type": "\(registerType.rawValue)",
+            "payable_amount": "\(payableAmount.doubleValue.format(format))",
+            "actual_amount": "\(actualAmount.doubleValue.format(format))",
+            "coupon_id": couponId,
+            "discount": discount,
+            "discount_type": "\(discountType.rawValue)",
+            "description": description,
+            "business_id": businessId,
+            "order_status": "\(orderStatus.rawValue)",
+            "product_model_json": productListJsonString,
+            "admin_id": adminId,
+            "device_type": "\(AppManager.platform().rawValue)"]
+        
+        manager.request(.POST, relativePath: "order_addEntityInfo", parameters: parameters) { (result) -> Void in
+            switch result {
+            case let .Error(e):
+                completion(nil, e)
+            case let .Value(json):
+                // 解析数据
+                let data = json["data"]
+                completion(data["order_id"].string, nil)
+            }
         }
     }
     

@@ -24,6 +24,8 @@ class TMCashPayView: UIView {
     var calculateClosure: (() -> ())!
     var backClosure: (() -> ())!
     
+    var takeOrderCompute: TMTakeOrderCompute!
+    
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -408,6 +410,8 @@ class TMCashPayView: UIView {
     :param: compute 数据结构
     */
     func updateEntityAllInfo(compute: TMTakeOrderCompute) {
+        takeOrderCompute = compute
+        
         let format = ".2"
         
         // 消费总额

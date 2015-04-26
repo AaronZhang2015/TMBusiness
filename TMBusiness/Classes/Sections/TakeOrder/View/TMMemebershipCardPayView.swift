@@ -11,6 +11,8 @@ import Snap
 
 class TMMemebershipCardPayView: UIView {
     
+    private var takeOrderCompute: TMTakeOrderCompute!
+    
     var backButton: UIButton!
     var consumeLabel: UILabel!
     var actualLabel: UILabel!
@@ -64,6 +66,8 @@ class TMMemebershipCardPayView: UIView {
     var cashButton: UIButton!
     
     var otherButton: UIButton!
+    
+    var commitButton: UIButton!
     
     var isDraging: Bool = false
     var backClosure: (() -> ())?
@@ -437,13 +441,14 @@ class TMMemebershipCardPayView: UIView {
         balanceButton.setBackgroundImage(UIImage(named: "payment_button"), forState: .Normal)
         balanceButton.setBackgroundImage(UIImage(named: "payment_button_on"), forState: .Highlighted)
         balanceButton.setBackgroundImage(UIImage(named: "payment_button_on"), forState: .Selected)
-        balanceButton.setBackgroundImage(UIImage(named: "payment_button"), forState: .Selected | .Highlighted)
+        balanceButton.setBackgroundImage(UIImage(named: "payment_button_on"), forState: .Selected | .Highlighted)
         balanceButton.setTitle("余额", forState: .Normal)
         balanceButton.titleLabel?.font = UIFont.systemFontOfSize(20.0)
         balanceButton.titleEdgeInsets = UIEdgeInsetsMake(0, 20, 0, 0)
         balanceButton.setTitleColor(UIColor(hex: 0x1E8EBC), forState: .Normal)
         balanceButton.setTitleColor(UIColor.whiteColor(), forState: .Highlighted)
         balanceButton.setTitleColor(UIColor.whiteColor(), forState: .Selected)
+        balanceButton.setTitleColor(UIColor.whiteColor(), forState: .Selected | .Highlighted)
         balanceButton.addTarget(self, action: "handleTransactionButtonState:", forControlEvents: .TouchUpInside)
         addSubview(balanceButton)
         balanceButton.snp_makeConstraints { make in
@@ -458,7 +463,7 @@ class TMMemebershipCardPayView: UIView {
         cashBoxButton.setBackgroundImage(UIImage(named: "payment_button"), forState: .Normal)
         cashBoxButton.setBackgroundImage(UIImage(named: "payment_button_on"), forState: .Highlighted)
         cashBoxButton.setBackgroundImage(UIImage(named: "payment_button_on"), forState: .Selected)
-        cashBoxButton.setBackgroundImage(UIImage(named: "payment_button"), forState: .Selected | .Highlighted)
+        cashBoxButton.setBackgroundImage(UIImage(named: "payment_button_on"), forState: .Selected | .Highlighted)
         
         cashBoxButton.setTitle("盒子支付", forState: .Normal)
         cashBoxButton.titleLabel?.font = balanceButton.titleLabel?.font
@@ -466,6 +471,7 @@ class TMMemebershipCardPayView: UIView {
         cashBoxButton.setTitleColor(UIColor(hex: 0x1E8EBC), forState: .Normal)
         cashBoxButton.setTitleColor(UIColor.whiteColor(), forState: .Highlighted)
         cashBoxButton.setTitleColor(UIColor.whiteColor(), forState: .Selected)
+        cashBoxButton.setTitleColor(UIColor.whiteColor(), forState: .Selected | .Highlighted)
         cashBoxButton.addTarget(self, action: "handleTransactionButtonState:", forControlEvents: .TouchUpInside)
         addSubview(cashBoxButton)
         cashBoxButton.snp_makeConstraints { make in
@@ -480,14 +486,14 @@ class TMMemebershipCardPayView: UIView {
         cashButton.setBackgroundImage(UIImage(named: "payment_button"), forState: .Normal)
         cashButton.setBackgroundImage(UIImage(named: "payment_button_on"), forState: .Highlighted)
         cashButton.setBackgroundImage(UIImage(named: "payment_button_on"), forState: .Selected)
-        cashButton.setBackgroundImage(UIImage(named: "payment_button"), forState: .Selected | .Highlighted)
+        cashButton.setBackgroundImage(UIImage(named: "payment_button_on"), forState: .Selected | .Highlighted)
         cashButton.setTitle("现金", forState: .Normal)
         cashButton.titleLabel?.font = balanceButton.titleLabel?.font
         cashButton.titleEdgeInsets = UIEdgeInsetsMake(0, 20, 0, 0)
         cashButton.setTitleColor(UIColor(hex: 0x1E8EBC), forState: .Normal)
         cashButton.setTitleColor(UIColor.whiteColor(), forState: .Highlighted)
         cashButton.setTitleColor(UIColor.whiteColor(), forState: .Selected)
-        
+        cashButton.setTitleColor(UIColor.whiteColor(), forState: .Selected | .Highlighted)
         cashButton.addTarget(self, action: "handleTransactionButtonState:", forControlEvents: .TouchUpInside)
         addSubview(cashButton)
         cashButton.snp_makeConstraints { make in
@@ -502,7 +508,7 @@ class TMMemebershipCardPayView: UIView {
         otherButton.setBackgroundImage(UIImage(named: "payment_button"), forState: .Normal)
         otherButton.setBackgroundImage(UIImage(named: "payment_button_on"), forState: .Highlighted)
         otherButton.setBackgroundImage(UIImage(named: "payment_button_on"), forState: .Selected)
-        otherButton.setBackgroundImage(UIImage(named: "payment_button"), forState: .Selected | .Highlighted)
+        otherButton.setBackgroundImage(UIImage(named: "payment_button_on"), forState: .Selected | .Highlighted)
         otherButton.setTitle("其他刷卡", forState: .Normal)
         otherButton.titleLabel?.font = balanceButton.titleLabel?.font
         otherButton.titleEdgeInsets = UIEdgeInsetsMake(0, 30, 0, 0)
@@ -510,6 +516,7 @@ class TMMemebershipCardPayView: UIView {
         otherButton.setTitleColor(UIColor(hex: 0x1E8EBC), forState: .Normal)
         otherButton.setTitleColor(UIColor.whiteColor(), forState: .Highlighted)
         otherButton.setTitleColor(UIColor.whiteColor(), forState: .Selected)
+        otherButton.setTitleColor(UIColor.whiteColor(), forState: .Selected | .Highlighted)
         otherButton.addTarget(self, action: "handleTransactionButtonState:", forControlEvents: .TouchUpInside)
         addSubview(otherButton)
         otherButton.snp_makeConstraints { make in
@@ -562,6 +569,7 @@ class TMMemebershipCardPayView: UIView {
         cancelButton.setTitleColor(UIColor(hex: 0x1E8EBC), forState: .Normal)
         cancelButton.setTitleColor(UIColor.whiteColor(), forState: .Highlighted)
         cancelButton.setTitle("清空", forState: .Normal)
+        cancelButton.addTarget(self, action: "clearMembershipData", forControlEvents: .TouchUpInside)
         addSubview(cancelButton)
         cancelButton.snp_makeConstraints { make in
             make.size.equalTo(CGSizeMake(143, 60))
@@ -569,7 +577,7 @@ class TMMemebershipCardPayView: UIView {
             make.trailing.equalTo(self.snp_centerX).offset(-27)
         }
         
-        var commitButton = UIButton.buttonWithType(.Custom) as! UIButton
+        commitButton = UIButton.buttonWithType(.Custom) as! UIButton
         commitButton.setBackgroundImage(UIImage(named: "payment_commit_button"), forState: .Normal)
         commitButton.setBackgroundImage(UIImage(named: "payment_commit_button_on"), forState: .Highlighted)
         commitButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
@@ -599,6 +607,9 @@ class TMMemebershipCardPayView: UIView {
     :param: compute 数据结构
     */
     func updateEntityAllInfo(compute: TMTakeOrderCompute) {
+        
+        takeOrderCompute = compute
+        
         let format = ".2"
         
         // 手机号码
@@ -657,7 +668,10 @@ class TMMemebershipCardPayView: UIView {
     */
     func handleTransactionButtonState(sender: UIButton) {
         if sender.selected == true {
-            sender.selected = false
+            var selectedCount = getSelectedCount()
+            if selectedCount > 1 {
+                sender.selected = false
+            }
             return
         }
         
@@ -669,6 +683,22 @@ class TMMemebershipCardPayView: UIView {
         }
         
         sender.selected = true
+        
+        if sender == otherButton {
+            takeOrderCompute.setTransactionMode(.Other)
+        } else if sender == cashBoxButton {
+            takeOrderCompute.setTransactionMode(.IBoxPay)
+        } else  {
+            if getSelectedCount() == 2 {
+                takeOrderCompute.setTransactionMode(.CashAndBalance)
+            } else {
+                if sender == cashButton {
+                    takeOrderCompute.setTransactionMode(.Cash)
+                } else {
+                    takeOrderCompute.setTransactionMode(.Balance)
+                }
+            }
+        }
     }
     
     /**
@@ -679,6 +709,72 @@ class TMMemebershipCardPayView: UIView {
         otherButton.selected = false
         cashButton.selected = false
         balanceButton.selected = false
+    }
+    
+    
+    /**
+    获取当前选中的支付按钮状态数量
+    
+    :returns: 选中的支付按钮状态数量
+    */
+    func getSelectedCount() -> Int {
+        var count = 0
+        
+        if cashBoxButton.selected == true {
+            count++
+        }
+        
+        if otherButton.selected == true {
+            count++
+        }
+        
+        if cashButton.selected == true {
+            count++
+        }
+        
+        if balanceButton.selected == true {
+            count++
+        }
+        
+        return count
+    }
+    
+    
+    /**
+    返回当前订单数据
+    
+    :returns: 订单
+    */
+    func getOrder() -> TMOrder? {
+        
+        if let user = takeOrderCompute.user {
+            var order = TMOrder()
+            order.user_id = user.user_id
+            order.shop_id = TMShop.sharedInstance.shop_id
+            order.business_id = TMShop.sharedInstance.business_id
+            order.admin_id = TMShop.sharedInstance.admin_id
+            order.transaction_mode = takeOrderCompute.getTransactionMode()
+            order.register_type = .Manually
+            order.payable_amount = NSNumber(double: takeOrderCompute.getConsumeAmount())
+            order.actual_amount = NSNumber(double: takeOrderCompute.getActualAmount())
+            order.coupon_id = ""
+            order.discount = NSNumber(double: takeOrderCompute.getMaxDiscount())
+            order.discount_type = takeOrderCompute.getDiscountType()
+            order.order_description = remarkTextView.text
+            order.status = .TransactionDone
+            order.product_records = takeOrderCompute.getProductRecords()
+            return order
+        } else {
+            return nil
+        }
+    }
+    
+    
+    /**
+    清空会员信息数据
+    */
+    func clearMembershipData() {
+        takeOrderCompute.clearAllData()
     }
 }
 
