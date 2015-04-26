@@ -140,7 +140,7 @@ class TMOrderDataManager: TMDataManager {
             restingOrder.order_description = order_description
         }
         
-        var productRecords = NSMutableOrderedSet()//[TMProductRecordManagedObject]()
+        var productRecords = NSMutableOrderedSet()
         // product records
         for productRecord in order.product_records {
             var record = TMProductRecordManagedObject(entity: productRecordEntity!,
@@ -166,6 +166,77 @@ class TMOrderDataManager: TMDataManager {
         if !managedContext.save(&error) {
             println("Could not save: \(error)")
         }
+    }
+    
+    
+    func fetchRestingOrderList() -> [TMOrder] {
+        var restingOrderList = [TMOrder]()
+        
+        var context = CoreDataStack.sharedInstance.context
+        let restingOrderFetch = NSFetchRequest(entityName: "TMRestingOrderManagedObject")
+        var registerTimeDescriptor = NSSortDescriptor(key: "register_time", ascending: false)
+        restingOrderFetch.sortDescriptors = [registerTimeDescriptor]
+        
+        var error: NSError?
+        let result = context.executeFetchRequest(restingOrderFetch, error: &error) as! [TMRestingOrderManagedObject]
+        
+        for var i = 0; i < result.count; ++i {
+            var restingOrderRecord = result[i]
+            var order = TMOrder()
+            
+            // 赋值
+            order.order_index = restingOrderRecord.order_index
+            order.order_id = restingOrderRecord.order_id
+            order.user_id = restingOrderRecord.user_id
+            order.shop_id = restingOrderRecord.shop_id
+            order.business_id = restingOrderRecord.business_id
+            order.admin_id = restingOrderRecord.admin_id
+            
+            if let mode = TMTransactionMode(rawValue: restingOrderRecord.transaction_mode.integerValue) {
+                order.transaction_mode = mode
+            }
+            
+            if let type = TMRegisterType(rawValue: restingOrderRecord.register_type.integerValue) {
+                order.register_type = type
+            }
+            
+            order.payable_amount = restingOrderRecord.payable_amount
+            order.actual_amount = restingOrderRecord.actual_amount
+            order.coupon_id = restingOrderRecord.coupon_id
+            order.discount = restingOrderRecord.discount
+            
+            if let type = TMDiscountType(rawValue: restingOrderRecord.discount_type.integerValue) {
+                order.discount_type = type
+            }
+            
+            order.register_time = restingOrderRecord.register_time
+            
+            if let status = TMOrderStatus(rawValue: restingOrderRecord.status.integerValue) {
+                order.status = status
+            }
+            
+            order.user_mobile_number = restingOrderRecord.user_mobile_number
+            order.order_description = restingOrderRecord.order_description
+            
+            var productRecordList = restingOrderRecord.product_records.array as! [TMProductRecordManagedObject]
+            var productRecords = [TMProductRecord]()
+            
+            for var m = 0; m < productRecordList.count; ++m {
+                var productRecordManagedObject = productRecordList[m]
+                var productRecord = TMProductRecord()
+                productRecord.product_id = productRecordManagedObject.product_id
+                productRecord.product_name = productRecordManagedObject.product_name
+                productRecord.price = productRecordManagedObject.price
+                productRecord.quantity = productRecordManagedObject.quantity
+                productRecord.actual_amount = productRecordManagedObject.actual_amount
+                productRecords.append(productRecord)
+            }
+            
+            order.product_records = productRecords
+            restingOrderList.append(order)
+        }
+        
+        return restingOrderList
     }
     
 }

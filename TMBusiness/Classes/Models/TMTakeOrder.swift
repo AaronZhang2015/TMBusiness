@@ -173,6 +173,7 @@ class TMTakeOrder {
         balanceAmount = 0.0
         consumeAmount = 0.0
         list.removeAll(keepCapacity: false)
+        transactionMode = .Cash
     }
 }
 
@@ -690,5 +691,33 @@ class TMTakeOrderCompute {
         }
         
         return productRecords
+    }
+    
+    
+    func getOrder(remark: String) -> TMOrder {
+        
+        var order = TMOrder()
+        
+        if let user = self.user {
+            order.user_id = user.user_id
+        } else {
+            order.user_id = TMShop.sharedInstance.shop_id
+        }
+        
+        order.shop_id = TMShop.sharedInstance.shop_id
+        order.business_id = TMShop.sharedInstance.business_id
+        order.admin_id = TMShop.sharedInstance.admin_id
+        order.transaction_mode = getTransactionMode()
+        order.register_type = .Manually
+        order.payable_amount = NSNumber(double: getConsumeAmount())
+        order.actual_amount = NSNumber(double: getActualAmount())
+        order.coupon_id = ""
+        order.discount = NSNumber(double: getMaxDiscount())
+        order.discount_type = getDiscountType()
+        order.register_time = NSDate()
+        order.order_description = remark
+        order.status = .TransactionDone
+        order.product_records = getProductRecords()
+        return order
     }
 }

@@ -215,6 +215,10 @@ class AZPagingContainerMenuView: UIView {
         expandView.hidden = !needShowExpandButton
         
         menuScrollView.contentSize = CGSizeMake(offsetX, menuScrollView.height)
+        
+        if offsetX < menuScrollView.width {
+            menuScrollView.width = offsetX
+        }
     }
     
     /**
