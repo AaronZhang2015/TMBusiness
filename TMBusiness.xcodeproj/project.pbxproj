@@ -70,6 +70,11 @@
 		6B7852631ACC353D008F1A49 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B7852611ACC353D008F1A49 /* LaunchScreen.xib */; };
 		6B78526F1ACC353D008F1A49 /* TMBusinessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B78526E1ACC353D008F1A49 /* TMBusinessTests.swift */; };
 		6B805C201AD4206500F2D968 /* AZPlaceholderTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B805C1F1AD4206500F2D968 /* AZPlaceholderTextView.swift */; };
+		6B8954451AEDDE3B00B0348D /* TMCheckingAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B8954441AEDDE3B00B0348D /* TMCheckingAccountViewController.swift */; };
+		6B8954471AEDE89800B0348D /* TMCheckingAccountSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B8954461AEDE89800B0348D /* TMCheckingAccountSearchView.swift */; };
+		6B8954491AEE1ABE00B0348D /* TMCheckingAccountAmountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B8954481AEE1ABE00B0348D /* TMCheckingAccountAmountView.swift */; };
+		6B89544B1AEE34E800B0348D /* TMCheckingAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B89544A1AEE34E800B0348D /* TMCheckingAccount.swift */; };
+		6B89544D1AEE54B900B0348D /* TMCheckingAccountProductListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B89544C1AEE54B900B0348D /* TMCheckingAccountProductListView.swift */; };
 		6B8A0B021AE00FA000CD2100 /* NSDate+LangExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B8A0B011AE00FA000CD2100 /* NSDate+LangExt.swift */; };
 		6B942A351AE490E000AC6AD2 /* AZCodeScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B942A341AE490E000AC6AD2 /* AZCodeScanViewController.swift */; };
 		6B942A371AE493FD00AC6AD2 /* TMCodeScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B942A361AE493FD00AC6AD2 /* TMCodeScanView.swift */; };
@@ -249,6 +254,11 @@
 		6B78526D1ACC353D008F1A49 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6B78526E1ACC353D008F1A49 /* TMBusinessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMBusinessTests.swift; sourceTree = "<group>"; };
 		6B805C1F1AD4206500F2D968 /* AZPlaceholderTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZPlaceholderTextView.swift; sourceTree = "<group>"; };
+		6B8954441AEDDE3B00B0348D /* TMCheckingAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMCheckingAccountViewController.swift; sourceTree = "<group>"; };
+		6B8954461AEDE89800B0348D /* TMCheckingAccountSearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMCheckingAccountSearchView.swift; sourceTree = "<group>"; };
+		6B8954481AEE1ABE00B0348D /* TMCheckingAccountAmountView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMCheckingAccountAmountView.swift; sourceTree = "<group>"; };
+		6B89544A1AEE34E800B0348D /* TMCheckingAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMCheckingAccount.swift; sourceTree = "<group>"; };
+		6B89544C1AEE54B900B0348D /* TMCheckingAccountProductListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMCheckingAccountProductListView.swift; sourceTree = "<group>"; };
 		6B8A0B011AE00FA000CD2100 /* NSDate+LangExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+LangExt.swift"; sourceTree = "<group>"; };
 		6B942A341AE490E000AC6AD2 /* AZCodeScanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZCodeScanViewController.swift; sourceTree = "<group>"; };
 		6B942A361AE493FD00AC6AD2 /* TMCodeScanView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMCodeScanView.swift; sourceTree = "<group>"; };
@@ -453,6 +463,7 @@
 				6B5F081A1ACC560F00CBD3BD /* TMUser.swift */,
 				6B5F081B1ACC560F00CBD3BD /* TMUserAccountBalance.swift */,
 				6BB4CA381AE0EC4200F407E2 /* TMTakeOrder.swift */,
+				6B89544A1AEE34E800B0348D /* TMCheckingAccount.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -472,8 +483,8 @@
 				6B5F080E1ACC55C800CBD3BD /* Common */,
 				6B5F084B1ACC57F800CBD3BD /* Login */,
 				6B5F084E1ACC57F800CBD3BD /* Master */,
+				6B8954411AEDDD6200B0348D /* CheckingAccount */,
 				6B5F08511ACC57F800CBD3BD /* Order */,
-				6B5F08571ACC57F800CBD3BD /* RestingOrder */,
 				6B4FBD8D1ACD16010017CB6F /* TakeOrder */,
 			);
 			path = Sections;
@@ -610,29 +621,6 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		6B5F08571ACC57F800CBD3BD /* RestingOrder */ = {
-			isa = PBXGroup;
-			children = (
-				6B5F08581ACC57F800CBD3BD /* Controller */,
-				6B5F08591ACC57F800CBD3BD /* View */,
-			);
-			path = RestingOrder;
-			sourceTree = "<group>";
-		};
-		6B5F08581ACC57F800CBD3BD /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		6B5F08591ACC57F800CBD3BD /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
 		6B5F08601ACC59F600CBD3BD /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -702,6 +690,33 @@
 				6B78526D1ACC353D008F1A49 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		6B8954411AEDDD6200B0348D /* CheckingAccount */ = {
+			isa = PBXGroup;
+			children = (
+				6B8954421AEDDD6200B0348D /* Controller */,
+				6B8954431AEDDD6200B0348D /* View */,
+			);
+			path = CheckingAccount;
+			sourceTree = "<group>";
+		};
+		6B8954421AEDDD6200B0348D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				6B8954441AEDDE3B00B0348D /* TMCheckingAccountViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		6B8954431AEDDD6200B0348D /* View */ = {
+			isa = PBXGroup;
+			children = (
+				6B8954461AEDE89800B0348D /* TMCheckingAccountSearchView.swift */,
+				6B8954481AEE1ABE00B0348D /* TMCheckingAccountAmountView.swift */,
+				6B89544C1AEE54B900B0348D /* TMCheckingAccountProductListView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		6B942A321AE4909D00AC6AD2 /* QRScan */ = {
@@ -901,6 +916,7 @@
 				6B5F082A1ACC561E00CBD3BD /* TMShopService.swift in Sources */,
 				6B62B80F1AD67281002F4462 /* Double+LangExt.swift in Sources */,
 				6B6EC8E91AD779C000A85B2B /* TMMemebershipCardPayView.swift in Sources */,
+				6B89544D1AEE54B900B0348D /* TMCheckingAccountProductListView.swift in Sources */,
 				6B5F081F1ACC560F00CBD3BD /* TMProductRecord.swift in Sources */,
 				6B5F08751ACC5AFA00CBD3BD /* UIColor+LangExt.swift in Sources */,
 				6B5F084A1ACC573400CBD3BD /* BaseViewController.swift in Sources */,
@@ -926,6 +942,7 @@
 				6B5F08481ACC573400CBD3BD /* BaseNavigationController.swift in Sources */,
 				6B9DEDAE1ADB996B00090163 /* TMRechargeView.swift in Sources */,
 				6B5F08791ACC5C1200CBD3BD /* MasterViewController.swift in Sources */,
+				6B8954451AEDDE3B00B0348D /* TMCheckingAccountViewController.swift in Sources */,
 				6B9DEDB61ADBBD4F00090163 /* TMConsumeRecordView.swift in Sources */,
 				6B5F08371ACC565700CBD3BD /* TMNetworkManager.swift in Sources */,
 				6BA06F7E1ACE6E4600DDA62E /* AZPagingContainerMenuView.swift in Sources */,
@@ -939,6 +956,8 @@
 				6B5F08731ACC5A7100CBD3BD /* TMLoginView.swift in Sources */,
 				6B942A351AE490E000AC6AD2 /* AZCodeScanViewController.swift in Sources */,
 				6B5F08211ACC560F00CBD3BD /* TMReward.swift in Sources */,
+				6B8954491AEE1ABE00B0348D /* TMCheckingAccountAmountView.swift in Sources */,
+				6B89544B1AEE34E800B0348D /* TMCheckingAccount.swift in Sources */,
 				6BEF67341AD52C2700EF2BCB /* TMCashPayView.swift in Sources */,
 				6B3E20DF1AE9E23200BD80D7 /* TMOrderDataManager.swift in Sources */,
 				6B5F081D1ACC560F00CBD3BD /* TMOrder.swift in Sources */,
@@ -951,6 +970,7 @@
 				6BA06F8B1ACE88BB00DDA62E /* AZPagingContainerMenuListView.swift in Sources */,
 				6BB65AE51AE0AAF400BD924A /* TMUserDataManager.swift in Sources */,
 				6BA06F7F1ACE6E4600DDA62E /* AZPagingContainerViewController.swift in Sources */,
+				6B8954471AEDE89800B0348D /* TMCheckingAccountSearchView.swift in Sources */,
 				6BDA93FB1AED306D007FD408 /* SwiftLoader.swift in Sources */,
 				6B3DB4781ADF4F9200ACC391 /* TMCategoryManagedObject.swift in Sources */,
 				6B4FBD911ACD16290017CB6F /* TMTakeOrderViewController.swift in Sources */,

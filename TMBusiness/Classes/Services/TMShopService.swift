@@ -115,4 +115,41 @@ class TMShopService: NSObject {
             }
         }
     }
+    
+    /**
+    对账单
+    
+    :param: businessId     商户编号
+    :param: shopId         商铺编号
+    :param: startDate      起始时间
+    :param: endDate        截止时间
+    :param: adminId        商铺管理员编号
+    :param: extensionField 扩展字段
+    */
+    func fetchStatisticsDetail(businessId: String, shopId: String, startDate: String, endDate: String, adminId: String, extensionField: String, completion: (TMCheckingAccount?, NSError?) -> Void) {
+        
+        var paramters = [
+            "business_id": businessId,
+            "shop_id": shopId,
+            "date_start": startDate,
+            "date_end": endDate,
+            "admin_id": adminId,
+            "extension_field": extensionField,
+            "device_type": "\(AppManager.platform().rawValue)"
+        ]
+        
+        manager.request(.POST, relativePath: "statisticsMoneyPlus", parameters: paramters) { (result) -> Void in
+            switch result {
+            case let .Error(e):
+                completion(nil, e)
+            case let .Value(json):
+                // 解析数据
+                let data = json["data"]
+                
+                var checkingAccount = TMParser.parseCheckingAccountRecord(data)
+                
+                completion(checkingAccount, nil)
+            }
+        }
+    }
 }

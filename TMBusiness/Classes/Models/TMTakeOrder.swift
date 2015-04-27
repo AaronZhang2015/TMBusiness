@@ -225,7 +225,6 @@ class TMTakeOrderCompute {
     
     // 清除事件
     var clearAllDataClosure: ((TMTakeOrderCompute) -> ())?
-
     
     func getProducts() -> [TMProduct] {
         return takeOrder.list

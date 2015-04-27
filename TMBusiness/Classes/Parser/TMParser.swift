@@ -291,11 +291,79 @@ class TMParser: NSObject {
         var productRecord = TMProductRecord()
         productRecord.product_id = data["product_id"].string
         productRecord.product_name = data["product_name"].string
-        productRecord.price = data["price"].stringValue.toNumber
-        productRecord.quantity = data["quantity"].stringValue.toNumber
-        productRecord.actual_amount = data["actual_amount"].stringValue.toNumber
+        
+        if let price = data["price"].string?.toNumber {
+            productRecord.price = price
+        }
+        
+        if let quantity = data["quantity"].string?.toNumber {
+            productRecord.quantity = quantity
+        }
+        
+        if let actual_amount = data["actual_amount"].string?.toNumber {
+            productRecord.actual_amount = actual_amount
+        }
+        
+        if let total_amount = data["total_amount"].string?.toNumber {
+            productRecord.total_amount = total_amount
+        }
         
         return productRecord
+    }
+    
+    
+    /**
+    解析对账单接口
+    
+    :param: data 待解析数据
+    
+    :returns: 对账单
+    */
+    class func parseCheckingAccountRecord(data: JSON) -> TMCheckingAccount {
+        var checkingAccount = TMCheckingAccount()
+        checkingAccount.box_amount = data["box_amount"].numberValue
+        checkingAccount.alipay_amount = data["alipay_amount"].numberValue
+        checkingAccount.cyber_bank_amount = data["cyber_bank_amount"].numberValue
+        checkingAccount.other_amount = data["other_amount"].numberValue
+        checkingAccount.cash_amount = data["cash_amount"].numberValue
+        checkingAccount.balance_amount = data["balance_amount"].numberValue
+        checkingAccount.amount = data["amount"].numberValue
+        checkingAccount.actual_amount = data["actual_amount"].numberValue
+        checkingAccount.discount_amount = data["discount_amount"].numberValue
+        checkingAccount.coupon_amount = data["coupon_amount"].numberValue
+        
+        checkingAccount.recharge_amount = parseCheckingAccountRecharge(data["recharge"]["recharge_amount"])
+        checkingAccount.recharge_cash = parseCheckingAccountRecharge(data["recharge"]["recharge_cash"])
+        checkingAccount.recharge_alipay = parseCheckingAccountRecharge(data["recharge"]["recharge_alipay"])
+        checkingAccount.recharge_cyber_bank = parseCheckingAccountRecharge(data["recharge"]["recharge_cyber_bank"])
+        checkingAccount.recharge_box = parseCheckingAccountRecharge(data["recharge"]["recharge_box"])
+        checkingAccount.recharge_other = parseCheckingAccountRecharge(data["recharge"]["recharge_other"])
+        
+        var subsidy = TMCheckingAccountSubSidy()
+        subsidy.unclear = data["recharge"]["subsidy"]["unclear"].numberValue
+        subsidy.total = data["recharge"]["subsidy"]["total"].numberValue
+        
+        checkingAccount.subsidy = subsidy
+        
+        // 解析商品
+        var products = [TMProductRecord]()
+        
+        for (index: String, subJson: JSON) in data["product"] {
+            var product = parseProductRecord(subJson)
+            products.append(product)
+        }
+        
+        checkingAccount.products = products
+        
+        return checkingAccount
+    }
+    
+    
+    class func parseCheckingAccountRecharge(data: JSON) -> TMCheckingAccountRecharge {
+        var recharge = TMCheckingAccountRecharge()
+        recharge.actual_amount = data["actual_amount"].numberValue
+        recharge.total_amount = data["total_amount"].numberValue
+        return recharge
     }
     
     

@@ -512,4 +512,37 @@ extension NSDate {
         let formatter = NSDateFormatter()
         return formatter.veryShortMonthSymbols[self.month() - 1] as! String
     }
+    
+    func startDateInDay() -> NSDate {
+        
+        var hour = self.hour()
+        var minute = self.minute()
+        var second = self.seconds()
+        
+        var totalSeconds = hour * Int(hourInSeconds) + minute * Int(minuteInSeconds) + second - 1
+        
+        var date = dateBySubtractingSeconds(totalSeconds)
+        
+        var hour1 = date.hour()
+        var minute2 = date.minute()
+        var second3 = date.seconds()
+        
+        return date
+    }
+    
+    func endDateInDay() -> NSDate {
+        var hour = self.hour()
+        var minute = self.minute()
+        var second = self.seconds()
+        
+        var totalSeconds = (23 - hour) * Int(hourInSeconds) + (59 - minute) * Int(minuteInSeconds) + (59 - second)
+        
+        var date = dateByAddingSeconds(totalSeconds)
+        
+        var hour1 = date.hour()
+        var minute2 = date.minute()
+        var second3 = date.seconds()
+        
+        return date
+    }
 }

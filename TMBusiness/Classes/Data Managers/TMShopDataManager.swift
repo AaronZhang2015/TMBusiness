@@ -229,4 +229,12 @@ class TMShopDataManager: TMDataManager {
         
         return categoryList
     }
+    
+    
+    func fetchStatisticsDetail(businessId: String, shopId: String, startDate: NSDate, endDate: NSDate, adminId: String, extensionField: String = "", completion: (TMCheckingAccount?, NSError?) -> Void) {
+        var startDateTimeInterval: NSTimeInterval = startDate.timeIntervalSince1970
+        var endDateTimeInterval: NSTimeInterval = endDate.timeIntervalSince1970
+        
+        shopService.fetchStatisticsDetail(businessId, shopId: shopId, startDate: "\(Int(startDateTimeInterval))", endDate: "\(Int(endDateTimeInterval))", adminId: adminId, extensionField: extensionField, completion: completion)
+    }
 }

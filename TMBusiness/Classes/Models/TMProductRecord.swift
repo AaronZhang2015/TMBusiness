@@ -27,6 +27,9 @@ class TMProductRecord: NSObject {
     
     // 实付金额
     var actual_amount: NSNumber! = 0
+    
+    // 总额
+    var total_amount: NSNumber = 0
 }
 
 

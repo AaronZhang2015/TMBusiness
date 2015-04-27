@@ -159,6 +159,11 @@ class TMTakeOrderViewController: BaseViewController {
     private lazy var takeOrderCompute: TMTakeOrderCompute = {
         var compute = TMTakeOrderCompute()
         
+        self.membershipCardPayView.updateEntityAllInfo(compute)
+        self.orderDetailView.updateOrderDetail(compute)
+        self.cashPayView.updateEntityAllInfo(compute)
+        self.rechargeView.updateRechargeDetail(compute)
+        
         compute.refreshDataClosure = { [weak self] compute in
             
             if let strongSelf = self {

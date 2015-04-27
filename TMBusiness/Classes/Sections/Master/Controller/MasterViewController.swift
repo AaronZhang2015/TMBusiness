@@ -14,6 +14,10 @@ class MasterViewController: BaseViewController {
         return TMTakeOrderViewController()
         }()
     
+    lazy var checkingAccountController: TMCheckingAccountViewController = {
+        return TMCheckingAccountViewController()
+        }()
+    
     var currentViewController: UIViewController!
     
     private var segmentControl: TMSegmentControl!
@@ -94,12 +98,35 @@ extension MasterViewController {
     }
     
     func handleMenuAction(segmentControl: TMSegmentControl) {
+        
+        var viewController: UIViewController?
         if segmentControl.selectedIndex == 0 {
             addChildViewController(takeOrderViewController)
             view.addSubview(takeOrderViewController.view)
             takeOrderViewController.view.frame = view.bounds
             takeOrderViewController.didMoveToParentViewController(self)
+            viewController = takeOrderViewController
+        } else if segmentControl.selectedIndex == 1 {
+            
+        } else {
+            addChildViewController(checkingAccountController)
+            view.addSubview(checkingAccountController.view)
+            checkingAccountController.view.frame = view.bounds
+            checkingAccountController.didMoveToParentViewController(self)
+            
+            viewController = checkingAccountController
         }
+        
+        if currentViewController != nil {
+            currentViewController.willMoveToParentViewController(nil)
+            currentViewController.beginAppearanceTransition(false, animated: false)
+            currentViewController.removeFromParentViewController()
+            currentViewController.view.removeFromSuperview()
+            currentViewController.didMoveToParentViewController(nil)
+            currentViewController.endAppearanceTransition()
+        }
+        
+        currentViewController = viewController
     }
 }
 
