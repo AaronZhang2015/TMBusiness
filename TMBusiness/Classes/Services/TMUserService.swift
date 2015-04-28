@@ -79,10 +79,11 @@ class TMUserService: NSObject {
     :param: shopId     商铺编号
     :param: businessId 商户编号
     :param: adminId    商铺管理员编号
+    :param: extensionField    是否解密（值为“B”时用户终生号需传加密过的，服务器会去解密.不传该参数时用户终生号不要传加密过的，服务器将不去解密。）
     :param: completion 回调
     */
-    func fetchEntityAllInfo(condition: String, type: TMConditionType, shopId: String, businessId: String, adminId: String, completion: (TMUser?, NSError?) -> Void) {
-        manager.request(.POST, relativePath: "user_getEntityAllInfo", parameters: ["condition": condition, "type": type.rawValue, "shop_id": shopId, "business_id": businessId, "admin_id": adminId, "device_type" : AppManager.platform().rawValue]) { (result) -> Void in
+    func fetchEntityAllInfo(condition: String, type: TMConditionType, shopId: String, businessId: String, adminId: String, extensionField: String, completion: (TMUser?, NSError?) -> Void) {
+        manager.request(.POST, relativePath: "user_getEntityAllInfo", parameters: ["condition": condition, "type": type.rawValue, "shop_id": shopId, "business_id": businessId, "admin_id": adminId, "device_type" : AppManager.platform().rawValue, "extension_field": extensionField]) { (result) -> Void in
             switch result {
             case let .Error(e):
                 completion(nil, e)

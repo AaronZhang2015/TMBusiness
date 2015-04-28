@@ -139,7 +139,9 @@ class TMCheckingAccountSearchView: TMModalView {
                 
                 datePickerView.minimumDate = startDate
                 datePickerView.maximumDate = nil
-                endDateButton.setTitle(NSDate().toString(format: .Custom("yyyy-MM-dd")), forState: .Normal)
+                var date = NSDate()
+                endDateButton.setTitle(date.toString(format: .Custom("yyyy-MM-dd")), forState: .Normal)
+                datePickerView.date = date
             }
         }
         

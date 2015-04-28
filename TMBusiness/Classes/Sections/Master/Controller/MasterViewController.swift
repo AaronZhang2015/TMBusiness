@@ -14,9 +14,14 @@ class MasterViewController: BaseViewController {
         return TMTakeOrderViewController()
         }()
     
+    lazy var orderViewController: TMOrderViewController = {
+        return TMOrderViewController()
+        }()
+    
     lazy var checkingAccountController: TMCheckingAccountViewController = {
         return TMCheckingAccountViewController()
         }()
+    
     
     var currentViewController: UIViewController!
     
@@ -107,7 +112,12 @@ extension MasterViewController {
             takeOrderViewController.didMoveToParentViewController(self)
             viewController = takeOrderViewController
         } else if segmentControl.selectedIndex == 1 {
+            addChildViewController(orderViewController)
+            view.addSubview(orderViewController.view)
+            orderViewController.view.frame = view.bounds
+            orderViewController.didMoveToParentViewController(self)
             
+            viewController = orderViewController
         } else {
             addChildViewController(checkingAccountController)
             view.addSubview(checkingAccountController.view)

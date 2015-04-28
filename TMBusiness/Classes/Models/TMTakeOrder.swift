@@ -420,6 +420,14 @@ class TMTakeOrderCompute {
         return takeOrder.consumeAmount * takeOrder.currentDiscount
     }
     
+    
+    func getActualCashAmount() -> Double {
+        var amount = getActualAmount() - getUserBalance().doubleValue
+        let format = ".2"
+        var string = amount.format(format)
+        return string.doubleValue
+    }
+    
     // MARK: - 配置规则和算法
     
     func setRuleDetail(shop: TMShop, hasProduct: Bool) {

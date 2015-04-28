@@ -24,6 +24,8 @@ class TMCashPayView: UIView {
     var calculateClosure: (() -> ())!
     var backClosure: (() -> ())!
     
+    var isUserCashPay: Bool = false
+    
     var takeOrderCompute: TMTakeOrderCompute!
     
     required init(coder aDecoder: NSCoder) {
@@ -415,7 +417,11 @@ class TMCashPayView: UIView {
         let format = ".2"
         
         // 消费总额
-        consumeLabel.text = "\(compute.getConsumeAmount().format(format))"
+        if isUserCashPay == false {
+            consumeLabel.text = "\(compute.getConsumeAmount().format(format))"
+        } else {
+            consumeLabel.text = "\(compute.getActualCashAmount().format(format))"
+        }
         
         updateAmountDetail()
     }

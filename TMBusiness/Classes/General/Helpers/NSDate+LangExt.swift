@@ -519,13 +519,9 @@ extension NSDate {
         var minute = self.minute()
         var second = self.seconds()
         
-        var totalSeconds = hour * Int(hourInSeconds) + minute * Int(minuteInSeconds) + second - 1
+        var totalSeconds = hour * Int(hourInSeconds) + minute * Int(minuteInSeconds) + second
         
         var date = dateBySubtractingSeconds(totalSeconds)
-        
-        var hour1 = date.hour()
-        var minute2 = date.minute()
-        var second3 = date.seconds()
         
         return date
     }
@@ -538,10 +534,6 @@ extension NSDate {
         var totalSeconds = (23 - hour) * Int(hourInSeconds) + (59 - minute) * Int(minuteInSeconds) + (59 - second)
         
         var date = dateByAddingSeconds(totalSeconds)
-        
-        var hour1 = date.hour()
-        var minute2 = date.minute()
-        var second3 = date.seconds()
         
         return date
     }

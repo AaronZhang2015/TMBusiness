@@ -28,6 +28,10 @@
 		6B4FBDB11ACD2CBF0017CB6F /* TMTakeOrderPayWayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4FBDB01ACD2CBF0017CB6F /* TMTakeOrderPayWayView.swift */; };
 		6B4FBDB31ACD439B0017CB6F /* TMProductListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4FBDB21ACD439B0017CB6F /* TMProductListViewController.swift */; };
 		6B55BB5D1AE5E79500413B85 /* TMParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B55BB5C1AE5E79500413B85 /* TMParser.swift */; };
+		6B5A2A0A1AEF846A00C787D4 /* TMOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5A2A091AEF846A00C787D4 /* TMOrderViewController.swift */; };
+		6B5A2A0C1AEF85D800C787D4 /* TMOrderMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5A2A0B1AEF85D800C787D4 /* TMOrderMenuView.swift */; };
+		6B5A2A0E1AEF8F4300C787D4 /* TMOrderListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5A2A0D1AEF8F4300C787D4 /* TMOrderListView.swift */; };
+		6B5A2A101AEF90CC00C787D4 /* TMOrderProductListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5A2A0F1AEF90CC00C787D4 /* TMOrderProductListView.swift */; };
 		6B5F08051ACC551200CBD3BD /* Alamofire.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 6B5F07FA1ACC550600CBD3BD /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6B5F081D1ACC560F00CBD3BD /* TMOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5F08131ACC560F00CBD3BD /* TMOrder.swift */; };
 		6B5F081F1ACC560F00CBD3BD /* TMProductRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5F08151ACC560F00CBD3BD /* TMProductRecord.swift */; };
@@ -207,6 +211,10 @@
 		6B4FBDB01ACD2CBF0017CB6F /* TMTakeOrderPayWayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMTakeOrderPayWayView.swift; sourceTree = "<group>"; };
 		6B4FBDB21ACD439B0017CB6F /* TMProductListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMProductListViewController.swift; sourceTree = "<group>"; };
 		6B55BB5C1AE5E79500413B85 /* TMParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMParser.swift; sourceTree = "<group>"; };
+		6B5A2A091AEF846A00C787D4 /* TMOrderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMOrderViewController.swift; sourceTree = "<group>"; };
+		6B5A2A0B1AEF85D800C787D4 /* TMOrderMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMOrderMenuView.swift; sourceTree = "<group>"; };
+		6B5A2A0D1AEF8F4300C787D4 /* TMOrderListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMOrderListView.swift; sourceTree = "<group>"; };
+		6B5A2A0F1AEF90CC00C787D4 /* TMOrderProductListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMOrderProductListView.swift; sourceTree = "<group>"; };
 		6B5F07F21ACC550600CBD3BD /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = Alamofire/Alamofire.xcodeproj; sourceTree = "<group>"; };
 		6B5F08131ACC560F00CBD3BD /* TMOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMOrder.swift; sourceTree = "<group>"; };
 		6B5F08151ACC560F00CBD3BD /* TMProductRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMProductRecord.swift; sourceTree = "<group>"; };
@@ -382,6 +390,33 @@
 			path = Parser;
 			sourceTree = "<group>";
 		};
+		6B5A2A061AEF844B00C787D4 /* Order */ = {
+			isa = PBXGroup;
+			children = (
+				6B5A2A071AEF844B00C787D4 /* Controller */,
+				6B5A2A081AEF844B00C787D4 /* View */,
+			);
+			path = Order;
+			sourceTree = "<group>";
+		};
+		6B5A2A071AEF844B00C787D4 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				6B5A2A091AEF846A00C787D4 /* TMOrderViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		6B5A2A081AEF844B00C787D4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				6B5A2A0B1AEF85D800C787D4 /* TMOrderMenuView.swift */,
+				6B5A2A0D1AEF8F4300C787D4 /* TMOrderListView.swift */,
+				6B5A2A0F1AEF90CC00C787D4 /* TMOrderProductListView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		6B5F07F31ACC550600CBD3BD /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -482,9 +517,9 @@
 				6B4FBD981ACD16AA0017CB6F /* ProductList */,
 				6B5F080E1ACC55C800CBD3BD /* Common */,
 				6B5F084B1ACC57F800CBD3BD /* Login */,
+				6B5A2A061AEF844B00C787D4 /* Order */,
 				6B5F084E1ACC57F800CBD3BD /* Master */,
 				6B8954411AEDDD6200B0348D /* CheckingAccount */,
-				6B5F08511ACC57F800CBD3BD /* Order */,
 				6B4FBD8D1ACD16010017CB6F /* TakeOrder */,
 			);
 			path = Sections;
@@ -594,29 +629,6 @@
 			isa = PBXGroup;
 			children = (
 				6B4FBD881ACCED500017CB6F /* TMSegmentControl.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		6B5F08511ACC57F800CBD3BD /* Order */ = {
-			isa = PBXGroup;
-			children = (
-				6B5F08521ACC57F800CBD3BD /* Controller */,
-				6B5F08531ACC57F800CBD3BD /* View */,
-			);
-			path = Order;
-			sourceTree = "<group>";
-		};
-		6B5F08521ACC57F800CBD3BD /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		6B5F08531ACC57F800CBD3BD /* View */ = {
-			isa = PBXGroup;
-			children = (
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -912,6 +924,7 @@
 				6B4FBD871ACCDD6F0017CB6F /* TMLoginHeaderView.swift in Sources */,
 				6B64DB661ADE4EDE00192C7B /* TMCategory.swift in Sources */,
 				6B4FBDA71ACD186B0017CB6F /* AAScrollMenuView.swift in Sources */,
+				6B5A2A0E1AEF8F4300C787D4 /* TMOrderListView.swift in Sources */,
 				6B4FBD891ACCED500017CB6F /* TMSegmentControl.swift in Sources */,
 				6B5F082A1ACC561E00CBD3BD /* TMShopService.swift in Sources */,
 				6B62B80F1AD67281002F4462 /* Double+LangExt.swift in Sources */,
@@ -929,6 +942,7 @@
 				6BB4CA391AE0EC4200F407E2 /* TMTakeOrder.swift in Sources */,
 				6B64DB5F1ADE4AF700192C7B /* CoreDataStack.swift in Sources */,
 				6B5F08341ACC564600CBD3BD /* TMShopDataManager.swift in Sources */,
+				6B5A2A101AEF90CC00C787D4 /* TMOrderProductListView.swift in Sources */,
 				6B4FBD9E1ACD16F50017CB6F /* TMProductCell.swift in Sources */,
 				6B67DE451AE7465800E27FC6 /* Crypto.swift in Sources */,
 				6B4FBDB11ACD2CBF0017CB6F /* TMTakeOrderPayWayView.swift in Sources */,
@@ -948,6 +962,7 @@
 				6BA06F7E1ACE6E4600DDA62E /* AZPagingContainerMenuView.swift in Sources */,
 				6B805C201AD4206500F2D968 /* AZPlaceholderTextView.swift in Sources */,
 				6B5F08201ACC560F00CBD3BD /* TMRechargeRecord.swift in Sources */,
+				6B5A2A0A1AEF846A00C787D4 /* TMOrderViewController.swift in Sources */,
 				6B025EAA1AE8C3B100C3A9FB /* TMModalView.swift in Sources */,
 				6B5F08421ACC56FB00CBD3BD /* AppManager.swift in Sources */,
 				6B5F08221ACC560F00CBD3BD /* TMRewardRecord.swift in Sources */,
@@ -967,6 +982,7 @@
 				6B5F082B1ACC561E00CBD3BD /* TMUserService.swift in Sources */,
 				6B4FBDA61ACD186B0017CB6F /* AAContainerViewController.swift in Sources */,
 				6B64DB731ADE62D000192C7B /* Thing Me.xcdatamodeld in Sources */,
+				6B5A2A0C1AEF85D800C787D4 /* TMOrderMenuView.swift in Sources */,
 				6BA06F8B1ACE88BB00DDA62E /* AZPagingContainerMenuListView.swift in Sources */,
 				6BB65AE51AE0AAF400BD924A /* TMUserDataManager.swift in Sources */,
 				6BA06F7F1ACE6E4600DDA62E /* AZPagingContainerViewController.swift in Sources */,

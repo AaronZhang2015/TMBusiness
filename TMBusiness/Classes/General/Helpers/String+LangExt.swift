@@ -74,6 +74,15 @@ extension String {
         return nil
     }
     
+//    var twoPositionDoubleValue: Double {
+//        var numberFormatter = NSNumberFormatter()
+//        numberFormatter.positiveFormat = "0.00"
+//        if let number = numberFormatter.numberFromString(self) {
+////            numberFormatter.
+//            numberFormatter.strin
+//        }
+//    }
+    
     static func generateString(number: Int) -> String {
         var temp = ""
         for var index = 0; index < number; ++index {

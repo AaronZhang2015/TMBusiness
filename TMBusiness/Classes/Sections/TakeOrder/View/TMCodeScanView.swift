@@ -31,6 +31,10 @@ class TMCodeScanView: UIView {
     var isDraging: Bool = false
     var backClosure: (() -> ())?
     var inputClosure: (() -> ())?
+    var decodeQRCodeClosure: ((String) -> ())?
+    
+    var code: String = ""
+    var canScan: Bool = true
     
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
@@ -190,6 +194,29 @@ class TMCodeScanView: UIView {
             inputClosure()
         }
     }
+    
+    /**
+    是否是有效的二维码
+    
+    :returns: 是否有效
+    */
+    func isValidQRCode() -> Bool {
+        
+        if count(code) == 18 {
+            
+            var encodeString = "\(code)\(Int(NSDate().timeIntervalSince1970))"
+            code = Crypto.DesEncrypt(encodeString, keyStr: "$Xunmimi")
+            return true
+        }
+        
+        if let string = Crypto.DesDecrypt(code, keyStr: "$Xunmimi") {
+            if count(string) > 0 {
+                return true
+            }
+        }
+        
+        return false
+    }
 }
 
 extension TMCodeScanView: AVCaptureMetadataOutputObjectsDelegate {
@@ -198,8 +225,16 @@ extension TMCodeScanView: AVCaptureMetadataOutputObjectsDelegate {
             var metadata = metadata as! AVMetadataObject
             if metadata.type == AVMetadataObjectTypeQRCode {
                 var transformed = previewLayer.transformedMetadataObjectForMetadataObject(metadata) as! AVMetadataMachineReadableCodeObject
+                code = transformed.stringValue
                 
-                println(transformed.stringValue)
+                if canScan {
+                    if isValidQRCode() {
+                        if let closure = decodeQRCodeClosure {
+                            canScan = false
+                            closure(code)
+                        }
+                    }
+                }
             }
         }
     }

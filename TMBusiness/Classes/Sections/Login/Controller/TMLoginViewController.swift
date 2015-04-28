@@ -51,8 +51,11 @@ extension TMLoginViewController {
         var username = loginView.usernameTextField.text
         var password = loginView.passwordTextField.text
         // test
-        username = "ys006"
-        password = "123456"
+        
+        if count(username) == 0 {
+            username = "ys006"
+            password = "123456"
+        }
         
         shopDataManager.login(username, password: password) { (shop, error) -> Void in
             if let e = error {

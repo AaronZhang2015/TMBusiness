@@ -75,10 +75,7 @@ class TMCheckingAccountViewController: BaseViewController {
         }
         
         startDate = startDate.startDateInDay()
-        endDate = endDate.endDateInDay()
-        
-        println(startDate)
-        println(endDate)
+        endDate = endDate.startDateInDay()
         
         startActivity()
         shopDataManager.fetchStatisticsDetail(TMShop.sharedInstance.business_id, shopId: TMShop.sharedInstance.shop_id, startDate: startDate, endDate: endDate, adminId: TMShop.sharedInstance.admin_id) {[weak self] (checkingAccount, error) in

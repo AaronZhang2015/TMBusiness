@@ -296,9 +296,9 @@ extension Crypto {
         return cipherText
     }
     
-    static func DesDecrypt(cipherText: String, keyStr: String) -> String {
-        var plainText: String = ""
-         var cipherData = hexDecode(cipherText)
+    static func DesDecrypt(cipherText: String, keyStr: String) -> String? {
+        var plainText: String?
+        var cipherData = hexDecode(cipherText)
         var dataLength = cipherData.length
         var keyData = (keyStr as NSString).dataUsingEncoding(NSUTF8StringEncoding)!
         var buffer = UnsafeMutablePointer<Void>.alloc(1024)
@@ -311,7 +311,7 @@ extension Crypto {
         var result: NSData!
         if Int(status) == kCCSuccess{
             result = NSData(bytesNoCopy: buffer, length: retLen)
-            plainText = NSString(data: result, encoding: NSUTF8StringEncoding) as! String
+            plainText = NSString(data: result, encoding: NSUTF8StringEncoding) as? String
         }
         
         return plainText

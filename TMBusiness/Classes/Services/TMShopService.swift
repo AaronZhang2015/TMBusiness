@@ -138,7 +138,7 @@ class TMShopService: NSObject {
             "device_type": "\(AppManager.platform().rawValue)"
         ]
         
-        manager.request(.POST, relativePath: "statisticsMoneyPlus", parameters: paramters) { (result) -> Void in
+        manager.request(.POST, relativePath: "statisticsMoney", parameters: paramters) { (result) -> Void in
             switch result {
             case let .Error(e):
                 completion(nil, e)

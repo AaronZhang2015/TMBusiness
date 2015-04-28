@@ -17,8 +17,11 @@ class TMMemebershipCardPayView: UIView {
     var consumeLabel: UILabel!
     var actualLabel: UILabel!
     var chargeLabel: UILabel!
+    var cashLabel: UILabel!
     var leftPanelImageView: UIImageView!
     var panelImageView: UIImageView!
+    
+    private var cashTitleLabel: UILabel!
     
     // 手机号码
     var phoneNumberTextField: UITextField!
@@ -71,6 +74,9 @@ class TMMemebershipCardPayView: UIView {
     
     var isDraging: Bool = false
     var backClosure: (() -> ())?
+    
+    var scanClosure: ((UIButton) -> ())?
+    var searchClosure: (() -> ())?
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -133,7 +139,9 @@ class TMMemebershipCardPayView: UIView {
         phoneNumberTextField = UITextField()
         phoneNumberTextField.keyboardType = UIKeyboardType.PhonePad
         phoneNumberTextField.returnKeyType = .Go
+        phoneNumberTextField.clearButtonMode = UITextFieldViewMode.WhileEditing
         phoneNumberTextField.placeholder = "请输入手机号码"
+        phoneNumberTextField.delegate = self
         phoneNumberTextField.font = UIFont.systemFontOfSize(18.0)
         addSubview(phoneNumberTextField)
         phoneNumberTextField.snp_makeConstraints { make in
@@ -158,6 +166,7 @@ class TMMemebershipCardPayView: UIView {
         searchButton.setImage(UIImage(named: "search_button"), forState: .Normal)
         searchButton.setImage(UIImage(named: "search_button_on"), forState: .Highlighted)
         addSubview(searchButton)
+        searchButton.addTarget(self, action: "handleSearchAction", forControlEvents: .TouchUpInside)
         searchButton.snp_makeConstraints { make in
             make.size.equalTo(CGSizeMake(22, 22))
             make.centerY.equalTo(phoneBackgroundImageView.snp_centerY)
@@ -422,6 +431,36 @@ class TMMemebershipCardPayView: UIView {
             make.trailing.equalTo(nicknameTitleLabel.snp_leading).offset(-35.0)
         }
         
+        // 优惠
+        cashTitleLabel = UILabel()
+        cashTitleLabel.text = "现金"
+        cashTitleLabel.font = UIFont.systemFontOfSize(20.0)
+        cashTitleLabel.textColor = UIColor(hex: 0x222222)
+        cashTitleLabel.textAlignment = .Left
+        addSubview(cashTitleLabel)
+        cashTitleLabel.hidden = true
+        cashTitleLabel.snp_makeConstraints { make in
+            make.leading.equalTo(nicknameTitleLabel.snp_leading)
+            make.height.equalTo(20.0)
+            make.top.equalTo(actualAmountTitleLabel.snp_top)
+            make.width.equalTo(85)
+        }
+        
+        cashLabel = UILabel()
+        cashLabel.text = "¥50.00"
+        cashLabel.font = UIFont.systemFontOfSize(20.0)
+        cashLabel.textColor = UIColor(hex: 0x1E8EBC)
+        cashLabel.textAlignment = .Right
+        addSubview(cashLabel)
+        cashLabel.hidden = true
+        cashLabel.snp_makeConstraints { make in
+            make.trailing.equalTo(consumeDetailImageView.snp_trailing).offset(-35.0)
+            make.height.equalTo(20.0)
+            make.top.equalTo(cashTitleLabel.snp_top)
+            make.leading.equalTo(cashTitleLabel.snp_trailing).offset(10.0)
+        }
+
+        
         // 支付方式
         var payWayTitleLabel = UILabel()
         payWayTitleLabel.text = "支付方式"
@@ -641,23 +680,41 @@ class TMMemebershipCardPayView: UIView {
         // 折后金额
         actualAmountLabel.text = "¥\(compute.getActualAmount().format(format))"
         
+        // 计算现金支付金额，折后金额-余额
+        var cashAmount = compute.getActualAmount() - compute.getUserBalance().doubleValue
+        if cashAmount <= 0 {
+            cashAmount = 0
+        }
+        
+        cashLabel.text = "¥\(cashAmount.format(format))"
+        
         // 设置支付方式
         
-        var transactionMode = compute.getAutoTransactionMode()
-
-        clearTransactionButtonState()
-        switch transactionMode {
-        case .Cash:
-            cashButton.selected = true
-        case .Balance:
-            balanceButton.selected = true
-        case .CashAndBalance:
-            cashButton.selected = true
-            balanceButton.selected = true
-        case .Other:
-            otherButton.selected = true
-        case .IBoxPay:
-            cashBoxButton.selected = true
+        if let user = compute.user {
+            if user.isScan {
+                var transactionMode = compute.getAutoTransactionMode()
+                
+                clearTransactionButtonState()
+                cashLabel.hidden = true
+                cashTitleLabel.hidden = true
+                switch transactionMode {
+                case .Cash:
+                    cashButton.selected = true
+                    cashLabel.hidden = false
+                    cashTitleLabel.hidden = false
+                case .Balance:
+                    balanceButton.selected = true
+                case .CashAndBalance:
+                    cashButton.selected = true
+                    balanceButton.selected = true
+                    cashLabel.hidden = false
+                    cashTitleLabel.hidden = false
+                case .Other:
+                    otherButton.selected = true
+                case .IBoxPay:
+                    cashBoxButton.selected = true
+                }
+            }
         }
     }
     
@@ -675,14 +732,28 @@ class TMMemebershipCardPayView: UIView {
             return
         }
         
-        if sender == cashButton || sender == balanceButton {
+        if sender == cashButton {
             otherButton.selected = false
             cashBoxButton.selected = false
+        } else if sender == balanceButton {
+            if takeOrderCompute.user != nil && takeOrderCompute.user?.isScan == true {
+                otherButton.selected = false
+                cashBoxButton.selected = false
+            } else {
+                if let closure = scanClosure {
+                    closure(sender)
+                    return
+                }
+            }
+            
         } else if sender == otherButton || sender == cashBoxButton {
             clearTransactionButtonState()
         }
         
         sender.selected = true
+        
+        cashLabel.hidden = true
+        cashTitleLabel.hidden = true
         
         if sender == otherButton {
             takeOrderCompute.setTransactionMode(.Other)
@@ -690,10 +761,14 @@ class TMMemebershipCardPayView: UIView {
             takeOrderCompute.setTransactionMode(.IBoxPay)
         } else  {
             if getSelectedCount() == 2 {
+                cashLabel.hidden = false
+                cashTitleLabel.hidden = false
                 takeOrderCompute.setTransactionMode(.CashAndBalance)
             } else {
                 if sender == cashButton {
                     takeOrderCompute.setTransactionMode(.Cash)
+                    cashLabel.hidden = false
+                    cashTitleLabel.hidden = false
                 } else {
                     takeOrderCompute.setTransactionMode(.Balance)
                 }
@@ -711,6 +786,12 @@ class TMMemebershipCardPayView: UIView {
         balanceButton.selected = false
     }
     
+    func handleSearchAction() {
+        if let closure = searchClosure {
+            phoneNumberTextField.resignFirstResponder()
+            closure()
+        }
+    }
     
     /**
     获取当前选中的支付按钮状态数量
@@ -739,42 +820,22 @@ class TMMemebershipCardPayView: UIView {
         return count
     }
     
-    
-    /**
-    返回当前订单数据
-    
-    :returns: 订单
-    */
-    func getOrder() -> TMOrder? {
-        
-        if let user = takeOrderCompute.user {
-            var order = TMOrder()
-            order.user_id = user.user_id
-            order.shop_id = TMShop.sharedInstance.shop_id
-            order.business_id = TMShop.sharedInstance.business_id
-            order.admin_id = TMShop.sharedInstance.admin_id
-            order.transaction_mode = takeOrderCompute.getTransactionMode()
-            order.register_type = .Manually
-            order.payable_amount = NSNumber(double: takeOrderCompute.getConsumeAmount())
-            order.actual_amount = NSNumber(double: takeOrderCompute.getActualAmount())
-            order.coupon_id = ""
-            order.discount = NSNumber(double: takeOrderCompute.getMaxDiscount())
-            order.discount_type = takeOrderCompute.getDiscountType()
-            order.order_description = remarkTextView.text
-            order.status = .TransactionDone
-            order.product_records = takeOrderCompute.getProductRecords()
-            return order
-        } else {
-            return nil
-        }
-    }
-    
-    
     /**
     清空会员信息数据
     */
     func clearMembershipData() {
         takeOrderCompute.clearAllData()
+    }
+}
+
+extension TMMemebershipCardPayView: UITextFieldDelegate {
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        if let closure = searchClosure {
+            phoneNumberTextField.resignFirstResponder()
+            closure()
+        }
+        
+        return true
     }
 }
 

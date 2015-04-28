@@ -62,6 +62,9 @@ class TMUser: NSObject {
     // 多个充值记录实体模型（数组）
     var recharge_record: [TMRechargeRecord]?
     
+    // 是否是扫二维码出来的用户
+    var isScan: Bool = false
+    
     class var sharedInstance: TMUser {
         struct Singleton {
             static let instance = TMUser()

@@ -100,9 +100,23 @@ class TMTakeOrderViewController: BaseViewController {
             }
         }
         
+        payView.scanClosure = {[weak self] sender in
+            if let strongSelf = self {
+                // 去扫描二维码
+                strongSelf.showCodeScanView()
+            }
+        }
+        
+        payView.searchClosure = { [weak self] in
+            if let strongSelf = self {
+                // 去扫描二维码
+                strongSelf.fetchEntityInfoAction()
+            }
+        }
+        
         payView.rechargeButton.addTarget(self, action: "hanldeRechargeAction", forControlEvents: .TouchUpInside)
         payView.consumeButton.addTarget(self, action: "handleConsumeAction", forControlEvents: .TouchUpInside)
-        payView.searchButton.addTarget(self, action: "fetchEntityInfoAction", forControlEvents: .TouchUpInside)
+//        payView.searchButton.addTarget(self, action: "fetchEntityInfoAction", forControlEvents: .TouchUpInside)
         payView.scanButton.addTarget(self, action: "showCodeScanView", forControlEvents: .TouchUpInside)
         payView.commitButton.addTarget(self, action: "settleBill", forControlEvents: .TouchUpInside)
         return payView
@@ -140,6 +154,12 @@ class TMTakeOrderViewController: BaseViewController {
             
             if let strongSelf = self {
                 strongSelf.hideCodeScanView(true)
+            }
+        }
+        
+        codeScanView.decodeQRCodeClosure = { [weak self] code in
+            if let strongSelf = self {
+                strongSelf.fetchEntityInfoWithQRCodeAction(code)
             }
         }
         
@@ -255,7 +275,7 @@ class TMTakeOrderViewController: BaseViewController {
         bgView.addSubview(orderDetailView)
         
         orderPayWayView = TMTakeOrderPayWayView(frame: CGRectMake(0, bgView.bottom, 558, view.height - 64 - bgView.bottom))
-        orderPayWayView.cashPayButton.addTarget(self, action: "showCashPayView", forControlEvents: .TouchUpInside)
+        orderPayWayView.cashPayButton.addTarget(self, action: "showCashPayView:", forControlEvents: .TouchUpInside)
         orderPayWayView.balancePayButton.addTarget(self, action: "showMembershipCardPayView", forControlEvents: .TouchUpInside)
         view.addSubview(orderPayWayView)
         
@@ -452,7 +472,11 @@ class TMTakeOrderViewController: BaseViewController {
     /**
     显示现金支付页面
     */
-    func showCashPayView() {
+    func showCashPayView(sender: UIButton!) {
+        if sender != nil {
+            cashPayView.isUserCashPay = false
+        }
+        
         if cashPayView.superview == nil {
             view.addSubview(cashPayView)
             cashPayView.frame = productListContainerView.frame
@@ -468,7 +492,9 @@ class TMTakeOrderViewController: BaseViewController {
         UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseInOut, animations: { () -> Void in
             self.cashPayView.frame = rect
             }) { finished in
-                self.hideMembershipCardPayView(false)
+                if sender != nil {
+                    self.hideMembershipCardPayView(false)
+                }
         }
     }
     
@@ -561,9 +587,15 @@ class TMTakeOrderViewController: BaseViewController {
         
         var condition = membershipCardPayView.phoneNumberTextField.text
         
+//        if count(condition) == 0 {
+//            condition = "13770863676"
+//        }
+        
         if count(condition) == 0 {
-            condition = "13770863676"
+            presentInfoAlertView("请输入用户手机号码")
+            return
         }
+        
         startActivity()
         userDataManager.fetchEntityAllInfo(condition, type: .MobileNumber, shopId: TMShop.sharedInstance.shop_id, businessId: TMShop.sharedInstance.business_id, adminId: TMShop.sharedInstance.admin_id) { [weak self](user, error) -> Void in
             
@@ -576,6 +608,32 @@ class TMTakeOrderViewController: BaseViewController {
                 }
             }
             
+        }
+    }
+    
+    
+    /**
+    根据二维码获取用户信息
+    */
+    func fetchEntityInfoWithQRCodeAction(code: String) {
+        if count(code) > 0 {
+            startActivity()
+            userDataManager.fetchEntityAllInfo(code, type: .UserId, shopId: TMShop.sharedInstance.shop_id, businessId: TMShop.sharedInstance.business_id, adminId: TMShop.sharedInstance.admin_id, isEncrypt: true) { [weak self](user, error) -> Void in
+                
+                if let strongSelf = self {
+                    strongSelf.stopActivity()
+                    if error == nil {
+                        if let user = user {
+                            user.isScan = true
+                            strongSelf.takeOrderCompute.setUserDetail(user, hasProducts: true)
+                        }
+                        strongSelf.hideCodeScanView(true)
+                    } else {
+                        strongSelf.codeScanView.canScan = true
+                    }
+                }
+                
+            }
         }
     }
     
@@ -595,7 +653,15 @@ class TMTakeOrderViewController: BaseViewController {
                 // 判断当前支付方式，如果是包含现金支付，并且现金确实需要额外支付
                 // 那么跳转到现金支付页面，进行操作
                 
-                // TODO
+                var transactionMode = takeOrderCompute.getTransactionMode()
+                if transactionMode == .Cash || transactionMode == .CashAndBalance {
+                    if takeOrderCompute.getActualAmount() - takeOrderCompute.getUserBalance().doubleValue > 0 {
+                        cashPayView.isUserCashPay = true
+                        cashPayView.updateEntityAllInfo(takeOrderCompute)
+                        showCashPayView(nil)
+                        return
+                    }
+                }
                 
                 startActivity()
                 orderDataManager.addOrderEntityInfo(order, completion: { [weak self] (orderId, error) in
@@ -663,6 +729,7 @@ class TMTakeOrderViewController: BaseViewController {
     
     // MARK: - 二维码扫描
     func showCodeScanView() {
+        codeScanView.canScan = true
         if codeScanView.superview == nil {
             view.addSubview(codeScanView)
             codeScanView.frame = productListContainerView.frame
@@ -752,30 +819,44 @@ class TMTakeOrderViewController: BaseViewController {
     
     // MARK: - 现金支付页面
     func handleCashPayAction() {
-        if let actualAmount = cashPayView.actualLabel.text?.doubleValue {
-            if actualAmount < takeOrderCompute.getActualAmount() {
-                presentInfoAlertView("顾客支付金额不足")
-                return
-            }
+        
+        if let actualAmount = cashPayView.actualLabel.text?.toNumber?.doubleValue {
             
+            if cashPayView.isUserCashPay {
+                if actualAmount < takeOrderCompute.getActualCashAmount() {
+                    presentInfoAlertView("顾客支付金额不足")
+                    return
+                }
+            } else {
+                if actualAmount < takeOrderCompute.getActualAmount() {
+                    presentInfoAlertView("顾客支付金额不足")
+                    return
+                }
+                
+            }
+    
             order = takeOrderCompute.getOrder(orderDescription)
             startActivity()
-            orderDataManager.addOrderEntityInfo(order, completion: { [weak self] (orderId, error) in
-                if let strongSelf = self {
-                    strongSelf.stopActivity()
-                    // 订单成功
-                    if let e = error {
-                        // 提示错误
-                        var alert = UIAlertView(title: "提示", message: "支付提交失败，是否转为挂单", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "挂单")
-                        alert.show()
-                    } else {
-                        // 提示操作成功
-                        strongSelf.hideCashPayView(true)
-                        // 清空之前用户数据
-                        strongSelf.takeOrderCompute.clearAllData()
+            
+            if order.payable_amount.doubleValue > 0 {
+                orderDataManager.addOrderEntityInfo(order, completion: { [weak self] (orderId, error) in
+                    if let strongSelf = self {
+                        strongSelf.stopActivity()
+                        // 订单成功
+                        if let e = error {
+                            // 提示错误
+                            var alert = UIAlertView(title: "提示", message: "支付提交失败，是否转为挂单", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "挂单")
+                            alert.show()
+                        } else {
+                            // 提示操作成功
+                            strongSelf.hideCashPayView(true)
+                            strongSelf.hideMembershipCardPayView(false)
+                            // 清空之前用户数据
+                            strongSelf.takeOrderCompute.clearAllData()
+                        }
                     }
-                }
-                })
+                    })
+            }
         }
     }
 }

@@ -166,7 +166,7 @@ class TMTakeOrderDetailView: UIView {
         takeOrderButton.titleLabel?.font = UIFont.systemFontOfSize(22.0)
         takeOrderButton.setBackgroundImage(UIImage(named: "home_order"), forState: .Normal)
         takeOrderButton.setBackgroundImage(UIImage(named: "home_order_on"), forState: .Highlighted)
-        takeOrderButton.setTitle("生成订单", forState: .Normal)
+        takeOrderButton.setTitle("下单", forState: .Normal)
         takeOrderButton.setTitleColor(UIColor(hex: 0x1E8EBC), forState: .Normal)
         takeOrderButton.setTitleColor(UIColor.whiteColor(), forState: .Highlighted)
         addSubview(takeOrderButton)

@@ -23,8 +23,8 @@ class TMUserDataManager: TMDataManager {
     :param: adminId    商铺管理员编号
     :param: completion 回调
     */
-    func fetchEntityAllInfo(condition: String, type: TMConditionType, shopId: String, businessId: String, adminId: String, completion: (TMUser?, NSError?) -> Void) {
-        userService.fetchEntityAllInfo(condition, type: type, shopId: shopId, businessId: businessId, adminId: adminId, completion: completion)
+    func fetchEntityAllInfo(condition: String, type: TMConditionType, shopId: String, businessId: String, adminId: String, isEncrypt: Bool = false, completion: (TMUser?, NSError?) -> Void) {
+        userService.fetchEntityAllInfo(condition, type: type, shopId: shopId, businessId: businessId, adminId: adminId, extensionField: isEncrypt ? "B": "", completion: completion)
     }
     
     /**
