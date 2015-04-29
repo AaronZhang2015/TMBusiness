@@ -36,7 +36,7 @@ class TMTakeOrderListCell: UITableViewCell {
         selectedBackgroundView.backgroundColor = UIColor(hex: 0xF2F2F2)
         
         productNameLabel = UILabel(frame: CGRectMake(10, 14, 150, 21))
-        productNameLabel.font = UIFont.systemFontOfSize(15.0)
+        productNameLabel.font = UIFont.systemFontOfSize(16)
         productNameLabel.text = "商品名称"
         addSubview(productNameLabel)
         
@@ -55,13 +55,13 @@ class TMTakeOrderListCell: UITableViewCell {
         addSubview(plusButton)
         
         quantityLabel = UILabel(frame: CGRectMake(212, 14, 25, 21))
-        quantityLabel.font = UIFont.systemFontOfSize(15.0)
+        quantityLabel.font = UIFont.systemFontOfSize(16)
         quantityLabel.textAlignment = .Center
         quantityLabel.text = "0"
         addSubview(quantityLabel)
         
         priceLabel = UILabel(frame: CGRectMake(297, 14, 87, 21))
-        priceLabel.font = UIFont.systemFontOfSize(15.0)
+        priceLabel.font = UIFont.systemFontOfSize(16)
         priceLabel.textAlignment = .Center
         priceLabel.text = "¥0.00"
         addSubview(priceLabel)

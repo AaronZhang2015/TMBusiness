@@ -16,13 +16,25 @@ class TMOrderProductListView: UIView {
         return imageView
         }()
     
+    lazy var bgView: UIView = {
+        var view = UIView()
+        view.backgroundColor = UIColor.whiteColor()
+        return view
+        }()
+    
+    lazy var boxImageView: UIImageView = {
+        var imageView = UIImageView(image: UIImage(named: "order_product_list_bg"))
+        return imageView
+        }()
+    
+    
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor(hex: 0xF5F5F5)
+        backgroundColor = UIColor.clearColor()
         addSubview(separatorView)
         separatorView.snp_makeConstraints { (make) -> Void in
             make.leading.equalTo(0)
@@ -30,5 +42,22 @@ class TMOrderProductListView: UIView {
             make.width.equalTo(10)
             make.bottom.equalTo(0)
         }
+        
+        addSubview(bgView)
+        bgView.snp_makeConstraints { (make) -> Void in
+            make.leading.equalTo(10)
+            make.top.equalTo(0)
+            make.trailing.equalTo(0)
+            make.bottom.equalTo(0)
+        }
+        
+        addSubview(boxImageView)
+        boxImageView.snp_makeConstraints { (make) -> Void in
+            make.top.equalTo(17)
+            make.leading.equalTo(18)
+            make.trailing.equalTo(-9)
+            make.bottom.equalTo(-44)
+        }
     }
+    
 }

@@ -8,6 +8,16 @@
 
 import UIKit
 
+/**
+订单状态
+
+- Take:            下单
+- WaitForPaying:   待支付
+- PaySuccess:      支付成功
+- Dispatching:     配送
+- TransactionDone: 交易完成
+- Invalid:         订单无效
+*/
 enum TMOrderStatus: Int {
     case Take = 1
     case WaitForPaying = 2
@@ -71,6 +81,32 @@ class TMOrderService: NSObject {
                 // 解析数据
                 let data = json["data"]
                 completion(data["order_id"].string, nil)
+            }
+        }
+    }
+    
+    func fetchOrderEntityList(shopId: String, type: TMOrderStatus, pageIndex: String, pageSize: String, adminId: String, completion: ([TMOrder]?, NSError?) -> Void) {
+        var parameters = ["shop_id": shopId,
+            "type": "\(type.rawValue)",
+            "page_index": pageIndex,
+            "page_size": pageSize,
+            "admin_id": adminId,
+            "device_type": "\(AppManager.platform().rawValue)"]
+        
+        manager.request(.POST, relativePath: "order_getEntityList", parameters: parameters) { (result) -> Void in
+            switch result {
+            case let .Error(e):
+                completion(nil, e)
+            case let .Value(json):
+                // 解析数据
+                let data = json["data"]
+                
+                var orderList = [TMOrder]()
+                for (index: String, subJson: JSON) in data {
+                    var order = TMParser.parseOrder(subJson)
+                    orderList.append(order)
+                }
+                completion(orderList, nil)
             }
         }
     }

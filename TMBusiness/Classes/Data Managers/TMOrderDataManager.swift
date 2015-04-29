@@ -16,6 +16,11 @@ class TMOrderDataManager: TMDataManager {
         }()
     
     
+    func fetchOrderEntityList(shopId: String, type: TMOrderStatus, pageIndex: Int, pageSize: Int = 10, adminId: String, completion: ([TMOrder]?, NSError?) -> Void) {
+        orderService.fetchOrderEntityList(shopId, type: type, pageIndex: "\(pageIndex)", pageSize: "\(pageSize)", adminId: adminId, completion: completion)
+    }
+    
+    
     /**
     添加订单
     

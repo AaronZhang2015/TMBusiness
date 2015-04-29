@@ -13,16 +13,16 @@ let TMOrderDetailCellIdentifier = "TMOrderDetailCell"
 
 class TMOrderListView: UIView {
     
-    lazy var separatorView: UIImageView = {
-        var imageView = UIImageView(image: UIImage(named: "checking_account_separator"))
-        return imageView
-        }()
+    var data = [TMOrder]()
     
     lazy var orderListTableView: UITableView = {
         var tableView = UITableView()
+        tableView.backgroundColor = UIColor.clearColor()
         tableView.registerClass(TMOrderDetailCell.self, forCellReuseIdentifier: TMOrderDetailCellIdentifier)
         tableView.dataSource = self
-        tableView.rowHeight = 230
+        tableView.delegate = self
+        tableView.rowHeight = 250
+        tableView.separatorStyle = .None
         return tableView
         }()
 
@@ -33,20 +33,14 @@ class TMOrderListView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor(hex: 0xF5F5F5)
-        addSubview(separatorView)
-        separatorView.snp_makeConstraints { (make) -> Void in
-            make.leading.equalTo(0)
-            make.top.equalTo(0)
-            make.width.equalTo(10)
-            make.bottom.equalTo(0)
-        }
+        
         
         addSubview(orderListTableView)
         orderListTableView.snp_makeConstraints { (make) -> Void in
-            make.leading.equalTo(10)
+            make.leading.equalTo(5)
             make.top.equalTo(0)
             make.bottom.equalTo(0)
-            make.trailing.equalTo(0)
+            make.trailing.equalTo(-4)
         }
     }
 
@@ -58,7 +52,7 @@ extension TMOrderListView: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return data.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -66,6 +60,9 @@ extension TMOrderListView: UITableViewDataSource {
         
         return cell
     }
+}
+
+extension TMOrderListView: UITableViewDelegate {
 }
 
 
@@ -140,10 +137,13 @@ class TMOrderDetailCell: UITableViewCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        backgroundColor = UIColor.clearColor()
+        backgroundView = UIImageView(image: UIImage(named: "order_content_bg"))
+        selectedBackgroundView = UIImageView(image: UIImage(named: "order_content_bg_selected"))
         
         addSubview(boxView)
         boxView.snp_makeConstraints { (make) -> Void in
-            make.edges.equalTo(UIEdgeInsetsMake(44, 9, 36, 9))
+            make.edges.equalTo(UIEdgeInsetsMake(44, 19, -36 - 12, -19))
         }
         
         // 时间
@@ -157,7 +157,7 @@ class TMOrderDetailCell: UITableViewCell {
         
         addSubview(dateLabel)
         dateLabel.snp_makeConstraints { (make) -> Void in
-            make.leading.equalTo(dateTitleLabel.snp_leading).offset(26)
+            make.leading.equalTo(dateTitleLabel.snp_trailing).offset(26)
             make.top.equalTo(dateTitleLabel.snp_top)
             make.height.equalTo(22)
             make.trailing.equalTo(boxView.snp_trailing).offset(-20)
@@ -175,14 +175,14 @@ class TMOrderDetailCell: UITableViewCell {
         addSubview(phoneNumberTitleLabel)
         phoneNumberTitleLabel.snp_makeConstraints { (make) -> Void in
             make.leading.equalTo(boxView.snp_leading).offset(21)
-            make.top.equalTo(boxView.snp_top).offset(14)
+            make.top.equalTo(dashView1.snp_bottom).offset(14)
             make.height.equalTo(22)
             make.width.equalTo(42)
         }
         
         addSubview(phoneNumberLabel)
         phoneNumberLabel.snp_makeConstraints { (make) -> Void in
-            make.leading.equalTo(phoneNumberTitleLabel.snp_leading).offset(26)
+            make.leading.equalTo(phoneNumberTitleLabel.snp_trailing).offset(26)
             make.top.equalTo(phoneNumberTitleLabel.snp_top)
             make.height.equalTo(22)
             make.trailing.equalTo(boxView.snp_trailing).offset(-20)
@@ -200,14 +200,14 @@ class TMOrderDetailCell: UITableViewCell {
         addSubview(amountTitleLabel)
         amountTitleLabel.snp_makeConstraints { (make) -> Void in
             make.leading.equalTo(boxView.snp_leading).offset(21)
-            make.top.equalTo(boxView.snp_top).offset(14)
+            make.top.equalTo(dashView2.snp_bottom).offset(14)
             make.height.equalTo(22)
             make.width.equalTo(42)
         }
         
         addSubview(amountLabel)
         amountLabel.snp_makeConstraints { (make) -> Void in
-            make.leading.equalTo(amountTitleLabel.snp_leading).offset(26)
+            make.leading.equalTo(amountTitleLabel.snp_trailing).offset(26)
             make.top.equalTo(amountTitleLabel.snp_top)
             make.height.equalTo(22)
             make.trailing.equalTo(boxView.snp_trailing).offset(-20)

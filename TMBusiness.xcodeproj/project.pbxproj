@@ -32,6 +32,9 @@
 		6B5A2A0C1AEF85D800C787D4 /* TMOrderMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5A2A0B1AEF85D800C787D4 /* TMOrderMenuView.swift */; };
 		6B5A2A0E1AEF8F4300C787D4 /* TMOrderListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5A2A0D1AEF8F4300C787D4 /* TMOrderListView.swift */; };
 		6B5A2A101AEF90CC00C787D4 /* TMOrderProductListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5A2A0F1AEF90CC00C787D4 /* TMOrderProductListView.swift */; };
+		6B5BE4821AF07C240040A1D2 /* PullToRefreshView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5BE4801AF07C240040A1D2 /* PullToRefreshView.swift */; };
+		6B5BE4831AF07C240040A1D2 /* AZLoadMoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5BE4811AF07C240040A1D2 /* AZLoadMoreView.swift */; };
+		6B5BE48B1AF07C440040A1D2 /* pulltorefresharrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B5BE48A1AF07C440040A1D2 /* pulltorefresharrow.png */; };
 		6B5F08051ACC551200CBD3BD /* Alamofire.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 6B5F07FA1ACC550600CBD3BD /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6B5F081D1ACC560F00CBD3BD /* TMOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5F08131ACC560F00CBD3BD /* TMOrder.swift */; };
 		6B5F081F1ACC560F00CBD3BD /* TMProductRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5F08151ACC560F00CBD3BD /* TMProductRecord.swift */; };
@@ -215,6 +218,9 @@
 		6B5A2A0B1AEF85D800C787D4 /* TMOrderMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMOrderMenuView.swift; sourceTree = "<group>"; };
 		6B5A2A0D1AEF8F4300C787D4 /* TMOrderListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMOrderListView.swift; sourceTree = "<group>"; };
 		6B5A2A0F1AEF90CC00C787D4 /* TMOrderProductListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMOrderProductListView.swift; sourceTree = "<group>"; };
+		6B5BE4801AF07C240040A1D2 /* PullToRefreshView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullToRefreshView.swift; sourceTree = "<group>"; };
+		6B5BE4811AF07C240040A1D2 /* AZLoadMoreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZLoadMoreView.swift; sourceTree = "<group>"; };
+		6B5BE48A1AF07C440040A1D2 /* pulltorefresharrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pulltorefresharrow.png; sourceTree = "<group>"; };
 		6B5F07F21ACC550600CBD3BD /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = Alamofire/Alamofire.xcodeproj; sourceTree = "<group>"; };
 		6B5F08131ACC560F00CBD3BD /* TMOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMOrder.swift; sourceTree = "<group>"; };
 		6B5F08151ACC560F00CBD3BD /* TMProductRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMProductRecord.swift; sourceTree = "<group>"; };
@@ -378,6 +384,9 @@
 				6B805C1F1AD4206500F2D968 /* AZPlaceholderTextView.swift */,
 				6B942A341AE490E000AC6AD2 /* AZCodeScanViewController.swift */,
 				6BDA93FA1AED306D007FD408 /* SwiftLoader.swift */,
+				6B5BE4801AF07C240040A1D2 /* PullToRefreshView.swift */,
+				6B5BE48A1AF07C440040A1D2 /* pulltorefresharrow.png */,
+				6B5BE4811AF07C240040A1D2 /* AZLoadMoreView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -901,6 +910,7 @@
 				6B78525E1ACC353D008F1A49 /* Main.storyboard in Resources */,
 				6B7852631ACC353D008F1A49 /* LaunchScreen.xib in Resources */,
 				6B7852601ACC353D008F1A49 /* Images.xcassets in Resources */,
+				6B5BE48B1AF07C440040A1D2 /* pulltorefresharrow.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -962,6 +972,7 @@
 				6BA06F7E1ACE6E4600DDA62E /* AZPagingContainerMenuView.swift in Sources */,
 				6B805C201AD4206500F2D968 /* AZPlaceholderTextView.swift in Sources */,
 				6B5F08201ACC560F00CBD3BD /* TMRechargeRecord.swift in Sources */,
+				6B5BE4821AF07C240040A1D2 /* PullToRefreshView.swift in Sources */,
 				6B5A2A0A1AEF846A00C787D4 /* TMOrderViewController.swift in Sources */,
 				6B025EAA1AE8C3B100C3A9FB /* TMModalView.swift in Sources */,
 				6B5F08421ACC56FB00CBD3BD /* AppManager.swift in Sources */,
@@ -981,6 +992,7 @@
 				6B5F08241ACC560F00CBD3BD /* TMUser.swift in Sources */,
 				6B5F082B1ACC561E00CBD3BD /* TMUserService.swift in Sources */,
 				6B4FBDA61ACD186B0017CB6F /* AAContainerViewController.swift in Sources */,
+				6B5BE4831AF07C240040A1D2 /* AZLoadMoreView.swift in Sources */,
 				6B64DB731ADE62D000192C7B /* Thing Me.xcdatamodeld in Sources */,
 				6B5A2A0C1AEF85D800C787D4 /* TMOrderMenuView.swift in Sources */,
 				6BA06F8B1ACE88BB00DDA62E /* AZPagingContainerMenuListView.swift in Sources */,
