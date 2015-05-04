@@ -20,8 +20,15 @@ class TMOrderViewController: BaseViewController {
     // 交易完成列表
     var transactionDoneOrderDataList = [TMOrder]()
     
+    // 选中的订单
+    var currentSelectedOrder: TMOrder!
+    
     lazy var orderDataManager: TMOrderDataManager = {
         return TMOrderDataManager()
+        }()
+    
+    lazy var userDataManager: TMUserDataManager = {
+        return TMUserDataManager()
         }()
     
     lazy var menuView: TMOrderMenuView = {
@@ -32,18 +39,28 @@ class TMOrderViewController: BaseViewController {
     
     lazy var orderListView: TMOrderListView = {
         var view = TMOrderListView()
+        view.delegate = self
         view.orderListTableView.addPullToRefresh { [weak self] in
-            println("addPullToRefresh")
             if let strongSelf = self {
-                strongSelf.fetchOrderList(.WaitForPaying)
+//                strongSelf.fetchOrderList(.WaitForPaying)
+                strongSelf.fetchOrderList(.TransactionDone)
             }
         }
         
         view.orderListTableView.addLoadMoreView { [weak self] in
             if let strongSelf = self {
-                strongSelf.fetchOrderList(.WaitForPaying, isLoadMore: true)
+//                strongSelf.fetchOrderList(.WaitForPaying, isLoadMore: true)
+                strongSelf.fetchOrderList(.TransactionDone, isLoadMore: true)
             }
         }
+        
+//        view.didSelectedOrderClosure = {[weak self] order in
+//            if let strongSelf = self {
+////                strongSelf.fetchOrderList(.WaitForPaying, isLoadMore: true)
+//                // TO DO
+//                
+//            }
+//        }
         return view
     }()
     
@@ -73,15 +90,73 @@ class TMOrderViewController: BaseViewController {
             make.width.equalTo(436)
         }
         
-        view.addSubview(orderProductListView)
-        orderProductListView.snp_makeConstraints { (make) -> Void in
+        var listContentView = UIView()
+        view.addSubview(listContentView)
+        listContentView.backgroundColor = UIColor.clearColor()
+        listContentView.snp_makeConstraints { (make) -> Void in
             make.leading.equalTo(orderListView.snp_trailing).offset(-6)
             make.top.equalTo(0)
             make.bottom.equalTo(0)
             make.trailing.equalTo(0)
         }
+        
+        var separatorView = UIImageView(image: UIImage(named: "checking_account_separator"))
+        listContentView.addSubview(separatorView)
+        separatorView.snp_makeConstraints { (make) -> Void in
+            make.leading.equalTo(0)
+            make.top.equalTo(0)
+            make.width.equalTo(10)
+            make.bottom.equalTo(0)
+        }
+
+        
+        var listBgView = UIView()
+        listBgView.backgroundColor = UIColor.whiteColor()
+        listContentView.addSubview(listBgView)
+        listBgView.snp_makeConstraints { (make) -> Void in
+            make.leading.equalTo(10)
+            make.top.equalTo(0)
+            make.trailing.equalTo(0)
+            make.bottom.equalTo(0)
+        }
+        
+        view.addSubview(orderProductListView)
+        orderProductListView.snp_makeConstraints { (make) -> Void in
+            make.leading.equalTo(orderListView.snp_trailing).offset(-6)
+            make.top.equalTo(0)
+            make.bottom.equalTo(-390)
+            make.trailing.equalTo(0)
+        }
     }
     
+    func changeOrderProductListView(order: TMOrder) {
+        currentSelectedOrder = order
+        orderProductListView.data = currentSelectedOrder
+        updateOrderProductListViewFrame()
+    }
+    
+    // MARK: - 更新订单列表详情Frame
+    func updateOrderProductListViewFrame() {
+        orderProductListView.snp_remakeConstraints { (make) -> Void in
+            make.leading.equalTo(orderListView.snp_trailing).offset(-6)
+            make.top.equalTo(0)
+            make.trailing.equalTo(0)
+            
+            if let order = currentSelectedOrder where order.product_records.count > 0 {
+                println(order.product_records.count)
+                var height = order.product_records.count * 50
+                var delta = height - 390
+                
+                if delta > 0 {
+                    delta = 0
+                }
+                
+                make.bottom.equalTo(delta)
+            } else {
+                make.bottom.equalTo(-390)
+            }
+        }
+    }
     
     // MARK: - 获取订单列表
     
@@ -99,8 +174,7 @@ class TMOrderViewController: BaseViewController {
             pageIndex = orderListView.data.count
         }
         
-        orderDataManager.fetchOrderEntityList(TMShop.sharedInstance.shop_id, type: status, pageIndex: pageIndex, adminId: TMShop.sharedInstance.admin_id) { [weak self] (list, error) -> Void in
-            
+        userDataManager.fetchUserEntityOrderList(TMShop.sharedInstance.shop_id, conditionType: TMConditionType.ShopId, orderStatus: status, orderPageIndex: pageIndex, adminId: TMShop.sharedInstance.admin_id) { [weak self](list, error) -> Void in
             if let strongSelf = self {
                 
                 // 待支付状态
@@ -148,7 +222,7 @@ class TMOrderViewController: BaseViewController {
                     strongSelf.orderListView.orderListTableView.stopLoadMore()
                 }
             }
-            
+
         }
     }
     
@@ -185,4 +259,10 @@ class TMOrderViewController: BaseViewController {
         }
     }
     
+}
+
+extension TMOrderViewController: TMOrderListViewDelegate {
+    func didSelectedOrder(selectedOrder: TMOrder) {
+        changeOrderProductListView(selectedOrder)
+    }
 }

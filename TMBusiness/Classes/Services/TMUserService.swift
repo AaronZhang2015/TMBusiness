@@ -12,6 +12,8 @@ import Alamofire
 enum TMConditionType: Int {
     case MobileNumber = 1
     case UserId = 2
+    case ShopId = 3
+    case AdminId = 4
 }
 
 enum TMRechargeType: Int {
@@ -27,6 +29,13 @@ enum TMShopType: Int {
     case Business = 1
     case Shop = 2
 }
+
+enum TMSearchType: Int {
+    case All = -1
+    case Last = -2
+    case Period = -3
+}
+
 
 class TMUserService: NSObject {
     
@@ -167,6 +176,43 @@ class TMUserService: NSObject {
             "device_type" : "\(AppManager.platform().rawValue)"]
         
         manager.request(.POST, relativePath: "user_getEntityOrder", parameters: parameters) { (result) -> Void in
+            switch result {
+            case let .Error(e):
+                completion(nil, e)
+            case let .Value(json):
+                // 解析数据
+                let data = json["data"]
+                
+                var orderList = [TMOrder]()
+                for (index: String, subJson: JSON) in data {
+                    var order = TMParser.parseOrder(subJson)
+                    orderList.append(order)
+                }
+                completion(orderList, nil)
+            }
+        }
+    }
+    
+    func fetchUserEntityOrderList(condition: String, conditionType: TMConditionType, startTime: String, endTime: String, searchType: TMSearchType, orderStatus: TMOrderStatus, orderPageIndex: String, orderPageSize: String, showProductRecord: String, productRecordPageIndex: String, productRecordPageSize: String, adminId: String, completion: ([TMOrder]?, NSError?) -> Void) {
+    
+    /**
+    根据终生号或手机号或商铺编号获取指定状态指定时间段内或全部或最后一笔订单或订单列表，并显示每笔订单包含的商品交易记录
+    */
+//    func fetchUserEntityOrderList(condition: String)(conditionType: TMConditionType)(startTime: String)(endTime: String)(searchType: TMSearchType)(orderStatus: TMOrderStatus)(orderPageIndex: String)(orderPageSize: String)(showProductRecord: String)(productRecordPageIndex: String)(productRecordPageSize: String)(adminId: String)(completion: ([TMOrder]?, NSError?) -> Void) {
+        var parameters = ["condition": condition,
+            "condition_type": "\(conditionType.rawValue)",
+            "start_time": startTime,
+            "end_time": endTime,
+            "search_type": "\(searchType.rawValue)",
+            "order_status": "\(orderStatus.rawValue)",
+            "order_page_index": orderPageIndex,
+            "order_page_size": orderPageSize,
+            "show_product_record": showProductRecord,
+            "product_record_page_index": productRecordPageIndex,
+            "product_record_page_size": productRecordPageSize,
+            "admin_id":adminId,
+            "device_type" : "\(AppManager.platform().rawValue)"]
+        manager.request(.POST, relativePath: "user_getEntityOrderList", parameters: parameters) { (result) -> Void in
             switch result {
             case let .Error(e):
                 completion(nil, e)

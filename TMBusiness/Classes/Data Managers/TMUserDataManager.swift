@@ -74,5 +74,11 @@ class TMUserDataManager: TMDataManager {
     func fetchUserEntityOrder(shopId: String, businessId: String = "", type: TMShopType = .Shop, userId: String, startIndex: Int, pageSize: Int = 10, adminId: String, completion: ([TMOrder]?, NSError?) -> Void) {
         userService.fetchUserOrderList(shopId, businessId: businessId, type: type, userId: userId, startIndex: startIndex, pageSize: pageSize, adminId: adminId, completion: completion)
     }
+    
+    
+    func fetchUserEntityOrderList(condition: String, conditionType: TMConditionType, startTime: String = "", endTime: String = "", searchType: TMSearchType = .All, orderStatus: TMOrderStatus, orderPageIndex: Int, orderPageSize: Int = 10, showProductRecord: String = "1", productRecordPageIndex: String = "", productRecordPageSize: String = "", adminId: String, completion: ([TMOrder]?, NSError?) -> Void) {
+        
+        userService.fetchUserEntityOrderList(condition, conditionType: conditionType, startTime: startTime, endTime: endTime, searchType: searchType, orderStatus: orderStatus, orderPageIndex: "\(orderPageIndex)", orderPageSize: "\(orderPageSize)", showProductRecord: showProductRecord, productRecordPageIndex: productRecordPageIndex, productRecordPageSize: productRecordPageSize, adminId: adminId, completion: completion)
+    }
 
 }

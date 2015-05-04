@@ -11,9 +11,16 @@ import Snap
 
 let TMOrderDetailCellIdentifier = "TMOrderDetailCell"
 
+protocol TMOrderListViewDelegate {
+    func didSelectedOrder(selectedOrder: TMOrder)
+}
+
 class TMOrderListView: UIView {
     
     var data = [TMOrder]()
+    var delegate: TMOrderListViewDelegate!
+    
+    var didSelectedOrderClosure: (TMOrder -> Void)?
     
     lazy var orderListTableView: UITableView = {
         var tableView = UITableView()
@@ -57,12 +64,19 @@ extension TMOrderListView: UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(TMOrderDetailCellIdentifier, forIndexPath: indexPath) as! TMOrderDetailCell
-        
+        cell.configureData(data[indexPath.row])
         return cell
     }
 }
 
 extension TMOrderListView: UITableViewDelegate {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        var order = data[indexPath.row]
+        
+        if let delegate = self.delegate {
+            delegate.didSelectedOrder(order)
+        }
+    }
 }
 
 
@@ -143,7 +157,7 @@ class TMOrderDetailCell: UITableViewCell {
         
         addSubview(boxView)
         boxView.snp_makeConstraints { (make) -> Void in
-            make.edges.equalTo(UIEdgeInsetsMake(44, 19, -36 - 12, -19))
+            make.edges.equalTo(UIEdgeInsetsMake(44 + 10, 19, -36, -19))
         }
         
         // 时间
@@ -213,6 +227,19 @@ class TMOrderDetailCell: UITableViewCell {
             make.trailing.equalTo(boxView.snp_trailing).offset(-20)
         }
         
+    }
+    
+    func configureData(model: TMOrder) {
+        if let date = model.register_time {
+            dateLabel.text = date.toString(format: .Custom("yyyy-MM-dd HH:mm:ss"))
+        }
+        
+        if let phoneNumber = model.user_mobile_number {
+            phoneNumberLabel.text = phoneNumber
+        }
+        
+        let format = ".2"
+        amountLabel.text = "\(model.actual_amount.doubleValue.format(format))"
     }
     
 }
