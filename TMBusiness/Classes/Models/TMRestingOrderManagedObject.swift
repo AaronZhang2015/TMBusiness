@@ -11,9 +11,9 @@ import CoreData
 
 class TMRestingOrderManagedObject: NSManagedObject {
 
-    @NSManaged var order_index: String
-    @NSManaged var order_id: String
-    @NSManaged var user_id: String
+    @NSManaged var order_index: String?
+    @NSManaged var order_id: String?
+    @NSManaged var user_id: String?
     @NSManaged var shop_id: String
     @NSManaged var business_id: String
     @NSManaged var admin_id: String
@@ -26,8 +26,8 @@ class TMRestingOrderManagedObject: NSManagedObject {
     @NSManaged var discount_type: NSNumber
     @NSManaged var register_time: NSDate
     @NSManaged var status: NSNumber
-    @NSManaged var user_mobile_number: String
-    @NSManaged var order_description: String
+    @NSManaged var user_mobile_number: String?
+    @NSManaged var order_description: String?
     @NSManaged var product_records: NSOrderedSet
 
 }

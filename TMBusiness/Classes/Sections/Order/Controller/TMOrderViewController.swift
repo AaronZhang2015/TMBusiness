@@ -33,7 +33,24 @@ class TMOrderViewController: BaseViewController {
     
     lazy var menuView: TMOrderMenuView = {
         var view = TMOrderMenuView()
-        
+        view.didSelectedIndexClosure = { [weak self] index in
+            if let strongSelf = self {
+                strongSelf.orderProductListView.hidden = true
+                strongSelf.orderListView.data.removeAll(keepCapacity: false)
+                strongSelf.orderListView.reloadTableData(true)
+                
+                if index == 0 {
+                    strongSelf.orderListView.status = .Resting
+                    strongSelf.fetchRestingOrderList()
+                } else if index == 1 {
+                    strongSelf.orderListView.status = .WaitForPaying
+                    strongSelf.orderListView.orderListTableView.startPullToRefresh()
+                } else {
+                    strongSelf.orderListView.status = .TransactionDone
+                    strongSelf.orderListView.orderListTableView.startPullToRefresh()
+                }
+            }
+        }
         return view
         }()
     
@@ -42,30 +59,62 @@ class TMOrderViewController: BaseViewController {
         view.delegate = self
         view.orderListTableView.addPullToRefresh { [weak self] in
             if let strongSelf = self {
-//                strongSelf.fetchOrderList(.WaitForPaying)
-                strongSelf.fetchOrderList(.TransactionDone)
+                if view.status == .Resting {
+                    strongSelf.fetchRestingOrderList()
+                } else {
+                    strongSelf.fetchOrderList(view.status)
+                }
             }
         }
         
         view.orderListTableView.addLoadMoreView { [weak self] in
             if let strongSelf = self {
-//                strongSelf.fetchOrderList(.WaitForPaying, isLoadMore: true)
-                strongSelf.fetchOrderList(.TransactionDone, isLoadMore: true)
+                
+                if view.status == .Resting {
+                    strongSelf.fetchRestingOrderList()
+                } else {
+                    strongSelf.fetchOrderList(view.status, isLoadMore: true)
+                }
             }
         }
         
-//        view.didSelectedOrderClosure = {[weak self] order in
-//            if let strongSelf = self {
-////                strongSelf.fetchOrderList(.WaitForPaying, isLoadMore: true)
-//                // TO DO
-//                
-//            }
-//        }
+        
         return view
     }()
     
     lazy var orderProductListView: TMOrderProductListView = {
         var view = TMOrderProductListView()
+        view.cancelOrderClosure = { [weak self] order in
+            // 删除订单
+            if let strongSelf = self {
+                var alertView = UIAlertView(title: "提示", message: "是否确认取消当前挂单", delegate: strongSelf, cancelButtonTitle: "取消", otherButtonTitles: "确认")
+                alertView.tag = 1000
+                alertView.show()
+            }
+        }
+        
+        view.takeOrderClosure = { [weak self] order in
+            if let strongSelf = self {
+                var alertView = UIAlertView(title: "提示", message: "是否确认下单", delegate: strongSelf, cancelButtonTitle: "取消", otherButtonTitles: "确认")
+                alertView.tag = 1001
+                alertView.show()
+            }
+        }
+        
+        view.checkoutOrderClosure = { [weak self] order in
+            // 转入结账页面
+            if let strongSelf = self {
+                println()
+                var masterViewController = strongSelf.parentViewController as! MasterViewController
+                masterViewController.handleMenu(0)
+            }
+            
+        }
+        
+        view.printOrderClosure = { [weak self] order in
+            
+        }
+        
         return view
         }()
 
@@ -121,10 +170,11 @@ class TMOrderViewController: BaseViewController {
         }
         
         view.addSubview(orderProductListView)
+        orderProductListView.hidden = true
         orderProductListView.snp_makeConstraints { (make) -> Void in
             make.leading.equalTo(orderListView.snp_trailing).offset(-6)
             make.top.equalTo(0)
-            make.bottom.equalTo(-390)
+            make.bottom.equalTo(-350)
             make.trailing.equalTo(0)
         }
     }
@@ -144,8 +194,8 @@ class TMOrderViewController: BaseViewController {
             
             if let order = currentSelectedOrder where order.product_records.count > 0 {
                 println(order.product_records.count)
-                var height = order.product_records.count * 50
-                var delta = height - 390
+                var height = (order.product_records.count + 1) * 50
+                var delta = height - 350
                 
                 if delta > 0 {
                     delta = 0
@@ -153,7 +203,7 @@ class TMOrderViewController: BaseViewController {
                 
                 make.bottom.equalTo(delta)
             } else {
-                make.bottom.equalTo(-390)
+                make.bottom.equalTo(-350)
             }
         }
     }
@@ -215,11 +265,12 @@ class TMOrderViewController: BaseViewController {
                 }
                 
                 // 刷新数据
-                strongSelf.orderListView.orderListTableView.reloadData()
                 if !isLoadMore {
                     strongSelf.orderListView.orderListTableView.stopPullToRefresh()
+                    strongSelf.orderListView.reloadTableData(true)
                 } else{
                     strongSelf.orderListView.orderListTableView.stopLoadMore()
+                    strongSelf.orderListView.reloadTableData(false)
                 }
             }
 
@@ -230,7 +281,12 @@ class TMOrderViewController: BaseViewController {
     获取挂单列表
     */
     func fetchRestingOrderList() {
-        
+        restingOrderDataList = orderDataManager.fetchRestingOrderList()
+        orderListView.data = restingOrderDataList
+        orderListView.reloadTableData(true)
+        orderListView.orderListTableView.stopPullToRefresh()
+        orderListView.orderListTableView.stopLoadMore()
+
     }
     
     // MARK: - Helper
@@ -260,9 +316,46 @@ class TMOrderViewController: BaseViewController {
     }
     
 }
+extension TMOrderViewController: UIAlertViewDelegate {
+    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+        if buttonIndex == 0 {
+            return
+        }
+        
+        if alertView.tag == 1000 {
+            orderDataManager.deleteRestingOrder(currentSelectedOrder)
+            currentSelectedOrder = nil
+            orderProductListView.hidden = true
+            fetchRestingOrderList()
+        } else if alertView.tag == 1001 {
+            // 下单
+            currentSelectedOrder.status = TMOrderStatus.WaitForPaying
+            
+            if currentSelectedOrder.payable_amount.doubleValue > 0 {
+                startActivity()
+                orderDataManager.addOrderEntityInfo(currentSelectedOrder, completion: { [weak self] (orderId, error) in
+                    if let strongSelf = self {
+                        strongSelf.stopActivity()
+                        // 订单成功
+                        if let e = error {
+                            
+                        } else {
+                            // 提交成功
+                            strongSelf.orderDataManager.deleteRestingOrder(strongSelf.currentSelectedOrder)
+                            strongSelf.currentSelectedOrder = nil
+                            strongSelf.orderProductListView.hidden = true
+                            strongSelf.fetchRestingOrderList()
+                        }
+                    }
+                    })
+            }
+        }
+    }
+}
 
 extension TMOrderViewController: TMOrderListViewDelegate {
     func didSelectedOrder(selectedOrder: TMOrder) {
         changeOrderProductListView(selectedOrder)
+        orderProductListView.hidden = false
     }
 }

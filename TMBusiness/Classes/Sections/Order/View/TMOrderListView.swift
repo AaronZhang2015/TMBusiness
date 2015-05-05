@@ -19,8 +19,10 @@ class TMOrderListView: UIView {
     
     var data = [TMOrder]()
     var delegate: TMOrderListViewDelegate!
+    var status: TMOrderStatus = .WaitForPaying
     
     var didSelectedOrderClosure: (TMOrder -> Void)?
+    private var currentSelectedIndex: NSIndexPath?
     
     lazy var orderListTableView: UITableView = {
         var tableView = UITableView()
@@ -50,6 +52,15 @@ class TMOrderListView: UIView {
             make.trailing.equalTo(-4)
         }
     }
+    
+    func reloadTableData(reset: Bool) {
+        orderListTableView.reloadData()
+        if reset {
+            currentSelectedIndex = nil
+        } else {
+            orderListTableView.selectRowAtIndexPath(currentSelectedIndex, animated: false, scrollPosition: UITableViewScrollPosition.None)
+        }
+    }
 
 }
 
@@ -72,7 +83,7 @@ extension TMOrderListView: UITableViewDataSource {
 extension TMOrderListView: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         var order = data[indexPath.row]
-        
+        currentSelectedIndex = indexPath
         if let delegate = self.delegate {
             delegate.didSelectedOrder(order)
         }

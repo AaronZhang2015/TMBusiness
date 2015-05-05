@@ -173,7 +173,40 @@ class TMOrderDataManager: TMDataManager {
         }
     }
     
+    /**
+    删除挂单
     
+    :param: order 待删除挂单
+    */
+    func deleteRestingOrder(order: TMOrder) {
+        var context = CoreDataStack.sharedInstance.context
+        
+        var managedContext = CoreDataStack.sharedInstance.context
+        let restingOrderFetch = NSFetchRequest(entityName: "TMRestingOrderManagedObject")
+        var predicate = NSPredicate(format: "order_index == %@", order.order_index!)
+        restingOrderFetch.predicate = predicate
+        var error: NSError?
+        let result = managedContext.executeFetchRequest(restingOrderFetch, error: &error) as?[TMRestingOrderManagedObject]
+        
+        if let list = result {
+            managedContext.deleteObject(list[0])
+            
+            for product in list[0].product_records {
+                managedContext.deleteObject(product as! TMProductRecordManagedObject)
+            }
+        }
+        
+        //Save the managed object context
+        if !managedContext.save(&error) {
+            println("Could not save: \(error)")
+        }
+    }
+    
+    /**
+    获取挂单列表
+    
+    :returns: 挂单列表
+    */
     func fetchRestingOrderList() -> [TMOrder] {
         var restingOrderList = [TMOrder]()
         
@@ -184,18 +217,20 @@ class TMOrderDataManager: TMDataManager {
         
         var error: NSError?
         let result = context.executeFetchRequest(restingOrderFetch, error: &error) as! [TMRestingOrderManagedObject]
-        
+    
         for var i = 0; i < result.count; ++i {
             var restingOrderRecord = result[i]
             var order = TMOrder()
             
             // 赋值
+            
             order.order_index = restingOrderRecord.order_index
             order.order_id = restingOrderRecord.order_id
             order.user_id = restingOrderRecord.user_id
             order.shop_id = restingOrderRecord.shop_id
             order.business_id = restingOrderRecord.business_id
             order.admin_id = restingOrderRecord.admin_id
+            
             
             if let mode = TMTransactionMode(rawValue: restingOrderRecord.transaction_mode.integerValue) {
                 order.transaction_mode = mode
@@ -215,9 +250,11 @@ class TMOrderDataManager: TMDataManager {
             }
             
             order.register_time = restingOrderRecord.register_time
-            
+
             if let status = TMOrderStatus(rawValue: restingOrderRecord.status.integerValue) {
                 order.status = status
+            } else {
+                order.status = .Resting
             }
             
             order.user_mobile_number = restingOrderRecord.user_mobile_number

@@ -88,30 +88,26 @@ class MasterViewController: BaseViewController {
         loginViewController.delegate = self
         navigationController?.presentViewController(loginViewController, animated: true, completion: nil)
     }
-}
-
-
-// MARK: - Button Actions
-extension MasterViewController {
     
-    func handleSettingAction() {
+    func handleCheckoutAction(order: TMOrder) {
+        takeOrderViewController.order = order
         
+        addChildViewController(takeOrderViewController)
+        view.addSubview(takeOrderViewController.view)
+        takeOrderViewController.view.frame = view.bounds
+        takeOrderViewController.didMoveToParentViewController(self)
+        viewController = takeOrderViewController
     }
     
-    func handleLogoutAction() {
-        
-    }
-    
-    func handleMenuAction(segmentControl: TMSegmentControl) {
-        
+    func handleMenu(selectedIndex: Int) {
         var viewController: UIViewController?
-        if segmentControl.selectedIndex == 0 {
+        if selectedIndex == 0 {
             addChildViewController(takeOrderViewController)
             view.addSubview(takeOrderViewController.view)
             takeOrderViewController.view.frame = view.bounds
             takeOrderViewController.didMoveToParentViewController(self)
             viewController = takeOrderViewController
-        } else if segmentControl.selectedIndex == 1 {
+        } else if selectedIndex == 1 {
             addChildViewController(orderViewController)
             view.addSubview(orderViewController.view)
             orderViewController.view.frame = view.bounds
@@ -137,6 +133,24 @@ extension MasterViewController {
         }
         
         currentViewController = viewController
+    }
+}
+
+
+// MARK: - Button Actions
+extension MasterViewController {
+    
+    func handleSettingAction() {
+        
+    }
+    
+    func handleLogoutAction() {
+        
+    }
+    
+    func handleMenuAction(segmentControl: TMSegmentControl) {
+        handleMenu(segmentControl.selectedIndex)
+        
     }
 }
 

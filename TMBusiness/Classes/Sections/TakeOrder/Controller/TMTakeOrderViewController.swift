@@ -697,6 +697,8 @@ class TMTakeOrderViewController: BaseViewController {
     // 挂单操作
     func handleRestingOrderAction() {
         var order = takeOrderCompute.getOrder(membershipCardPayView.remarkTextView.text)
+        order.status = .Resting
+        order.order_index = "\(NSDate().timeIntervalSince1970)"
         orderDataManager.cacheRestingOrder(order)
         // 清空之前用户数据
         takeOrderCompute.clearAllData()

@@ -11,6 +11,7 @@ import UIKit
 /**
 订单状态
 
+- Resting:         挂单
 - Take:            下单
 - WaitForPaying:   待支付
 - PaySuccess:      支付成功
@@ -19,6 +20,7 @@ import UIKit
 - Invalid:         订单无效
 */
 enum TMOrderStatus: Int {
+    case Resting = 0
     case Take = 1
     case WaitForPaying = 2
     case PaySuccess = 3
