@@ -281,4 +281,8 @@ class TMOrderDataManager: TMDataManager {
         return restingOrderList
     }
     
+    func updateOrderStatus(order: TMOrder, completion: (Bool -> Void)) {
+        orderService.updateOrderStatus(order.status, orderId: order.order_id!, shopId: order.shop_id!, businessId: order.business_id!, adminId: order.admin_id!, completion: completion)
+    }
+    
 }

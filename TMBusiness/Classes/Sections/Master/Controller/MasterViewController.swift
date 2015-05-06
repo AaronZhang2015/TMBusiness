@@ -90,13 +90,8 @@ class MasterViewController: BaseViewController {
     }
     
     func handleCheckoutAction(order: TMOrder) {
-        takeOrderViewController.order = order
-        
-        addChildViewController(takeOrderViewController)
-        view.addSubview(takeOrderViewController.view)
-        takeOrderViewController.view.frame = view.bounds
-        takeOrderViewController.didMoveToParentViewController(self)
-        viewController = takeOrderViewController
+        takeOrderViewController.loadFromOrderList(order)
+        segmentControl.selectedIndex = 0
     }
     
     func handleMenu(selectedIndex: Int) {
@@ -150,7 +145,6 @@ extension MasterViewController {
     
     func handleMenuAction(segmentControl: TMSegmentControl) {
         handleMenu(segmentControl.selectedIndex)
-        
     }
 }
 

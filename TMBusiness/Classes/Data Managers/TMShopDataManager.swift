@@ -230,6 +230,53 @@ class TMShopDataManager: TMDataManager {
         return categoryList
     }
     
+    func fetchProduct(productId: String) -> TMProduct? {
+        var context = CoreDataStack.sharedInstance.context
+        
+        var managedContext = CoreDataStack.sharedInstance.context
+        let restingOrderFetch = NSFetchRequest(entityName: "TMProductManagedObject")
+        var predicate = NSPredicate(format: "product_id == %@", productId)
+        restingOrderFetch.predicate = predicate
+        var error: NSError?
+        let result = managedContext.executeFetchRequest(restingOrderFetch, error: &error) as?[TMProductManagedObject]
+        
+        var product: TMProduct!
+        if let list = result {
+            product = TMProduct()
+            var productRecord = list[0]
+            product.product_id = productRecord.product_id
+            product.product_name = productRecord.product_name
+            product.product_description = productRecord.product_description
+            product.title_1 = productRecord.title_1
+            product.title_2 = productRecord.title_2
+            product.title_3 = productRecord.title_3
+            product.title_4 = productRecord.title_4
+            product.title_5 = productRecord.title_5
+            product.description_1 = productRecord.description_1
+            product.description_2 = productRecord.description_2
+            product.description_3 = productRecord.description_3
+            product.description_4 = productRecord.description_4
+            product.description_5 = productRecord.description_5
+            product.image_url = productRecord.image_url
+            product.official_quotation = productRecord.official_quotation
+            product.monetary_unit = productRecord.monetary_unit
+            product.width = productRecord.width
+            product.height = productRecord.height
+            product.category_id = productRecord.category_id
+            product.category_name = productRecord.category_name
+            product.is_discount = productRecord.is_discount
+            product.discount_type = productRecord.discount_type
+            product.aTemplate_examples_plate = productRecord.aTemplate_examples_plate
+        }
+        
+        //Save the managed object context
+        if !managedContext.save(&error) {
+            println("Could not save: \(error)")
+        }
+        
+        return product
+    }
+    
     
     func fetchStatisticsDetail(businessId: String, shopId: String, startDate: NSDate, endDate: NSDate, adminId: String, extensionField: String = "", completion: (TMCheckingAccount?, NSError?) -> Void) {
         var startDateTimeInterval: NSTimeInterval = startDate.timeIntervalSince1970

@@ -104,9 +104,8 @@ class TMOrderViewController: BaseViewController {
         view.checkoutOrderClosure = { [weak self] order in
             // 转入结账页面
             if let strongSelf = self {
-                println()
                 var masterViewController = strongSelf.parentViewController as! MasterViewController
-                masterViewController.handleMenu(0)
+                masterViewController.handleCheckoutAction(order)
             }
             
         }
@@ -176,6 +175,31 @@ class TMOrderViewController: BaseViewController {
             make.top.equalTo(0)
             make.bottom.equalTo(-350)
             make.trailing.equalTo(0)
+        }
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "orderListNeedRefresh", name: TMOrderListNeedRefresh, object: nil)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+    }
+    
+    
+    func orderListNeedRefresh() {
+        orderProductListView.hidden = true
+        orderListView.data.removeAll(keepCapacity: false)
+        orderListView.reloadTableData(true)
+        
+        
+        if orderListView.status == .Resting {
+            fetchRestingOrderList()
+        } else {
+            orderListView.orderListTableView.startPullToRefresh()
         }
     }
     
@@ -286,7 +310,28 @@ class TMOrderViewController: BaseViewController {
         orderListView.reloadTableData(true)
         orderListView.orderListTableView.stopPullToRefresh()
         orderListView.orderListTableView.stopLoadMore()
-
+    }
+    
+    /**
+    获取用户信息以及奖励信息
+    */
+    func fetchEntityInfoAction(mobileNumber: String, completion: (TMUser -> Void)) {
+        startActivity()
+        userDataManager.fetchEntityAllInfo(mobileNumber, type: .MobileNumber, shopId: TMShop.sharedInstance.shop_id, businessId: TMShop.sharedInstance.business_id, adminId: TMShop.sharedInstance.admin_id) { [weak self](user, error) -> Void in
+            
+            if let strongSelf = self {
+                strongSelf.stopActivity()
+                if error == nil {
+                    if let user = user {
+                        completion(user)
+                        return
+                    }
+                }
+                
+                // 获取失败，提示不做操作
+            }
+            
+        }
     }
     
     // MARK: - Helper
@@ -313,6 +358,10 @@ class TMOrderViewController: BaseViewController {
                 originData.append(extendOrder)
             }
         }
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
 }

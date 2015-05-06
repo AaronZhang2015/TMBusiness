@@ -113,5 +113,21 @@ class TMOrderService: NSObject {
         }
     }
     
-//    func updateOrderStatus(status: TMOrderStatus, orderId: )
+    func updateOrderStatus(status: TMOrderStatus, orderId: String, shopId: String, businessId: String, adminId: String, completion: (Bool -> Void)) {
+        var parameters = ["status": "\(status.rawValue)",
+            "order_id": orderId,
+            "shop_id": shopId,
+            "business_id": businessId,
+            "admin_id": adminId,
+            "device_type": "\(AppManager.platform().rawValue)"]
+        
+        manager.request(.POST, relativePath: "updateOrderStatus", parameters: parameters) { (result) -> Void in
+            switch result {
+            case let .Error(e):
+                completion(false)
+            case let .Value(json):
+                completion(true)
+            }
+        }
+    }
 }

@@ -201,7 +201,9 @@ class TMTakeOrderDetailView: UIView {
         consumeAmountLabel.text = "¥\(compute.getConsumeAmount().format(format))"
         
         // 优惠金额
-        var discountAmount = compute.getActualAmount() - compute.getConsumeAmount()
+        var discountAmount = compute.getConsumeAmount() - compute.getActualAmount()
+        println("getConsumeAmount = \(compute.getConsumeAmount())")
+        println("getActualAmount() = \(compute.getActualAmount())")
         discountAmountLabel.text = "¥\(discountAmount.format(format))"
         
         // 折后金额

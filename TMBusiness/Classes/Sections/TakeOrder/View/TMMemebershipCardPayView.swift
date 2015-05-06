@@ -824,7 +824,8 @@ class TMMemebershipCardPayView: UIView {
     清空会员信息数据
     */
     func clearMembershipData() {
-        takeOrderCompute.clearAllData()
+        var alertView = UIAlertView(title: "提示", message: "是否确定清空当前已点商品信息", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "确定")
+        alertView.show()
     }
 }
 
@@ -836,6 +837,14 @@ extension TMMemebershipCardPayView: UITextFieldDelegate {
         }
         
         return true
+    }
+}
+
+extension TMMemebershipCardPayView: UIAlertViewDelegate {
+    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+        if buttonIndex == 1 {
+            takeOrderCompute.clearAllData()
+        }
     }
 }
 

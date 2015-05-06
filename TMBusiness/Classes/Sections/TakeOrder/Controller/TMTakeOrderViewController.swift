@@ -11,6 +11,8 @@ import Snap
 
 let takeOrderListCellReuseIdentifier = "TakeOriderListCell"
 
+let TMOrderListNeedRefresh = "TMOrderListNeedRefresh"
+
 class TMTakeOrderViewController: BaseViewController {
     
     private lazy var shopDataManager: TMShopDataManager = TMShopDataManager()
@@ -433,7 +435,7 @@ class TMTakeOrderViewController: BaseViewController {
             return
         }
         
-        presentInfoAlertView("请先获取用户信息")
+        presentInfoAlertView("请输入会员手机号或者扫描会员二维码")
     }
     
     
@@ -449,7 +451,7 @@ class TMTakeOrderViewController: BaseViewController {
             fetchUserOrderList()
             return
         }
-        presentInfoAlertView("请先获取用户信息")
+        presentInfoAlertView("请输入会员手机号或者扫描会员二维码")
     }
     
     
@@ -486,6 +488,9 @@ class TMTakeOrderViewController: BaseViewController {
         if CGRectEqualToRect(cashPayView.frame, productListContainerView.frame) {
             return
         }
+        
+        cashPayView.actualLabel.text = "0"
+        cashPayView.chargeLabel.text = "0"
         
         var rect = productListContainerView.frame
         
@@ -604,6 +609,7 @@ class TMTakeOrderViewController: BaseViewController {
                 if error == nil {
                     if let user = user {
                         strongSelf.takeOrderCompute.setUserDetail(user, hasProducts: true)
+                        strongSelf.membershipCardPayView.phoneNumberTextField.text = ""
                     }
                 }
             }
@@ -628,6 +634,7 @@ class TMTakeOrderViewController: BaseViewController {
                             strongSelf.takeOrderCompute.setUserDetail(user, hasProducts: true)
                         }
                         strongSelf.hideCodeScanView(true)
+                        strongSelf.membershipCardPayView.phoneNumberTextField.text = ""
                     } else {
                         strongSelf.codeScanView.canScan = true
                     }
@@ -643,26 +650,34 @@ class TMTakeOrderViewController: BaseViewController {
     func settleBill() {
         
         if let user = takeOrderCompute.user {
-            order = takeOrderCompute.getOrder(membershipCardPayView.remarkTextView.text)
+
             if membershipCardPayView.getSelectedCount() == 0 {
                 presentInfoAlertView("请先选择支付方式")
                 return
             }
             
-            if order.payable_amount.doubleValue > 0 {
-                // 判断当前支付方式，如果是包含现金支付，并且现金确实需要额外支付
-                // 那么跳转到现金支付页面，进行操作
-                
-                var transactionMode = takeOrderCompute.getTransactionMode()
-                if transactionMode == .Cash || transactionMode == .CashAndBalance {
-                    if takeOrderCompute.getActualAmount() - takeOrderCompute.getUserBalance().doubleValue > 0 {
-                        cashPayView.isUserCashPay = true
-                        cashPayView.updateEntityAllInfo(takeOrderCompute)
-                        showCashPayView(nil)
-                        return
-                    }
+            // 判断当前支付方式，如果是包含现金支付，并且现金确实需要额外支付
+            // 那么跳转到现金支付页面，进行操作
+            
+            var transactionMode = takeOrderCompute.getTransactionMode()
+            if transactionMode == .Cash || transactionMode == .CashAndBalance {
+                if takeOrderCompute.getActualAmount() - takeOrderCompute.getUserBalance().doubleValue > 0 {
+                    cashPayView.isUserCashPay = true
+                    cashPayView.updateEntityAllInfo(takeOrderCompute)
+                    showCashPayView(nil)
+                    return
                 }
+            }
+            
+            // 如果是未支付订单结账，则删除之前订单
+            if takeOrderCompute.isWaitForPaying && order.payable_amount.doubleValue > 0 {
+                updateOrder()
                 
+                return
+            }
+            
+            order = takeOrderCompute.getOrder(membershipCardPayView.remarkTextView.text)
+            if order.payable_amount.doubleValue > 0 {
                 startActivity()
                 orderDataManager.addOrderEntityInfo(order, completion: { [weak self] (orderId, error) in
                     if let strongSelf = self {
@@ -675,15 +690,24 @@ class TMTakeOrderViewController: BaseViewController {
                         } else {
                             // 提示操作成功
                             strongSelf.hideMembershipCardPayView(true)
+                            
+                            if strongSelf.takeOrderCompute.isRestingOrder && strongSelf.takeOrderCompute.orderIndex != nil {
+                                // 删除挂单数据
+                                strongSelf.orderDataManager.deleteRestingOrder(strongSelf.order)
+                                NSNotificationCenter.defaultCenter().postNotificationName(TMOrderListNeedRefresh, object: nil)
+                            }
                             // 清空之前用户数据
                             strongSelf.takeOrderCompute.clearAllData()
+                            strongSelf.presentInfoAlertView("支付成功")
                         }
                     }
                     })
+            } else {
+                presentInfoAlertView("请选择商品")
             }
 
         } else {
-            presentInfoAlertView("请先获取用户信息")
+            presentInfoAlertView("请输入会员手机号或者扫描会员二维码")
         }
     }
     
@@ -691,17 +715,23 @@ class TMTakeOrderViewController: BaseViewController {
     
     // 重新下单
     func handleResetProductList() {
-        takeOrderCompute.clearAllData()
+        var alertView = UIAlertView(title: "提示", message: "是否确定清空当前已点商品信息", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "确定")
+        alertView.tag = 1000
+        alertView.show()
     }
     
     // 挂单操作
     func handleRestingOrderAction() {
         var order = takeOrderCompute.getOrder(membershipCardPayView.remarkTextView.text)
-        order.status = .Resting
-        order.order_index = "\(NSDate().timeIntervalSince1970)"
-        orderDataManager.cacheRestingOrder(order)
-        // 清空之前用户数据
-        takeOrderCompute.clearAllData()
+        
+        if order.payable_amount.doubleValue > 0 {
+            order.status = .Resting
+            order.order_index = "\(NSDate().timeIntervalSince1970)"
+            orderDataManager.cacheRestingOrder(order)
+            // 清空之前用户数据
+            takeOrderCompute.clearAllData()
+            presentInfoAlertView("挂单成功")
+        }
     }
     
     // 生成订单
@@ -722,9 +752,12 @@ class TMTakeOrderViewController: BaseViewController {
                     } else {
                         // 清空之前用户数据
                         strongSelf.takeOrderCompute.clearAllData()
+                        strongSelf.presentInfoAlertView("下单成功")
                     }
                 }
                 })
+        } else {
+            presentInfoAlertView("请选择商品")
         }
     }
     
@@ -807,8 +840,14 @@ class TMTakeOrderViewController: BaseViewController {
                             strongSelf.stopActivity()
                             if error == nil {
                                 if let user = user {
+                                    
+                                    if let oldUser = strongSelf.takeOrderCompute.user {
+                                        user.isScan = oldUser.isScan
+                                    }
+                                    
                                     strongSelf.takeOrderCompute.setUserDetail(user, hasProducts: true)
                                 }
+                                strongSelf.presentInfoAlertView("充值成功")
                             }
                             
                         })
@@ -836,11 +875,18 @@ class TMTakeOrderViewController: BaseViewController {
                 }
                 
             }
+            
+            // 如果是未支付订单结账，则删除之前订单
+            if takeOrderCompute.isWaitForPaying && order.payable_amount.doubleValue > 0 {
+                updateOrder()
+                
+                return
+            }
     
             order = takeOrderCompute.getOrder(orderDescription)
-            startActivity()
-            
+        
             if order.payable_amount.doubleValue > 0 {
+                startActivity()
                 orderDataManager.addOrderEntityInfo(order, completion: { [weak self] (orderId, error) in
                     if let strongSelf = self {
                         strongSelf.stopActivity()
@@ -854,10 +900,87 @@ class TMTakeOrderViewController: BaseViewController {
                             strongSelf.hideCashPayView(true)
                             strongSelf.hideMembershipCardPayView(false)
                             // 清空之前用户数据
+                            
+                            if strongSelf.takeOrderCompute.isRestingOrder && strongSelf.takeOrderCompute.orderIndex != nil {
+                                // 删除挂单数据
+                                strongSelf.orderDataManager.deleteRestingOrder(strongSelf.order)
+                                NSNotificationCenter.defaultCenter().postNotificationName(TMOrderListNeedRefresh, object: nil)
+                            }
+                            
                             strongSelf.takeOrderCompute.clearAllData()
+                            strongSelf.presentInfoAlertView("支付成功")
                         }
                     }
                     })
+            } else {
+                // 请选择商品
+                presentInfoAlertView("请选择商品")
+            }
+        }
+    }
+    
+    /**
+    加载订单信息
+    
+    :param: order 订单
+    :param: user  用户信息
+    */
+    func loadFromOrderList(order: TMOrder) {
+        takeOrderCompute.clearAllData()
+        // 设置商品列表
+        // 获取商品列表
+        for record in order.product_records {
+            if let product = shopDataManager.fetchProduct(record.product_id!) {
+                takeOrderCompute.addProduct(product)
+            }
+        }
+        
+        if let order_id = order.order_id {
+            takeOrderCompute.isWaitForPaying = true
+            takeOrderCompute.isRestingOrder = false
+        } else {
+            takeOrderCompute.isWaitForPaying = false
+            takeOrderCompute.isRestingOrder = true
+            takeOrderCompute.orderIndex = order.order_index
+        }
+        
+        self.order = order
+        tableView.reloadData()
+    }
+    
+    func updateOrder() {
+        // 更新订单状态
+        order.status = TMOrderStatus.Invalid
+        order.business_id = TMShop.sharedInstance.business_id
+        order.admin_id = TMShop.sharedInstance.admin_id
+        startActivity()
+        orderDataManager.updateOrderStatus(order) { [weak self] success in
+            if let strongSelf = self {
+                // 重新创建订单
+                if success {
+                    strongSelf.order = strongSelf.takeOrderCompute.getOrder(strongSelf.orderDescription)
+                    strongSelf.orderDataManager.addOrderEntityInfo(strongSelf.order, completion: { [weak self] (orderId, error) in
+                        if let strongSelf = self {
+                            strongSelf.stopActivity()
+                            // 订单成功
+                            if let e = error {
+                                // 提示错误
+                                var alert = UIAlertView(title: "提示", message: "支付提交失败", delegate: nil, cancelButtonTitle: "确定")
+                                alert.show()
+                            } else {
+                                // 提示操作成功
+                                strongSelf.hideCashPayView(true)
+                                strongSelf.hideMembershipCardPayView(false)
+                                // 清空之前用户数据
+                                strongSelf.takeOrderCompute.clearAllData()
+                                strongSelf.presentInfoAlertView("支付成功")
+                                NSNotificationCenter.defaultCenter().postNotificationName(TMOrderListNeedRefresh, object: nil)
+                            }
+                        }
+                        })
+                } else {
+                    strongSelf.stopActivity()
+                }
             }
         }
     }
@@ -968,11 +1091,16 @@ extension TMTakeOrderViewController: TMProductListViewControllerDelegate {
 extension TMTakeOrderViewController: UIAlertViewDelegate {
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
         if buttonIndex == 1 {
-            // 采取挂单
-            if let order = self.order {
-                orderDataManager.cacheRestingOrder(order)
-                // 清空之前用户数据
+            
+            if alertView.tag == 1000 {
                 takeOrderCompute.clearAllData()
+            } else {
+                // 采取挂单
+                if let order = self.order {
+                    orderDataManager.cacheRestingOrder(order)
+                    // 清空之前用户数据
+                    takeOrderCompute.clearAllData()
+                }
             }
         }
     }

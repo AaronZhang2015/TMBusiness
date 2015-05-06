@@ -215,6 +215,12 @@ class TMTakeOrderCompute {
     // 点单数据规则
     lazy var takeOrderRule = TMTakeOrderRule()
     
+    var isWaitForPaying: Bool = false
+    
+    var isRestingOrder: Bool = false
+    
+    var orderIndex: String?
+    
     // 用户实体信息
     var user: TMUser?
     
@@ -228,6 +234,10 @@ class TMTakeOrderCompute {
     
     func getProducts() -> [TMProduct] {
         return takeOrder.list
+    }
+    
+    func setProducts(list: [TMProduct]) {
+        takeOrder.list = list
     }
     
     /**
@@ -365,6 +375,8 @@ class TMTakeOrderCompute {
         takeOrder.clearAllData()
         takeOrderRule.clearAllData()
         clearProductList()
+        isWaitForPaying = false
+        isRestingOrder = false
         
         if let closure = clearAllDataClosure {
             closure(self)
@@ -700,6 +712,25 @@ class TMTakeOrderCompute {
         return productRecords
     }
     
+    func setProductRecords(list: [TMProductRecord]) {
+        takeOrder.list.removeAll(keepCapacity: false)
+        
+        for productRecord in list {
+            var product = TMProduct()
+            product.product_id = productRecord.product_id
+            product.product_name = productRecord.product_name
+            product.official_quotation = productRecord.price
+            product.quantity = productRecord.quantity
+            
+            takeOrder.list.append(product)
+        }
+        
+        // 刷新数据
+        if let closure = refreshDataClosure {
+            closure(self)
+        }
+    }
+    
     
     func getOrder(remark: String) -> TMOrder {
         
@@ -709,6 +740,10 @@ class TMTakeOrderCompute {
             order.user_id = user.user_id
         } else {
             order.user_id = TMShop.sharedInstance.shop_id
+        }
+        
+        if isRestingOrder && orderIndex != nil {
+            order.order_index = orderIndex
         }
         
         order.shop_id = TMShop.sharedInstance.shop_id
