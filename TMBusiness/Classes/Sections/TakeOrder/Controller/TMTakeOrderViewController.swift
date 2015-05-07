@@ -659,6 +659,10 @@ class TMTakeOrderViewController: BaseViewController {
             // 判断当前支付方式，如果是包含现金支付，并且现金确实需要额外支付
             // 那么跳转到现金支付页面，进行操作
             
+            if !takeOrderCompute.isWaitForPaying {
+                order = takeOrderCompute.getOrder(membershipCardPayView.remarkTextView.text)
+            }
+            
             var transactionMode = takeOrderCompute.getTransactionMode()
             if transactionMode == .Cash || transactionMode == .CashAndBalance {
                 if takeOrderCompute.getActualAmount() - takeOrderCompute.getUserBalance().doubleValue > 0 {
@@ -666,6 +670,8 @@ class TMTakeOrderViewController: BaseViewController {
                     cashPayView.updateEntityAllInfo(takeOrderCompute)
                     showCashPayView(nil)
                     return
+                } else {
+                    order.transaction_mode = .Balance
                 }
             }
             
@@ -676,7 +682,6 @@ class TMTakeOrderViewController: BaseViewController {
                 return
             }
             
-            order = takeOrderCompute.getOrder(membershipCardPayView.remarkTextView.text)
             if order.payable_amount.doubleValue > 0 {
                 startActivity()
                 orderDataManager.addOrderEntityInfo(order, completion: { [weak self] (orderId, error) in

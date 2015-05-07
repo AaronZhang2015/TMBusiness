@@ -681,7 +681,9 @@ class TMMemebershipCardPayView: UIView {
         actualAmountLabel.text = "¥\(compute.getActualAmount().format(format))"
         
         // 计算现金支付金额，折后金额-余额
-        var cashAmount = compute.getActualAmount() - compute.getUserBalance().doubleValue
+        var actualAmount = compute.getActualAmount()
+        var userBalance = compute.getUserBalance().doubleValue
+        var cashAmount = actualAmount - userBalance
         if cashAmount <= 0 {
             cashAmount = 0
         }
@@ -702,6 +704,7 @@ class TMMemebershipCardPayView: UIView {
                     cashButton.selected = true
                     cashLabel.hidden = false
                     cashTitleLabel.hidden = false
+                    cashLabel.text = "¥\(actualAmount.format(format))"
                 case .Balance:
                     balanceButton.selected = true
                 case .CashAndBalance:
@@ -731,6 +734,14 @@ class TMMemebershipCardPayView: UIView {
             }
             return
         }
+        
+        var actualAmount = takeOrderCompute.getActualAmount()
+        var userBalance = takeOrderCompute.getUserBalance().doubleValue
+        var cashAmount = actualAmount - userBalance
+        if cashAmount <= 0 {
+            cashAmount = 0
+        }
+        let format = ".2"
         
         if sender == cashButton {
             otherButton.selected = false
@@ -764,11 +775,13 @@ class TMMemebershipCardPayView: UIView {
                 cashLabel.hidden = false
                 cashTitleLabel.hidden = false
                 takeOrderCompute.setTransactionMode(.CashAndBalance)
+                cashLabel.text = "¥\(cashAmount.format(format))"
             } else {
                 if sender == cashButton {
                     takeOrderCompute.setTransactionMode(.Cash)
                     cashLabel.hidden = false
                     cashTitleLabel.hidden = false
+                    cashLabel.text = "¥\(actualAmount.format(format))"
                 } else {
                     takeOrderCompute.setTransactionMode(.Balance)
                 }

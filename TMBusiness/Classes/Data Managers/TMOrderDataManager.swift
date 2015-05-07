@@ -58,7 +58,8 @@ class TMOrderDataManager: TMDataManager {
             
             var discountString = ""
             if let discount = order.discount {
-                discountString = "\(discount.doubleValue.format(format))"
+                var discountRate = discount.doubleValue * 10
+                discountString = "\(discountRate.format(format))"
             }
             
             var businessId = ""
