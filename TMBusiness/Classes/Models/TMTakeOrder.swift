@@ -732,15 +732,23 @@ class TMTakeOrderCompute {
     }
     
     
-    func getOrder(remark: String) -> TMOrder {
+    func getOrder(remark: String, hasUserInfo: Bool = true, status: TMOrderStatus = .TransactionDone) -> TMOrder {
         
         var order = TMOrder()
         
-        if let user = self.user {
-            order.user_id = user.user_id
+        if hasUserInfo {
+            if let user = self.user {
+                order.user_id = user.user_id
+            } else {
+                order.user_id = TMShop.sharedInstance.shop_id
+            }
+            order.actual_amount = NSNumber(double: getActualAmount())
+            order.discount = NSNumber(double: getMaxDiscount())
         } else {
-            order.user_id = TMShop.sharedInstance.shop_id
+            order.actual_amount = NSNumber(double: getConsumeAmount())
+            order.discount = 1.0
         }
+        
         
         if isRestingOrder && orderIndex != nil {
             order.order_index = orderIndex
@@ -752,13 +760,11 @@ class TMTakeOrderCompute {
         order.transaction_mode = getTransactionMode()
         order.register_type = .Manually
         order.payable_amount = NSNumber(double: getConsumeAmount())
-        order.actual_amount = NSNumber(double: getActualAmount())
         order.coupon_id = ""
-        order.discount = NSNumber(double: getMaxDiscount())
         order.discount_type = getDiscountType()
         order.register_time = NSDate()
         order.order_description = remark
-        order.status = .TransactionDone
+        order.status = status
         order.product_records = getProductRecords()
         return order
     }

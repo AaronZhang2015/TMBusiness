@@ -322,6 +322,21 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		6B4AFCBA1AFCAB9700055BC4 /* Vendors */ = {
+			isa = PBXGroup;
+			children = (
+				6B4AFCBB1AFCAB9700055BC4 /* iBoxPay */,
+			);
+			path = Vendors;
+			sourceTree = "<group>";
+		};
+		6B4AFCBB1AFCAB9700055BC4 /* iBoxPay */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = iBoxPay;
+			sourceTree = "<group>";
+		};
 		6B4FBD8D1ACD16010017CB6F /* TakeOrder */ = {
 			isa = PBXGroup;
 			children = (
@@ -460,7 +475,7 @@
 				6B55BB551AE5E77C00413B85 /* Parser */,
 				6B5F080D1ACC55C800CBD3BD /* Sections */,
 				6B5F080C1ACC55C800CBD3BD /* Resources */,
-				6B5F08101ACC55C800CBD3BD /* Vendors */,
+				6B4AFCBA1AFCAB9700055BC4 /* Vendors */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -566,13 +581,6 @@
 				6B3DB4791ADF883D00ACC391 /* TMCacheService.swift */,
 			);
 			path = Services;
-			sourceTree = "<group>";
-		};
-		6B5F08101ACC55C800CBD3BD /* Vendors */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Vendors;
 			sourceTree = "<group>";
 		};
 		6B5F08301ACC564600CBD3BD /* Data Managers */ = {

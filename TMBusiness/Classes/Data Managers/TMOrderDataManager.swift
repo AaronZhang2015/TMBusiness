@@ -49,31 +49,35 @@ class TMOrderDataManager: TMDataManager {
     */
     func addOrderEntityInfo(order: TMOrder, completion:(String?, NSError?) -> Void) {
         
-        if let user_id = order.user_id, shop_id = order.shop_id {
-            let format = ".2"
-            var couponId = ""
-            if let conpon_id = order.coupon_id {
-                couponId = conpon_id
-            }
-            
-            var discountString = ""
-            if let discount = order.discount {
-                var discountRate = discount.doubleValue * 10
-                discountString = "\(discountRate.format(format))"
-            }
-            
-            var businessId = ""
-            if let business_id = order.business_id {
-                businessId = business_id
-            }
-            
-            var adminId = ""
-            if let admin_id = order.admin_id {
-                adminId = admin_id
-            }
-            
-            orderService.addOrderEntityInfo(userId: user_id, shopId: shop_id, transactionMode: order.transaction_mode, registerType: order.register_type, payableAmount: order.payable_amount, actualAmount: order.actual_amount, couponId: couponId, discount: discountString, discountType: order.discount_type, description: order.order_description!, businessId: businessId, orderStatus: order.status, productList: order.product_records, adminId: adminId, completion: completion)
+        let format = ".2"
+        var couponId = ""
+        if let conpon_id = order.coupon_id {
+            couponId = conpon_id
         }
+        
+        var discountString = ""
+        if let discount = order.discount {
+            var discountRate = discount.doubleValue * 10
+            discountString = "\(discountRate.format(format))"
+        }
+        
+        var businessId = ""
+        if let business_id = order.business_id {
+            businessId = business_id
+        }
+        
+        var adminId = ""
+        if let admin_id = order.admin_id {
+            adminId = admin_id
+        }
+        
+        var userId = ""
+        if let user_id = order.user_id {
+            userId = user_id
+        }
+        
+        
+        orderService.addOrderEntityInfo(userId: userId, shopId: order.shop_id!, transactionMode: order.transaction_mode, registerType: order.register_type, payableAmount: order.payable_amount, actualAmount: order.actual_amount, couponId: couponId, discount: discountString, discountType: order.discount_type, description: order.order_description!, businessId: businessId, orderStatus: order.status, productList: order.product_records, adminId: adminId, completion: completion)
     }
     
     

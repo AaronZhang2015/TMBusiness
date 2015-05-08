@@ -741,7 +741,7 @@ class TMTakeOrderViewController: BaseViewController {
     
     // 生成订单
     func addOrderAction() {
-        var order = takeOrderCompute.getOrder(membershipCardPayView.remarkTextView.text)
+        var order = takeOrderCompute.getOrder(membershipCardPayView.remarkTextView.text, hasUserInfo: false)
         order.status = TMOrderStatus.WaitForPaying
         
         if order.payable_amount.doubleValue > 0 {

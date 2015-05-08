@@ -365,7 +365,7 @@ class TMMemebershipCardPayView: UIView {
         }
         
         consumeAmountLabel = UILabel()
-        consumeAmountLabel.text = "¥150.00"
+        consumeAmountLabel.text = "¥0.00"
         consumeAmountLabel.font = UIFont.systemFontOfSize(20.0)
         consumeAmountLabel.textColor = UIColor(hex: 0x222222)
         consumeAmountLabel.textAlignment = .Right
@@ -392,7 +392,7 @@ class TMMemebershipCardPayView: UIView {
         }
         
         discountAmountLabel = UILabel()
-        discountAmountLabel.text = "-¥50.00"
+        discountAmountLabel.text = "¥0.00"
         discountAmountLabel.font = UIFont.systemFontOfSize(20.0)
         discountAmountLabel.textColor = UIColor(hex: 0x1E8EBC)
         discountAmountLabel.textAlignment = .Right
@@ -419,7 +419,7 @@ class TMMemebershipCardPayView: UIView {
         }
         
         actualAmountLabel = UILabel()
-        actualAmountLabel.text = "¥100.00"
+        actualAmountLabel.text = "¥0.00"
         actualAmountLabel.font = UIFont.systemFontOfSize(20.0)
         actualAmountLabel.textColor = UIColor(hex: 0xFE0200)
         actualAmountLabel.textAlignment = .Right
@@ -447,7 +447,7 @@ class TMMemebershipCardPayView: UIView {
         }
         
         cashLabel = UILabel()
-        cashLabel.text = "¥50.00"
+        cashLabel.text = "¥0.00"
         cashLabel.font = UIFont.systemFontOfSize(20.0)
         cashLabel.textColor = UIColor(hex: 0x1E8EBC)
         cashLabel.textAlignment = .Right
@@ -674,7 +674,7 @@ class TMMemebershipCardPayView: UIView {
         consumeAmountLabel.text = "¥\(compute.getConsumeAmount().format(format))"
         
         // 优惠金额
-        var discountAmount = compute.getActualAmount() - compute.getConsumeAmount()
+        var discountAmount = compute.getConsumeAmount() - compute.getActualAmount()
         discountAmountLabel.text = "¥\(discountAmount.format(format))"
         
         // 折后金额
