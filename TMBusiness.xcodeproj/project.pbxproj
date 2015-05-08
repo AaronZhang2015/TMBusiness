@@ -16,6 +16,7 @@
 		6B3E20DF1AE9E23200BD80D7 /* TMOrderDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B3E20DE1AE9E23200BD80D7 /* TMOrderDataManager.swift */; };
 		6B3E20E71AEA41B500BD80D7 /* TMProductRecordManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B3E20E61AEA41B500BD80D7 /* TMProductRecordManagedObject.swift */; };
 		6B3E20E91AEA41B600BD80D7 /* TMRestingOrderManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B3E20E81AEA41B600BD80D7 /* TMRestingOrderManagedObject.swift */; };
+		6B4AFCC71AFCB7AD00055BC4 /* CryptoSwift.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 6B4AFCC21AFCAF6D00055BC4 /* CryptoSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6B4FBD871ACCDD6F0017CB6F /* TMLoginHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4FBD861ACCDD6F0017CB6F /* TMLoginHeaderView.swift */; };
 		6B4FBD891ACCED500017CB6F /* TMSegmentControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4FBD881ACCED500017CB6F /* TMSegmentControl.swift */; };
 		6B4FBD911ACD16290017CB6F /* TMTakeOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4FBD901ACD16290017CB6F /* TMTakeOrderViewController.swift */; };
@@ -102,6 +103,27 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		6B4AFCC11AFCAF6D00055BC4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6B4AFCBC1AFCAF6D00055BC4 /* CryptoSwift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 754BE45519693E190098E6F3;
+			remoteInfo = CryptoSwift;
+		};
+		6B4AFCC31AFCAF6D00055BC4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6B4AFCBC1AFCAF6D00055BC4 /* CryptoSwift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 754BE46019693E190098E6F3;
+			remoteInfo = CryptoSwiftTests;
+		};
+		6B4AFCC51AFCB7A500055BC4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6B4AFCBC1AFCAF6D00055BC4 /* CryptoSwift.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 754BE45419693E190098E6F3;
+			remoteInfo = CryptoSwift;
+		};
 		6B5F07F91ACC550600CBD3BD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6B5F07F21ACC550600CBD3BD /* Alamofire.xcodeproj */;
@@ -188,6 +210,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				6B4AFCC71AFCB7AD00055BC4 /* CryptoSwift.framework in Copy Frameworks */,
 				6B5F08701ACC5A0700CBD3BD /* Snap.framework in Copy Frameworks */,
 				6B5F08051ACC551200CBD3BD /* Alamofire.framework in Copy Frameworks */,
 			);
@@ -206,6 +229,7 @@
 		6B3E20DE1AE9E23200BD80D7 /* TMOrderDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMOrderDataManager.swift; sourceTree = "<group>"; };
 		6B3E20E61AEA41B500BD80D7 /* TMProductRecordManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMProductRecordManagedObject.swift; sourceTree = "<group>"; };
 		6B3E20E81AEA41B600BD80D7 /* TMRestingOrderManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMRestingOrderManagedObject.swift; sourceTree = "<group>"; };
+		6B4AFCBC1AFCAF6D00055BC4 /* CryptoSwift.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CryptoSwift.xcodeproj; path = CryptoSwift/CryptoSwift.xcodeproj; sourceTree = "<group>"; };
 		6B4FBD861ACCDD6F0017CB6F /* TMLoginHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMLoginHeaderView.swift; sourceTree = "<group>"; };
 		6B4FBD881ACCED500017CB6F /* TMSegmentControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMSegmentControl.swift; sourceTree = "<group>"; };
 		6B4FBD901ACD16290017CB6F /* TMTakeOrderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMTakeOrderViewController.swift; sourceTree = "<group>"; };
@@ -335,6 +359,15 @@
 			children = (
 			);
 			path = iBoxPay;
+			sourceTree = "<group>";
+		};
+		6B4AFCBD1AFCAF6D00055BC4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6B4AFCC21AFCAF6D00055BC4 /* CryptoSwift.framework */,
+				6B4AFCC41AFCAF6D00055BC4 /* CryptoSwiftTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		6B4FBD8D1ACD16010017CB6F /* TakeOrder */ = {
@@ -676,6 +709,7 @@
 		6B78524A1ACC353C008F1A49 = {
 			isa = PBXGroup;
 			children = (
+				6B4AFCBC1AFCAF6D00055BC4 /* CryptoSwift.xcodeproj */,
 				6B5F07F21ACC550600CBD3BD /* Alamofire.xcodeproj */,
 				6B5F085F1ACC59F600CBD3BD /* Snap.xcodeproj */,
 				6B7852551ACC353C008F1A49 /* TMBusiness */,
@@ -790,6 +824,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				6B4AFCC61AFCB7A500055BC4 /* PBXTargetDependency */,
 				6B5F086F1ACC5A0200CBD3BD /* PBXTargetDependency */,
 				6B5F08021ACC550C00CBD3BD /* PBXTargetDependency */,
 			);
@@ -851,6 +886,10 @@
 					ProjectRef = 6B5F07F21ACC550600CBD3BD /* Alamofire.xcodeproj */;
 				},
 				{
+					ProductGroup = 6B4AFCBD1AFCAF6D00055BC4 /* Products */;
+					ProjectRef = 6B4AFCBC1AFCAF6D00055BC4 /* CryptoSwift.xcodeproj */;
+				},
+				{
 					ProductGroup = 6B5F08601ACC59F600CBD3BD /* Products */;
 					ProjectRef = 6B5F085F1ACC59F600CBD3BD /* Snap.xcodeproj */;
 				},
@@ -864,6 +903,20 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		6B4AFCC21AFCAF6D00055BC4 /* CryptoSwift.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CryptoSwift.framework;
+			remoteRef = 6B4AFCC11AFCAF6D00055BC4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6B4AFCC41AFCAF6D00055BC4 /* CryptoSwiftTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = CryptoSwiftTests.xctest;
+			remoteRef = 6B4AFCC31AFCAF6D00055BC4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		6B5F07FA1ACC550600CBD3BD /* Alamofire.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -1047,6 +1100,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		6B4AFCC61AFCB7A500055BC4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = CryptoSwift;
+			targetProxy = 6B4AFCC51AFCB7A500055BC4 /* PBXContainerItemProxy */;
+		};
 		6B5F08021ACC550C00CBD3BD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Alamofire iOS";

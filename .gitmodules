@@ -7,3 +7,6 @@
 [submodule "Snap"]
 	path = Snap
 	url = https://github.com/Masonry/Snap.git
+[submodule "CryptoSwift"]
+	path = CryptoSwift
+	url = https://github.com/krzyzanowskim/CryptoSwift.git

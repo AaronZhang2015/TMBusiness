@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import CryptoSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -22,6 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navigationContorller = BaseNavigationController(rootViewController: masterViewController)
         window?.rootViewController = navigationContorller
         window?.makeKeyAndVisible()
+        println("aaaaa".md5())
         return true
     }
 
