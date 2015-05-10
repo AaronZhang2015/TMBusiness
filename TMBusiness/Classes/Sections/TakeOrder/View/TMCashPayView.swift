@@ -138,6 +138,7 @@ class TMCashPayView: UIView {
             make.leading.equalTo(actualTitleLabel.snp_trailing).offset(37)
             make.top.equalTo(actualTitleLabel.snp_top)
             make.width.greaterThanOrEqualTo(20)
+            make.width.lessThanOrEqualTo(100)
             make.height.equalTo(actualTitleLabel.snp_height)
         }
         

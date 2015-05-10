@@ -39,6 +39,10 @@ class TMTakeOrderViewController: BaseViewController {
     // 商品列表页面
     private var productListContainerView: UIView!
     
+    var productListContainerViewleadingConstraint: Constraint!
+    
+    var cashPayViewLeadingConstraint: Constraint!
+    
     // 订单
     var order: TMOrder!
     
@@ -232,17 +236,28 @@ class TMTakeOrderViewController: BaseViewController {
     
     // 设置所有页面视图
     func configureView() {
-        var bgView = UIView(frame: CGRectMake(8, 10, 444, 570))
-        bgView.backgroundColor = UIColor.whiteColor()
+        var bgView = UIView()
         view.addSubview(bgView)
+        bgView.snp_makeConstraints { (make) -> Void in
+            make.leading.equalTo(8)
+            make.top.equalTo(10)
+            make.size.equalTo(CGSizeMake(444, 570))
+        }
+        bgView.backgroundColor = UIColor.whiteColor()
+        
         
         var bgImageView = UIImageView(image: UIImage(named: "xiaopiaobg"))
-        bgImageView.frame = CGRectMake(0, 0, 444, 570)
         bgView.addSubview(bgImageView)
+        bgImageView.snp_makeConstraints { (make) -> Void in
+            make.leading.equalTo(0)
+            make.top.equalTo(0)
+            make.size.equalTo(CGSizeMake(444, 570))
+        }
+        
         
         // 备注按钮
         remarkButton = UIButton.buttonWithType(.Custom) as! UIButton
-        remarkButton.frame = CGRectMake(350, 2, 70, 30)
+//        remarkButton.frame = CGRectMake(350, 2, 70, 30)
         remarkButton.setImage(UIImage(named: "remark_add"), forState: .Normal)
         remarkButton.setTitle("备注", forState: .Normal)
         remarkButton.titleLabel?.font = UIFont.systemFontOfSize(17.0)
@@ -251,43 +266,87 @@ class TMTakeOrderViewController: BaseViewController {
         remarkButton.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, remarkButton.titleLabel!.width)
         remarkButton.addTarget(self, action: "handleRemarkAction", forControlEvents: .TouchUpInside)
         bgView.addSubview(remarkButton)
+        remarkButton.snp_makeConstraints { (make) -> Void in
+            make.leading.equalTo(350)
+            make.top.equalTo(2)
+            make.width.equalTo(70)
+            make.height.equalTo(30)
+        }
         
-        var orderContentView = UIView(frame: CGRectMake(5, 34, 434, 365))
+        var orderContentView = UIView()//UIView(frame: CGRectMake(5, 34, 434, 365))
         orderContentView.layer.borderWidth = 1
         orderContentView.layer.borderColor = UIColor(hex: 0xD4D4D4).CGColor
         bgView.addSubview(orderContentView)
+        orderContentView.snp_makeConstraints { (make) -> Void in
+            make.leading.equalTo(5)
+            make.top.equalTo(34)
+            make.size.equalTo(CGSizeMake(434, 365))
+        }
         
-        orderListHeaderView = TMTakeOrderListHeaderView(frame: CGRectMake(0, 0, 434, 31))
+        orderListHeaderView = TMTakeOrderListHeaderView(frame: CGRectZero)//TMTakeOrderListHeaderView(frame: CGRectMake(0, 0, 434, 31))
         orderContentView.addSubview(orderListHeaderView)
+        orderListHeaderView.snp_makeConstraints { (make) -> Void in
+            make.leading.equalTo(0)
+            make.top.equalTo(0)
+            make.size.equalTo(CGSizeMake(434, 31))
+        }
         
-        tableView = UITableView(frame: CGRectMake(0, 31, 434, 334))
+        tableView = UITableView()//(frame: CGRectMake(0, 31, 434, 334))
         tableView.delegate = self
         tableView.dataSource = self
         tableView.rowHeight = 50.0
         tableView.separatorStyle = .None
         orderContentView.addSubview(tableView)
+        tableView.snp_makeConstraints { (make) -> Void in
+            make.leading.equalTo(0)
+            make.top.equalTo(31)
+            make.size.equalTo(CGSizeMake(434, 334))
+        }
         
         // Register class
         tableView.registerClass(TMTakeOrderListCell.self, forCellReuseIdentifier: takeOrderListCellReuseIdentifier)
         
-        orderDetailView = TMTakeOrderDetailView(frame: CGRectMake(0, 399, 444, 171))
+        orderDetailView = TMTakeOrderDetailView(frame: CGRectZero)//TMTakeOrderDetailView(frame: CGRectMake(0, 399, 444, 171))
         orderDetailView.resetButton.addTarget(self, action: "handleResetProductList", forControlEvents: .TouchUpInside)
         orderDetailView.restingButton.addTarget(self, action: "handleRestingOrderAction", forControlEvents: .TouchUpInside)
         orderDetailView.takeOrderButton.addTarget(self, action: "addOrderAction", forControlEvents: .TouchUpInside)
         bgView.addSubview(orderDetailView)
+        orderDetailView.snp_makeConstraints { (make) -> Void in
+            make.leading.equalTo(0)
+            make.top.equalTo(399)
+            make.size.equalTo(CGSizeMake(444, 171))
+        }
         
-        orderPayWayView = TMTakeOrderPayWayView(frame: CGRectMake(0, bgView.bottom, 558, view.height - 64 - bgView.bottom))
+        orderPayWayView = TMTakeOrderPayWayView(frame: CGRectZero)//TMTakeOrderPayWayView(frame: CGRectMake(0, bgView.bottom, 558, view.height - 64 - bgView.bottom))
         orderPayWayView.cashPayButton.addTarget(self, action: "showCashPayView:", forControlEvents: .TouchUpInside)
         orderPayWayView.balancePayButton.addTarget(self, action: "showMembershipCardPayView", forControlEvents: .TouchUpInside)
         view.addSubview(orderPayWayView)
+        orderPayWayView.snp_makeConstraints { (make) -> Void in
+            make.leading.equalTo(0)
+            make.top.equalTo(bgView.snp_bottom)
+            make.width.equalTo(558)
+            make.bottom.equalTo(0)
+        }
         
         //分割线
         var separatorView = UIImageView(image: UIImage(named: "order_separator"))
-        separatorView.frame = CGRectMake(463, 0, 2, view.height - 64)
+        //separatorView.frame = CGRectMake(463, 0, 2, view.height - 64)
         view.addSubview(separatorView)
+        separatorView.snp_makeConstraints { (make) -> Void in
+            make.leading.equalTo(463)
+            make.top.equalTo(0)
+            make.bottom.equalTo(0)
+            make.width.equalTo(2)
+        }
         
-        productListContainerView = UIView(frame: CGRectMake(465, 0, 559, view.height - 64))
+        productListContainerView = UIView()//(frame: CGRectMake(465, 0, 559, view.height - 64))
         view.addSubview(productListContainerView)
+        productListContainerView.snp_makeConstraints { (make) -> Void in
+            self.productListContainerViewleadingConstraint = make.leading.equalTo(465).constraint
+            make.top.equalTo(0)
+            make.trailing.equalTo(0)
+            make.bottom.equalTo(0)
+        }
         
         // 监听键盘弹出事件
         /*
@@ -481,25 +540,25 @@ class TMTakeOrderViewController: BaseViewController {
         
         if cashPayView.superview == nil {
             view.addSubview(cashPayView)
-            cashPayView.frame = productListContainerView.frame
-            cashPayView.left = view.width
-        }
-    
-        if CGRectEqualToRect(cashPayView.frame, productListContainerView.frame) {
-            return
+            cashPayView.snp_remakeConstraints({ (make) -> Void in
+                self.cashPayViewLeadingConstraint = make.leading.equalTo(view.snp_right).offset(0).constraint
+                make.top.equalTo(productListContainerView.snp_top)
+                make.width.equalTo(productListContainerView.snp_width)
+                make.height.equalTo(productListContainerView.snp_height)
+            })
+            view.layoutIfNeeded()
         }
         
         cashPayView.actualLabel.text = "0"
         cashPayView.chargeLabel.text = "0"
         
-        var rect = productListContainerView.frame
-        
-        UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseInOut, animations: { () -> Void in
-            self.cashPayView.frame = rect
-            }) { finished in
-                if sender != nil {
-                    self.hideMembershipCardPayView(false)
-                }
+        self.cashPayViewLeadingConstraint.updateOffset(-559)
+        UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+            self.view.layoutIfNeeded()
+        }) { (finished) -> Void in
+            if sender != nil {
+                self.hideMembershipCardPayView(false)
+            }
         }
     }
     
@@ -516,15 +575,9 @@ class TMTakeOrderViewController: BaseViewController {
             return
         }
         
-        if cashPayView.left >= view.width {
-            return
-        }
-        
-        var rect = productListContainerView.frame
-        rect.left = view.width
-        
+        self.cashPayViewLeadingConstraint.updateOffset(0)
         UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseInOut, animations: { () -> Void in
-            self.cashPayView.frame = rect
+            self.view.layoutIfNeeded()
             }) {finished in
                 self.cashPayView.removeFromSuperview()
         }
@@ -931,6 +984,8 @@ class TMTakeOrderViewController: BaseViewController {
     :param: user  用户信息
     */
     func loadFromOrderList(order: TMOrder) {
+        hideMembershipCardPayView(false)
+        hideCashPayView(false)
         takeOrderCompute.clearAllData()
         // 设置商品列表
         // 获取商品列表
