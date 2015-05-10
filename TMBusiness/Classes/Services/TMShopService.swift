@@ -56,8 +56,6 @@ class TMShopService: NSObject {
             case let .Value(json):
                 // 解析数据
                 let data = json["data"]
-                
-                println(data)
                 // 分类列表
                 var models = [TMCategory]()
                 
@@ -70,7 +68,6 @@ class TMShopService: NSObject {
                     model.category_name = result["category_name"].stringValue
                     model.is_discount = result["is_discount"].numberValue
                     model.discount_type = result["discount_type"].stringValue
-                    
                     
                     // 解析分类下的商品
                     var products = [TMProduct]()

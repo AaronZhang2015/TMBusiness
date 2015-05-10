@@ -74,7 +74,7 @@ class TMUserService: NSObject {
             case let .Value(json):
                 // 解析数据
                 let data = json["data"]
-                println(data)
+//                println(data)
             }
             
         }
@@ -193,12 +193,10 @@ class TMUserService: NSObject {
         }
     }
     
-    func fetchUserEntityOrderList(condition: String, conditionType: TMConditionType, startTime: String, endTime: String, searchType: TMSearchType, orderStatus: TMOrderStatus, orderPageIndex: String, orderPageSize: String, showProductRecord: String, productRecordPageIndex: String, productRecordPageSize: String, adminId: String, completion: ([TMOrder]?, NSError?) -> Void) {
-    
     /**
     根据终生号或手机号或商铺编号获取指定状态指定时间段内或全部或最后一笔订单或订单列表，并显示每笔订单包含的商品交易记录
     */
-//    func fetchUserEntityOrderList(condition: String)(conditionType: TMConditionType)(startTime: String)(endTime: String)(searchType: TMSearchType)(orderStatus: TMOrderStatus)(orderPageIndex: String)(orderPageSize: String)(showProductRecord: String)(productRecordPageIndex: String)(productRecordPageSize: String)(adminId: String)(completion: ([TMOrder]?, NSError?) -> Void) {
+    func fetchUserEntityOrderList(condition: String, conditionType: TMConditionType, startTime: String, endTime: String, searchType: TMSearchType, orderStatus: TMOrderStatus, orderPageIndex: String, orderPageSize: String, showProductRecord: String, productRecordPageIndex: String, productRecordPageSize: String, adminId: String, completion: ([TMOrder]?, NSError?) -> Void) {
         var parameters = ["condition": condition,
             "condition_type": "\(conditionType.rawValue)",
             "start_time": startTime,
@@ -226,6 +224,30 @@ class TMUserService: NSObject {
                     orderList.append(order)
                 }
                 completion(orderList, nil)
+            }
+        }
+    }
+    
+    // 获取盒子信息
+    func fetchBoxPayEntityInfo(sn: String, extensionField: String, businessId: String, shopId: String, adminId: String, completion: (TMBoxPay?, NSError?) -> Void) {
+        var parameters = [
+            "search_field": sn,
+            "extension_field": extensionField,
+            "business_id": businessId,
+            "shop_id": shopId,
+            "admin_id": adminId,
+            "device_type": "\(AppManager.platform().rawValue)"]
+        
+        manager.request(.POST, relativePath: "iBoxPay_getEntityInfo", parameters: parameters) { (result) -> Void in
+            switch result {
+            case let .Error(e):
+                completion(nil, e)
+            case let .Value(json):
+                // 解析数据
+                let data = json["data"]
+                
+                var boxPay = TMParser.parseBoxPay(data)
+                completion(boxPay, nil)
             }
         }
     }

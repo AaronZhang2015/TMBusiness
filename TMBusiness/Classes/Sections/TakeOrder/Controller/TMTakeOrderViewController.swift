@@ -8,6 +8,7 @@
 
 import UIKit
 import Snap
+import CryptoSwift
 
 let takeOrderListCellReuseIdentifier = "TakeOriderListCell"
 
@@ -20,6 +21,8 @@ class TMTakeOrderViewController: BaseViewController {
     private lazy var userDataManager: TMUserDataManager = TMUserDataManager()
     
     private lazy var orderDataManager: TMOrderDataManager = TMOrderDataManager()
+    
+    var loginViewController: CBLoginViewController!
     
     // 备注操作
     private var remarkButton: UIButton!
@@ -562,6 +565,7 @@ class TMTakeOrderViewController: BaseViewController {
     :param: animated 动画是否开启
     */
     func hideMembershipCardPayView(animated: Bool) {
+        membershipCardPayView.clearTransactionButtonState()
         if membershipCardPayView.superview == nil {
             return
         }
@@ -673,6 +677,9 @@ class TMTakeOrderViewController: BaseViewController {
                 } else {
                     order.transaction_mode = .Balance
                 }
+            } else if (transactionMode == TMTransactionMode.IBoxPay) {
+                // 如果是盒子支付，那么首先更新订单状态为未支付-
+                order.status = TMOrderStatus.WaitForPaying
             }
             
             // 如果是未支付订单结账，则删除之前订单
@@ -701,9 +708,16 @@ class TMTakeOrderViewController: BaseViewController {
                                 strongSelf.orderDataManager.deleteRestingOrder(strongSelf.order)
                                 NSNotificationCenter.defaultCenter().postNotificationName(TMOrderListNeedRefresh, object: nil)
                             }
-                            // 清空之前用户数据
-                            strongSelf.takeOrderCompute.clearAllData()
-                            strongSelf.presentInfoAlertView("支付成功")
+
+                            // 如果不是刷卡的话，提示成功
+                            if strongSelf.order.transaction_mode != TMTransactionMode.IBoxPay {
+                                strongSelf.presentInfoAlertView("支付成功")
+                                // 清空之前用户数据
+                                strongSelf.takeOrderCompute.clearAllData()
+                            } else {
+                                // 转入盒子支付页面
+                                strongSelf.payWithCashBox(orderId!, amount: strongSelf.order.actual_amount)
+                            }
                         }
                     }
                     })
@@ -936,7 +950,9 @@ class TMTakeOrderViewController: BaseViewController {
         // 获取商品列表
         for record in order.product_records {
             if let product = shopDataManager.fetchProduct(record.product_id!) {
-                takeOrderCompute.addProduct(product)
+                for var index = 0; index < record.quantity.integerValue; ++index {
+                    takeOrderCompute.addProduct(product)
+                }
             }
         }
         
@@ -988,6 +1004,71 @@ class TMTakeOrderViewController: BaseViewController {
                 }
             }
         }
+    }
+    
+    
+    func payWithCashBox(orderId: String, amount: NSNumber) {
+        var signMessage: String = ""
+        var signDict = NSMutableDictionary()
+        
+        var lv = CBLoginViewController()
+        lv.setIsDefualtConnectTypeForBT(false)
+        lv.delegate = self
+        
+        // 加载支付信息
+        //---------登录参数---------------------------------
+        lv.datas.username = "15195988772#02"
+        
+        //必须用MD5加密后的密文,并且转换为大写
+        lv.datas.password = "123456".md5()!.uppercaseString
+        // 商户名称
+        lv.datas.outMchName = "ThingMe"
+        // 商户合作ID,由盒子支付分配
+        lv.datas.partner = "10332010089990134"
+        signDict.setValue(lv.datas.partner, forKey: "partner")
+        
+        // 第三方的公司交易订单号
+        lv.datas.outTradeNo = orderId
+        signDict.setValue(lv.datas.outTradeNo, forKey: "outTradeNo")
+        
+        // 交易金额
+        lv.datas.totalFee = Int64(amount.doubleValue * 100) //精确到分
+        signDict.setValue(NSNumber(longLong: lv.datas.totalFee), forKey: "totalFee")
+        
+        // 编码方式
+        lv.datas._inputCharset = "UTF-8"
+        signDict.setValue(lv.datas._inputCharset, forKey: "_inputCharset")
+        
+        // 服务器回调的地址
+        lv.datas.notifyUrl = "http://172.30.10.22:8080/iboxpay"
+        signDict.setValue(lv.datas.notifyUrl, forKey: "notifyUrl")
+        
+        // 加密方式（加密必须需要盒子支付公司配置登录账号的公钥key,否则交易不成功，提示公钥不匹配；这个可以找项目负责人处理）
+        lv.datas.signType = "MD5"
+        
+        var returnSortStr = ""
+        var keyArray = signDict.allKeys as NSArray
+        keyArray = keyArray.sortedArrayUsingSelector("compare:")
+        for var i = 0; i < keyArray.count; ++i {
+            if (count(returnSortStr) == 0) {
+                var key = keyArray[i] as! String
+                var tempStr = "\(key)=\(signDict[key]))"
+                returnSortStr = "\(returnSortStr)\(tempStr)"
+            } else {
+                var key = keyArray[i] as! String
+                var tempStr = "&\(key)=\(signDict[key]))"
+                returnSortStr = "\(returnSortStr)\(tempStr)"
+            }
+        }
+        
+        signMessage = returnSortStr
+        signMessage = signMessage.stringByAppendingString("&key=f218542278ff4e85b7ce00ed390c4ba7")
+        signMessage.md5()
+        
+        lv.datas.signContent = signMessage
+        var nc = UINavigationController(rootViewController: lv)
+        loginViewController = lv
+        self.presentViewController(nc, animated: true, completion: nil)
     }
 }
 
@@ -1110,3 +1191,57 @@ extension TMTakeOrderViewController: UIAlertViewDelegate {
         }
     }
 }
+
+
+// MARK: -
+    
+extension TMTakeOrderViewController: CBLoginViewControllerDelegate {
+    func authError() {
+        if self.loginViewController != nil {
+            loginViewController.dismissViewControllerAnimated(true, completion: { [weak self] () -> Void in
+                // 支付失败
+                if let strongSelf = self {
+                    strongSelf.presentInfoAlertView("授权失败，请重新尝试")
+                }
+                })
+        }
+    }
+}
+
+extension TMTakeOrderViewController: CashBoxManagerSDKDelegate {
+    
+    func payErrorWithInfo(error: NSError!) {
+        if self.loginViewController != nil {
+            loginViewController.dismissViewControllerAnimated(true, completion: { [weak self] () -> Void in
+                // 支付失败
+                if let strongSelf = self {
+                    strongSelf.presentInfoAlertView("支付失败，请去未支付订单查看")
+                }
+            })
+        }
+    }
+    
+    func payResultWithInfo(info: [NSObject : AnyObject]!) {
+        if self.loginViewController != nil {
+            loginViewController.dismissViewControllerAnimated(true, completion: { [weak self] () -> Void in
+                // 支付失败
+                if let strongSelf = self {
+                    strongSelf.presentInfoAlertView("支付成功")
+                    // 更改支付状态
+                }
+                })
+        }
+    }
+    
+    func loginErrorWithInfo(imgData: NSData!) {
+        if self.loginViewController != nil {
+            loginViewController.dismissViewControllerAnimated(true, completion: { [weak self] () -> Void in
+                // 支付失败
+                if let strongSelf = self {
+                    strongSelf.presentInfoAlertView("登录失败，请重新登录，如果不行，请去重新设置盒子SN号码")
+                }
+                })
+        }
+    }
+}
+

@@ -23,7 +23,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navigationContorller = BaseNavigationController(rootViewController: masterViewController)
         window?.rootViewController = navigationContorller
         window?.makeKeyAndVisible()
-        println("aaaaa".md5())
         return true
     }
 

@@ -114,6 +114,14 @@ class TMOrderViewController: BaseViewController {
             
         }
         
+        view.changeOrderClosure = { [weak self] order in
+            // 转入改单页面
+            if let strongSelf = self {
+                var masterViewController = strongSelf.parentViewController as! MasterViewController
+                masterViewController.handleCheckoutAction(order)
+            }
+        }
+        
         return view
         }()
 
@@ -248,9 +256,11 @@ class TMOrderViewController: BaseViewController {
             pageIndex = orderListView.data.count
         }
         
+        startActivity()
         userDataManager.fetchUserEntityOrderList(TMShop.sharedInstance.shop_id, conditionType: TMConditionType.ShopId, orderStatus: status, orderPageIndex: pageIndex, adminId: TMShop.sharedInstance.admin_id) { [weak self](list, error) -> Void in
+            
             if let strongSelf = self {
-                
+                strongSelf.stopActivity()
                 // 待支付状态
                 if status == .WaitForPaying {
                     
@@ -268,7 +278,6 @@ class TMOrderViewController: BaseViewController {
                         
                         strongSelf.orderListView.data = strongSelf.waitForPayingOrderDataList
                     }
-                    
                     
                 } else {
                     if let result = list {
