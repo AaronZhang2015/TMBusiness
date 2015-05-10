@@ -323,6 +323,8 @@ class TMTakeOrderViewController: BaseViewController {
         orderPayWayView = TMTakeOrderPayWayView(frame: CGRectZero)//TMTakeOrderPayWayView(frame: CGRectMake(0, bgView.bottom, 558, view.height - 64 - bgView.bottom))
         orderPayWayView.cashPayButton.addTarget(self, action: "showCashPayView:", forControlEvents: .TouchUpInside)
         orderPayWayView.balancePayButton.addTarget(self, action: "showMembershipCardPayView", forControlEvents: .TouchUpInside)
+        orderPayWayView.cardPayButton.addTarget(self, action: "handleCardPayAction", forControlEvents: .TouchUpInside)
+        orderPayWayView.otherPayButton.addTarget(self, action: "handleOtherPayAction", forControlEvents: .TouchUpInside)
         view.addSubview(orderPayWayView)
         orderPayWayView.snp_makeConstraints { (make) -> Void in
             make.leading.equalTo(0)
@@ -1061,6 +1063,136 @@ class TMTakeOrderViewController: BaseViewController {
         }
     }
     
+    // MARK: - 结算方式
+    
+    /*
+     * 刷卡支付
+     */
+    func handleCardPayAction() {
+        // 如果是未支付订单结账，则删除之前订单
+        if takeOrderCompute.isWaitForPaying && order.payable_amount.doubleValue > 0 {
+            
+            // 更新订单状态
+            // 更新旧订单为无效
+            order.status = TMOrderStatus.Invalid
+            order.business_id = TMShop.sharedInstance.business_id
+            order.admin_id = TMShop.sharedInstance.admin_id
+            startActivity()
+            orderDataManager.updateOrderStatus(order) { [weak self] success in
+                if let strongSelf = self {
+                    // 重新创建订单
+                    if success {
+                        strongSelf.order = strongSelf.takeOrderCompute.getOrder(strongSelf.orderDescription)
+                        
+                        // 更新新订单为代支付
+                        strongSelf.order.status = TMOrderStatus.WaitForPaying
+                        strongSelf.order.transaction_mode = TMTransactionMode.IBoxPay
+                        strongSelf.orderDataManager.addOrderEntityInfo(strongSelf.order, completion: { [weak self] (orderId, error) in
+                            if let strongSelf = self {
+                                strongSelf.stopActivity()
+                                // 订单成功
+                                if let e = error {
+                                    // 提示错误
+                                    var alert = UIAlertView(title: "提示", message: "支付提交失败", delegate: nil, cancelButtonTitle: "确定")
+                                    alert.show()
+                                } else {
+                                    // 提示操作成功
+                                    strongSelf.hideCashPayView(true)
+                                    strongSelf.hideMembershipCardPayView(false)
+                                    strongSelf.payWithCashBox(orderId!, amount: strongSelf.order.payable_amount)
+   
+                                    // 清空之前用户数据
+                                    strongSelf.takeOrderCompute.clearAllData()
+//                                    strongSelf.presentInfoAlertView("支付成功")
+//                                    NSNotificationCenter.defaultCenter().postNotificationName(TMOrderListNeedRefresh, object: nil)
+                                }
+                            }
+                            })
+                    } else {
+                        strongSelf.stopActivity()
+                    }
+                }
+            }
+
+            return
+        }
+        
+        order = takeOrderCompute.getOrder(orderDescription)
+        order.transaction_mode = TMTransactionMode.IBoxPay
+        if order.payable_amount.doubleValue > 0 {
+            startActivity()
+            orderDataManager.addOrderEntityInfo(order, completion: { [weak self] (orderId, error) in
+                if let strongSelf = self {
+                    strongSelf.stopActivity()
+                    // 订单成功
+                    if let e = error {
+                        // 提示错误
+                        var alert = UIAlertView(title: "提示", message: "支付提交失败", delegate: nil, cancelButtonTitle: "确定")
+                        alert.show()
+                    } else {
+                        // 提示操作成功
+                        strongSelf.hideCashPayView(true)
+                        strongSelf.hideMembershipCardPayView(false)
+                        strongSelf.payWithCashBox(orderId!, amount: strongSelf.order.payable_amount)
+                        // 清空之前用户数据
+                        strongSelf.takeOrderCompute.clearAllData()
+//                        strongSelf.presentInfoAlertView("支付成功")
+                        
+                    }
+                }
+                })
+        } else {
+            // 请选择商品
+            presentInfoAlertView("请选择商品")
+        }
+    }
+    
+    /*
+     * 其他支付
+     */
+    func handleOtherPayAction() {
+        // 如果是未支付订单结账，则删除之前订单
+        if takeOrderCompute.isWaitForPaying && order.payable_amount.doubleValue > 0 {
+            updateOrder()
+            
+            return
+        }
+        order = takeOrderCompute.getOrder(orderDescription)
+        order.transaction_mode = TMTransactionMode.Other
+        
+        if order.payable_amount.doubleValue > 0 {
+            startActivity()
+            orderDataManager.addOrderEntityInfo(order, completion: { [weak self] (orderId, error) in
+                if let strongSelf = self {
+                    strongSelf.stopActivity()
+                    // 订单成功
+                    if let e = error {
+                        // 提示错误
+                        var alert = UIAlertView(title: "提示", message: "支付提交失败，是否转为挂单", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "挂单")
+                        alert.show()
+                    } else {
+                        // 提示操作成功
+                        strongSelf.hideCashPayView(true)
+                        strongSelf.hideMembershipCardPayView(false)
+                        // 清空之前用户数据
+                        
+                        if strongSelf.takeOrderCompute.isRestingOrder && strongSelf.takeOrderCompute.orderIndex != nil {
+                            // 删除挂单数据
+                            strongSelf.orderDataManager.deleteRestingOrder(strongSelf.order)
+                            NSNotificationCenter.defaultCenter().postNotificationName(TMOrderListNeedRefresh, object: nil)
+                        }
+                        
+                        strongSelf.takeOrderCompute.clearAllData()
+                        strongSelf.presentInfoAlertView("支付成功")
+                    }
+                }
+                })
+        } else {
+            // 请选择商品
+            presentInfoAlertView("请选择商品")
+        }
+    }
+    
     
     func payWithCashBox(orderId: String, amount: NSNumber) {
         var signMessage: String = ""
@@ -1256,6 +1388,7 @@ extension TMTakeOrderViewController: CBLoginViewControllerDelegate {
             loginViewController.dismissViewControllerAnimated(true, completion: { [weak self] () -> Void in
                 // 支付失败
                 if let strongSelf = self {
+                    strongSelf.takeOrderCompute.clearAllData()
                     strongSelf.presentInfoAlertView("授权失败，请重新尝试")
                 }
                 })
@@ -1270,6 +1403,7 @@ extension TMTakeOrderViewController: CashBoxManagerSDKDelegate {
             loginViewController.dismissViewControllerAnimated(true, completion: { [weak self] () -> Void in
                 // 支付失败
                 if let strongSelf = self {
+                    strongSelf.takeOrderCompute.clearAllData()
                     strongSelf.presentInfoAlertView("支付失败，请去未支付订单查看")
                 }
             })
@@ -1281,8 +1415,10 @@ extension TMTakeOrderViewController: CashBoxManagerSDKDelegate {
             loginViewController.dismissViewControllerAnimated(true, completion: { [weak self] () -> Void in
                 // 支付失败
                 if let strongSelf = self {
+                    strongSelf.takeOrderCompute.clearAllData()
                     strongSelf.presentInfoAlertView("支付成功")
                     // 更改支付状态
+                    NSNotificationCenter.defaultCenter().postNotificationName(TMOrderListNeedRefresh, object: nil)
                 }
                 })
         }
@@ -1293,6 +1429,7 @@ extension TMTakeOrderViewController: CashBoxManagerSDKDelegate {
             loginViewController.dismissViewControllerAnimated(true, completion: { [weak self] () -> Void in
                 // 支付失败
                 if let strongSelf = self {
+                    strongSelf.takeOrderCompute.clearAllData()
                     strongSelf.presentInfoAlertView("登录失败，请重新登录，如果不行，请去重新设置盒子SN号码")
                 }
                 })
