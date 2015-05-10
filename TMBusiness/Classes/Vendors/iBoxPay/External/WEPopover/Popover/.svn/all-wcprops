@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/repo/iboxpay_iphone/!svn/ver/3280/trunk/PaySDK/External/WEPopover/Popover
+END
+WEPopoverContainerView.m
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repo/iboxpay_iphone/!svn/ver/3280/trunk/PaySDK/External/WEPopover/Popover/WEPopoverContainerView.m
+END
+WEPopoverController.h
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repo/iboxpay_iphone/!svn/ver/3280/trunk/PaySDK/External/WEPopover/Popover/WEPopoverController.h
+END
+WEPopoverParentView.h
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repo/iboxpay_iphone/!svn/ver/3280/trunk/PaySDK/External/WEPopover/Popover/WEPopoverParentView.h
+END
+WETouchableView.h
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repo/iboxpay_iphone/!svn/ver/3280/trunk/PaySDK/External/WEPopover/Popover/WETouchableView.h
+END
+UIBarButtonItem+WEPopover.h
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repo/iboxpay_iphone/!svn/ver/3280/trunk/PaySDK/External/WEPopover/Popover/UIBarButtonItem+WEPopover.h
+END
+WEPopoverController.m
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/repo/iboxpay_iphone/!svn/ver/3280/trunk/PaySDK/External/WEPopover/Popover/WEPopoverController.m
+END
+WETouchableView.m
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repo/iboxpay_iphone/!svn/ver/3280/trunk/PaySDK/External/WEPopover/Popover/WETouchableView.m
+END
+UIBarButtonItem+WEPopover.m
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repo/iboxpay_iphone/!svn/ver/3280/trunk/PaySDK/External/WEPopover/Popover/UIBarButtonItem+WEPopover.m
+END
+WEPopoverContainerView.h
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/repo/iboxpay_iphone/!svn/ver/3280/trunk/PaySDK/External/WEPopover/Popover/WEPopoverContainerView.h
+END

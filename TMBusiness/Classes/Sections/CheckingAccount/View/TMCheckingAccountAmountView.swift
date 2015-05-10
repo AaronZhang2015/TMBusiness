@@ -52,28 +52,6 @@ class TMCheckingAccountAmountView: UIView {
         return bgView
         }()
     
-    lazy var productNameTitleLabel: UILabel = {
-        var label = UILabel()
-        label.text = "品名"
-        label.textColor = UIColor(hex: 0x222222)
-        label.font = UIFont.systemFontOfSize(20.0)
-        return label
-        }()
-    
-    lazy var amountTitleLabel: UILabel = {
-        var label = UILabel()
-        label.text = "金额"
-        label.textColor = UIColor(hex: 0x222222)
-        label.font = UIFont.systemFontOfSize(20.0)
-        return label
-        }()
-    
-    lazy var tableHeaderView: UIView = {
-        var view = UIView()
-        view.height = 40
-        return view
-        }()
-    
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -121,24 +99,6 @@ class TMCheckingAccountAmountView: UIView {
             make.top.equalTo(tableBgView.snp_top).offset(1)
             make.bottom.equalTo(tableBgView.snp_bottom).offset(-1)
         }
-        
-        tableHeaderView.addSubview(productNameTitleLabel)
-        productNameTitleLabel.snp_makeConstraints { (make) -> Void in
-            make.leading.equalTo(tableHeaderView.snp_leading).offset(15)
-            make.top.equalTo(tableHeaderView.snp_top).offset(11)
-            make.width.equalTo(80)
-            make.height.equalTo(18)
-        }
-        
-        tableHeaderView.addSubview(amountTitleLabel)
-        amountTitleLabel.snp_makeConstraints { (make) -> Void in
-            make.trailing.equalTo(tableHeaderView.snp_trailing).offset(-32)
-            make.top.equalTo(tableHeaderView.snp_top).offset(11)
-            make.width.equalTo(40)
-            make.height.equalTo(18)
-        }
-        
-//        amountTableView.tableHeaderView = tableHeaderView
     }
     
     func configureData(checkingAccount: TMCheckingAccount) {
@@ -353,7 +313,7 @@ class TMCheckingAccountAmountCell: UITableViewCell {
     
     lazy var amountLabel: UILabel = {
         var label = UILabel()
-        label.text = "¥50.00"
+        label.text = "¥0.00"
         label.textColor = UIColor(hex: 0x222222)
         label.font = UIFont.systemFontOfSize(18.0)
         return label

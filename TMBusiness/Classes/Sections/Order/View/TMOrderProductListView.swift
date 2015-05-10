@@ -100,6 +100,7 @@ class TMOrderProductListView: UIView {
     var printOrderClosure: (TMOrder -> Void)?
     var checkoutOrderClosure: (TMOrder -> Void)?
     var takeOrderClosure: (TMOrder -> Void)?
+    var changeOrderClosure: (TMOrder -> Void)?
 //    var printOrderClosure: (TMOrder -> Void)?
     
     
@@ -157,6 +158,7 @@ class TMOrderProductListView: UIView {
         restingOrderMenuView.cancelButton.addTarget(self, action: "handleCancelAction", forControlEvents: .TouchUpInside)
         restingOrderMenuView.takeOrderButton.addTarget(self, action: "handleTakeOrderAction", forControlEvents: .TouchUpInside)
         restingOrderMenuView.checkOutButton.addTarget(self, action: "handleCheckoutAction", forControlEvents: .TouchUpInside)
+        restingOrderMenuView.changeButton.addTarget(self, action: "handleChangeOrderAction", forControlEvents: .TouchUpInside)
         restingOrderMenuView.hidden = true
         restingOrderMenuView.snp_makeConstraints { (make) -> Void in
             make.bottom.equalTo(boxImageView.snp_bottom)
@@ -171,6 +173,7 @@ class TMOrderProductListView: UIView {
         addSubview(waitForPayingMenuView)
         waitForPayingMenuView.printButton.addTarget(self, action: "handlePrintAction", forControlEvents: .TouchUpInside)
         waitForPayingMenuView.checkoutButton.addTarget(self, action: "handleCheckoutAction", forControlEvents: .TouchUpInside)
+        waitForPayingMenuView.changeButton.addTarget(self, action: "handleChangeOrderAction", forControlEvents: .TouchUpInside)
         waitForPayingMenuView.hidden = true
         waitForPayingMenuView.snp_makeConstraints { (make) -> Void in
             make.bottom.equalTo(boxImageView.snp_bottom)
@@ -222,21 +225,33 @@ class TMOrderProductListView: UIView {
         if let order = data {
             let format = ".2"
             let discountFormat = ".1"
-            // 优惠折扣
-            if let discount = order.discount {
-                var discountRate = (discount.doubleValue * 10).format(discountFormat)
-                detailView.discountAmountLabel.text = "\(discountRate)折"
+            
+            if order.status == .TransactionDone {
+                // 优惠折扣
+                if let discount = order.discount {
+                    var discountRate = discount.doubleValue.format(discountFormat)
+                    detailView.discountAmountLabel.text = "\(discountRate)折"
+                }
+                
+                // 消费金额
+                detailView.consumeLabel.text = "¥\(order.payable_amount.doubleValue.format(format))"
+                
+                // 优惠金额
+                var discountAmount = order.payable_amount.doubleValue - order.actual_amount.doubleValue
+                detailView.discountLabel.text = "¥\(discountAmount.format(format))"
+                
+                // 折后金额
+                detailView.actualLabel.text = "¥\(order.actual_amount.doubleValue.format(format))"
+            } else {
+                detailView.discountAmountLabel.text = "10折"
+                
+                // 消费金额
+                detailView.consumeLabel.text = "¥\(order.payable_amount.doubleValue.format(format))"
+                detailView.discountLabel.text = "¥0.00"
+                detailView.actualLabel.text = "¥\(order.payable_amount.doubleValue.format(format))"
             }
             
-            // 消费金额
-            detailView.consumeLabel.text = "¥\(order.payable_amount.doubleValue.format(format))"
             
-            // 优惠金额
-            var discountAmount = order.payable_amount.doubleValue - order.actual_amount.doubleValue
-            detailView.discountLabel.text = "¥\(discountAmount.format(format))"
-            
-            // 折后金额
-            detailView.actualLabel.text = "¥\(order.actual_amount.doubleValue.format(format))"
             
             // 编号
             if let orderId = order.order_id {
@@ -293,6 +308,15 @@ class TMOrderProductListView: UIView {
     */
     func handleCheckoutAction() {
         if let closure = checkoutOrderClosure {
+            closure(data)
+        }
+    }
+    
+    /**
+    改单
+    */
+    func handleChangeOrderAction() {
+        if let closure = changeOrderClosure {
             closure(data)
         }
     }

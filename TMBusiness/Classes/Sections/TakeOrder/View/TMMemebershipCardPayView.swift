@@ -856,6 +856,7 @@ extension TMMemebershipCardPayView: UITextFieldDelegate {
 extension TMMemebershipCardPayView: UIAlertViewDelegate {
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
         if buttonIndex == 1 {
+            clearTransactionButtonState()
             takeOrderCompute.clearAllData()
         }
     }

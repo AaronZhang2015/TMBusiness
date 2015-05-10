@@ -367,6 +367,15 @@ class TMParser: NSObject {
     }
     
     
+    class func parseBoxPay(data: JSON) -> TMBoxPay {
+        var boxPay = TMBoxPay()
+        boxPay.sn = data["iBoxPay_SN"].stringValue
+        boxPay.account = data["iBoxPay_account"].stringValue
+        boxPay.password = data["iBoxPay_password"].stringValue
+        boxPay.partner = data["partner"].stringValue
+        boxPay.md5Key = data["md5_key"].stringValue
+        return boxPay
+    }
     
     // MARK: - Helper
     class func parseDate(dateString: String?) -> NSDate? {

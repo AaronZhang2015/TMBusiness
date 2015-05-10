@@ -48,10 +48,10 @@ class TMTakeOrderDetailView: UIView {
         discountLabel.text = "无折扣"
         addSubview(discountLabel)
         discountLabel.snp_makeConstraints { make in
-            make.leading.equalTo(discountTitleLabel.snp_trailing).offset(22.0)
+            make.leading.equalTo(discountTitleLabel.snp_trailing).offset(12.0)
             make.top.equalTo(discountTitleLabel.snp_top)
             make.height.equalTo(discountTitleLabel.snp_height)
-            make.width.greaterThanOrEqualTo(40)
+            make.width.equalTo(70)
         }
         
         var discountAmountTitleLabel = UILabel()//(frame: CGRectMake(16, 68, 60, 18))
@@ -71,10 +71,10 @@ class TMTakeOrderDetailView: UIView {
         discountAmountLabel.text = "¥0.00"
         addSubview(discountAmountLabel)
         discountAmountLabel.snp_makeConstraints { make in
-            make.left.equalTo(discountAmountTitleLabel.snp_trailing).offset(22)
+            make.left.equalTo(discountAmountTitleLabel.snp_trailing).offset(12)
             make.top.equalTo(discountAmountTitleLabel.snp_top)
             make.height.equalTo(discountAmountTitleLabel.snp_height)
-            make.width.greaterThanOrEqualTo(40)
+            make.width.equalTo(70)
         }
         
         
@@ -92,13 +92,13 @@ class TMTakeOrderDetailView: UIView {
         consumeAmountLabel = UILabel()//(frame: CGRectMake(338, 22, 90, 22))
         consumeAmountLabel.font = UIFont.systemFontOfSize(18.0)
         consumeAmountLabel.textAlignment = .Left
-        consumeAmountLabel.text = "¥0.00"
+        consumeAmountLabel.text = "¥1230.00"
         addSubview(consumeAmountLabel)
         consumeAmountLabel.snp_makeConstraints { make in
-            make.left.equalTo(consumeAmountTitleLabel.snp_trailing).offset(22)
+            make.left.equalTo(consumeAmountTitleLabel.snp_trailing).offset(12)
             make.top.equalTo(consumeAmountTitleLabel.snp_top)
             make.height.equalTo(consumeAmountTitleLabel.snp_height)
-            make.width.greaterThanOrEqualTo(40)
+            make.width.equalTo(80)
         }
         
         
@@ -114,16 +114,16 @@ class TMTakeOrderDetailView: UIView {
         }
         
         actualAmountLabel = UILabel()//(frame: CGRectMake(338, 65, 90, 22))
-        actualAmountLabel.font = UIFont.systemFontOfSize(22.0)
+        actualAmountLabel.font = UIFont.systemFontOfSize(18)
         actualAmountLabel.textColor = UIColor(hex: 0xFF0000)
         actualAmountLabel.textAlignment = .Left
         actualAmountLabel.text = "¥0.00"
         addSubview(actualAmountLabel)
         actualAmountLabel.snp_makeConstraints { make in
-            make.left.equalTo(actualAmountTitleLabel.snp_trailing).offset(22)
-            make.top.equalTo(actualAmountTitleLabel.snp_top).offset(-4)
-            make.width.greaterThanOrEqualTo(40)
-            make.height.equalTo(actualAmountTitleLabel.snp_height).offset(4)
+            make.left.equalTo(actualAmountTitleLabel.snp_trailing).offset(12)
+            make.top.equalTo(actualAmountTitleLabel.snp_top)
+            make.width.equalTo(80)
+            make.height.equalTo(actualAmountTitleLabel.snp_height)
         }
         
         
@@ -202,8 +202,6 @@ class TMTakeOrderDetailView: UIView {
         
         // 优惠金额
         var discountAmount = compute.getConsumeAmount() - compute.getActualAmount()
-        println("getConsumeAmount = \(compute.getConsumeAmount())")
-        println("getActualAmount() = \(compute.getActualAmount())")
         discountAmountLabel.text = "¥\(discountAmount.format(format))"
         
         // 折后金额

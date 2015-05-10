@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import CryptoSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

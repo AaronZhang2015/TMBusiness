@@ -80,5 +80,9 @@ class TMUserDataManager: TMDataManager {
         
         userService.fetchUserEntityOrderList(condition, conditionType: conditionType, startTime: startTime, endTime: endTime, searchType: searchType, orderStatus: orderStatus, orderPageIndex: "\(orderPageIndex)", orderPageSize: "\(orderPageSize)", showProductRecord: showProductRecord, productRecordPageIndex: productRecordPageIndex, productRecordPageSize: productRecordPageSize, adminId: adminId, completion: completion)
     }
+    
+    func fetchBoxPayEntityInfo(sn: String, extensionField: String = "", businessId: String = "", shopId: String = "", adminId: String = "", completion: (TMBoxPay?, NSError?) -> Void) {
+        userService.fetchBoxPayEntityInfo(sn, extensionField: extensionField, businessId: businessId, shopId: shopId, adminId: adminId, completion: completion)
+    }
 
 }
