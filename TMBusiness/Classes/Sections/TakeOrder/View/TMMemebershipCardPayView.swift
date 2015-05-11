@@ -729,13 +729,6 @@ class TMMemebershipCardPayView: UIView {
     :param: sender 按钮
     */
     func handleTransactionButtonState(sender: UIButton) {
-        if sender.selected == true {
-            var selectedCount = getSelectedCount()
-            if selectedCount > 1 {
-                sender.selected = false
-            }
-            return
-        }
         
         var actualAmount = takeOrderCompute.getActualAmount()
         var userBalance = takeOrderCompute.getUserBalance().doubleValue
@@ -744,6 +737,22 @@ class TMMemebershipCardPayView: UIView {
             cashAmount = 0
         }
         let format = ".2"
+        if sender.selected == true {
+            var selectedCount = getSelectedCount()
+            if selectedCount > 1 {
+                sender.selected = false
+                
+                if sender == balanceButton {
+                    takeOrderCompute.setTransactionMode(.Cash)
+                    cashLabel.hidden = false
+                    cashTitleLabel.hidden = false
+                    cashLabel.text = "¥\(actualAmount.format(format))"
+                }
+            }
+            return
+        }
+        
+        
         
         if sender == cashButton {
             otherButton.selected = false

@@ -35,6 +35,14 @@ class MasterViewController: BaseViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        if let shop = NSKeyedUnarchiver.unarchiveObjectWithFile(shopPath) as? TMShop {
+            TMShop.sharedInstance.shop_id = shop.shop_id
+            TMShop.sharedInstance.business_id = shop.business_id
+            TMShop.sharedInstance.shop_name = shop.shop_name
+            TMShop.sharedInstance.admin_id = shop.admin_id
+            TMShop.sharedInstance.admin_name = shop.admin_name
+        }
+        
         if (TMShop.sharedInstance.shop_id == nil) {
             presentLoginViewController()
         } else {

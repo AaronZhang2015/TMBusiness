@@ -12,6 +12,8 @@ protocol TMLoginViewControllerDelegate: class {
     func loginActionDidLoginSuccessful()
 }
 
+let shopPath = (NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).last as! String).stringByAppendingPathComponent("shop")
+
 class TMLoginViewController: BaseViewController {
     
     private var loginView: TMLoginView!
@@ -57,15 +59,23 @@ extension TMLoginViewController {
             password = "123456"
         }
         
-        shopDataManager.login(username, password: password) { (shop, error) -> Void in
-            if let e = error {
-                
-            } else {
-                if let delegate = self.delegate {
-                    delegate.loginActionDidLoginSuccessful()
+        startActivity()
+        shopDataManager.login(username, password: password) { [weak self] (shop, error) -> Void in
+            
+            if let strongSelf = self {
+                strongSelf.stopActivity()
+                if let e = error {
+                    
+                } else {
+                    if let delegate = strongSelf.delegate {
+                        // 持久化
+                        NSKeyedArchiver.archiveRootObject(shop!, toFile: shopPath)
+                        delegate.loginActionDidLoginSuccessful()
+                    }
+                    strongSelf.dismissViewControllerAnimated(true, completion: nil)
                 }
-                self.dismissViewControllerAnimated(true, completion: nil)
             }
+
         }
     }
 }

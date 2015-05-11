@@ -753,7 +753,7 @@ class TMTakeOrderViewController: BaseViewController {
                 startActivity()
                 orderDataManager.addOrderEntityInfo(order, completion: { [weak self] (orderId, error) in
                     if let strongSelf = self {
-                        strongSelf.order.order_id = orderId
+                        
                         strongSelf.stopActivity()
                         // 订单成功
                         if let e = error {
@@ -761,6 +761,7 @@ class TMTakeOrderViewController: BaseViewController {
                             var alert = UIAlertView(title: "提示", message: "支付提交失败，是否转为挂单", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "挂单")
                             alert.show()
                         } else {
+                            strongSelf.order.order_id = orderId
                             // 提示操作成功
                             strongSelf.hideMembershipCardPayView(true)
                             
@@ -917,7 +918,7 @@ class TMTakeOrderViewController: BaseViewController {
     
     func addOrder(animated: Bool = true) {
 //        var order = takeOrderCompute.getOrder(membershipCardPayView.remarkTextView.text, hasUserInfo: false)
-        var order = takeOrderCompute.getOrder(orderDescription, hasUserInfo: false)
+        order = takeOrderCompute.getOrder(orderDescription, hasUserInfo: false)
         order.status = TMOrderStatus.WaitForPaying
         
         if order.payable_amount.doubleValue > 0 {
@@ -926,7 +927,6 @@ class TMTakeOrderViewController: BaseViewController {
             }
             orderDataManager.addOrderEntityInfo(order, completion: { [weak self] (orderId, error) in
                 if let strongSelf = self {
-                    strongSelf.order.order_id = orderId
                     strongSelf.stopActivity()
                     // 订单成功
                     if let e = error {
@@ -934,6 +934,7 @@ class TMTakeOrderViewController: BaseViewController {
                         var alert = UIAlertView(title: "提示", message: "生成订单提交失败，是否转为挂单", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "挂单")
                         alert.show()
                     } else {
+                        strongSelf.order.order_id = orderId
                         // 清空之前用户数据
                         strongSelf.takeOrderCompute.clearAllData()
                         strongSelf.presentInfoAlertView("下单成功")
@@ -1074,7 +1075,7 @@ class TMTakeOrderViewController: BaseViewController {
                 startActivity()
                 orderDataManager.addOrderEntityInfo(order, completion: { [weak self] (orderId, error) in
                     if let strongSelf = self {
-                        strongSelf.order.order_id = orderId
+                        
                         strongSelf.stopActivity()
                         // 订单成功
                         if let e = error {
@@ -1082,6 +1083,7 @@ class TMTakeOrderViewController: BaseViewController {
                             var alert = UIAlertView(title: "提示", message: "支付提交失败，是否转为挂单", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "挂单")
                             alert.show()
                         } else {
+                            strongSelf.order.order_id = orderId
                             // 提示操作成功
                             strongSelf.hideCashPayView(true)
                             strongSelf.hideMembershipCardPayView(false)
@@ -1152,7 +1154,7 @@ class TMTakeOrderViewController: BaseViewController {
                     strongSelf.order = strongSelf.takeOrderCompute.getOrder(strongSelf.orderDescription)
                     strongSelf.orderDataManager.addOrderEntityInfo(strongSelf.order, completion: { [weak self] (orderId, error) in
                         if let strongSelf = self {
-                            strongSelf.order.order_id = orderId
+                            
                             strongSelf.stopActivity()
                             // 订单成功
                             if let e = error {
@@ -1160,6 +1162,7 @@ class TMTakeOrderViewController: BaseViewController {
                                 var alert = UIAlertView(title: "提示", message: "支付提交失败", delegate: nil, cancelButtonTitle: "确定")
                                 alert.show()
                             } else {
+                                strongSelf.order.order_id = orderId
                                 // 提示操作成功
                                 strongSelf.hideCashPayView(true)
                                 strongSelf.hideMembershipCardPayView(false)
@@ -1203,7 +1206,7 @@ class TMTakeOrderViewController: BaseViewController {
                         strongSelf.order.transaction_mode = TMTransactionMode.IBoxPay
                         strongSelf.orderDataManager.addOrderEntityInfo(strongSelf.order, completion: { [weak self] (orderId, error) in
                             if let strongSelf = self {
-                                strongSelf.order.order_id = orderId
+                                
                                 strongSelf.stopActivity()
                                 // 订单成功
                                 if let e = error {
@@ -1211,6 +1214,7 @@ class TMTakeOrderViewController: BaseViewController {
                                     var alert = UIAlertView(title: "提示", message: "支付提交失败", delegate: nil, cancelButtonTitle: "确定")
                                     alert.show()
                                 } else {
+                                    strongSelf.order.order_id = orderId
                                     // 提示操作成功
                                     strongSelf.hideCashPayView(true)
                                     strongSelf.hideMembershipCardPayView(false)
@@ -1233,7 +1237,7 @@ class TMTakeOrderViewController: BaseViewController {
             startActivity()
             orderDataManager.addOrderEntityInfo(order, completion: { [weak self] (orderId, error) in
                 if let strongSelf = self {
-                    strongSelf.order.order_id = orderId
+                    
                     strongSelf.stopActivity()
                     // 订单成功
                     if let e = error {
@@ -1241,6 +1245,7 @@ class TMTakeOrderViewController: BaseViewController {
                         var alert = UIAlertView(title: "提示", message: "支付提交失败", delegate: nil, cancelButtonTitle: "确定")
                         alert.show()
                     } else {
+                        strongSelf.order.order_id = orderId
                         // 提示操作成功
                         strongSelf.hideCashPayView(true)
                         strongSelf.hideMembershipCardPayView(false)
@@ -1287,7 +1292,7 @@ class TMTakeOrderViewController: BaseViewController {
             startActivity()
             orderDataManager.addOrderEntityInfo(order, completion: { [weak self] (orderId, error) in
                 if let strongSelf = self {
-                    strongSelf.order.order_id = orderId
+                    
                     strongSelf.stopActivity()
                     // 订单成功
                     if let e = error {
@@ -1295,6 +1300,7 @@ class TMTakeOrderViewController: BaseViewController {
                         var alert = UIAlertView(title: "提示", message: "支付提交失败，是否转为挂单", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "挂单")
                         alert.show()
                     } else {
+                        strongSelf.order.order_id = orderId
                         // 提示操作成功
                         strongSelf.hideCashPayView(true)
                         strongSelf.hideMembershipCardPayView(false)
@@ -1494,8 +1500,10 @@ extension TMTakeOrderViewController: UIAlertViewDelegate {
                 // 采取挂单
                 if let order = self.order {
                     orderDataManager.cacheRestingOrder(order)
+                    presentInfoAlertView("挂单成功")
                     // 清空之前用户数据
                     takeOrderCompute.clearAllData()
+                    NSNotificationCenter.defaultCenter().postNotificationName(TMOrderListNeedRefresh, object: nil)
                 }
             }
         }
