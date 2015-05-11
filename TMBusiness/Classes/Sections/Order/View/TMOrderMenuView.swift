@@ -128,7 +128,7 @@ class TMOrderMenuView: UIView {
     
     override func willMoveToSuperview(newSuperview: UIView?) {
         if let superview = newSuperview {
-            restingButton.sendActionsForControlEvents(.TouchUpInside)
+            waitForPayingButton.sendActionsForControlEvents(.TouchUpInside)
         }
     }
     

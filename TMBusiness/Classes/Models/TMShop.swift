@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TMShop: NSObject {
+class TMShop: NSObject, NSCoding {
     
     // 商铺编号
     var shop_id: String!
@@ -70,7 +70,28 @@ class TMShop: NSObject {
         }
         return Singleton.instance
     }
+    
+    override init() {
+        super.init()
+    }
+    
+    func encodeWithCoder(aCoder: NSCoder) {
+        shop_id = aCoder.decodeObjectForKey("shop_id") as! String
+        business_id = aCoder.decodeObjectForKey("business_id") as! String
+        shop_name = aCoder.decodeObjectForKey("shop_name") as? String
+        admin_id = aCoder.decodeObjectForKey("admin_id") as! String
+        admin_name = aCoder.decodeObjectForKey("admin_name") as? String
+    }
+    
+    required init(coder aDecoder: NSCoder) {
+        aDecoder.encodeObject(shop_id, forKey: "shop_id")
+        aDecoder.encodeObject(business_id, forKey: "business_id")
+        aDecoder.encodeObject(shop_name, forKey: "shop_name")
+        aDecoder.encodeObject(admin_id, forKey: "admin_id")
+        aDecoder.encodeObject(admin_name, forKey: "admin_name")
+    }
 }
+
 
 /*
 shop_id										商铺编号

@@ -48,7 +48,7 @@ class TMMemebershipCardPayView: UIView {
     var actualAmountLabel: UILabel!
     
     // 备注
-    var remarkTextView: AZPlaceholderTextView!
+//    var remarkTextView: AZPlaceholderTextView!
     
     // 充值按钮
     var rechargeButton: UIButton!
@@ -567,6 +567,7 @@ class TMMemebershipCardPayView: UIView {
         
         // 备注
         
+        /*
         var remarkTitleLabel = UILabel()
         remarkTitleLabel.text = "备注"
         remarkTitleLabel.font = UIFont.systemFontOfSize(20.0)
@@ -601,6 +602,7 @@ class TMMemebershipCardPayView: UIView {
             make.top.equalTo(remarkBackgroundImageView.snp_top).offset(4)
             make.bottom.equalTo(remarkBackgroundImageView.snp_bottom).offset(-4)
         }
+*/
         
         var cancelButton = UIButton.buttonWithType(.Custom) as! UIButton
         cancelButton.setBackgroundImage(UIImage(named: "payment_cancel_button"), forState: .Normal)

@@ -421,7 +421,11 @@ class TMCashPayView: UIView {
         if isUserCashPay == false {
             consumeLabel.text = "\(compute.getConsumeAmount().format(format))"
         } else {
-            consumeLabel.text = "\(compute.getActualCashAmount().format(format))"
+            if takeOrderCompute.getTransactionMode() == .Cash {
+                consumeLabel.text = "\(compute.getActualAmount().format(format))"
+            } else {
+                consumeLabel.text = "\(compute.getActualCashAmount().format(format))"
+            }
         }
         
         updateAmountDetail()

@@ -42,13 +42,16 @@ class TMOrderViewController: BaseViewController {
                 if index == 0 {
                     strongSelf.orderListView.status = .Resting
                     strongSelf.fetchRestingOrderList()
+                    return
                 } else if index == 1 {
                     strongSelf.orderListView.status = .WaitForPaying
-                    strongSelf.orderListView.orderListTableView.startPullToRefresh()
+//                    strongSelf.orderListView.orderListTableView.startPullToRefresh()
                 } else {
                     strongSelf.orderListView.status = .TransactionDone
-                    strongSelf.orderListView.orderListTableView.startPullToRefresh()
+//                    strongSelf.orderListView.orderListTableView.startPullToRefresh()
                 }
+                
+                strongSelf.fetchOrderList(strongSelf.orderListView.status)
             }
         }
         return view

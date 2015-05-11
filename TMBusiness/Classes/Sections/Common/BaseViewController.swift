@@ -10,20 +10,11 @@ import UIKit
 
 class BaseViewController: UIViewController {
     
-    /*
-    lazy var hudMaskView: UIControl = {
-        var view = UIControl(frame: UIApplication.sharedApplication().keyWindow!.bounds)
-        view.backgroundColor = UIColor.blackColor()
-        view.alpha = 0
+    lazy var hudMaskView: UIView = {
+        var view = UIView(frame: UIScreen.mainScreen().bounds)
+        view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
         return view
         }()
-    
-    lazy var activityIndicatorView: DTIActivityIndicatorView = {
-        var view = DTIActivityIndicatorView(frame: CGRectMake(0, 0, 80, 80))
-        view.indicatorStyle = "spotify"
-        return view
-        }()
-    */
     
     lazy var config: SwiftLoader.Config = {
         var c = SwiftLoader.Config()
@@ -54,14 +45,17 @@ class BaseViewController: UIViewController {
     
     
     func startActivity() {
+        
         SwiftLoader.setConfig(config)
-        SwiftLoader.show(animated: true)
+        SwiftLoader.show(animated: false)
     }
     
     func stopActivity() {
-        delay(seconds: 0.0) { () -> () in
-            SwiftLoader.hide()
-        }
+        SwiftLoader.hide()
+        hudMaskView.removeFromSuperview()
+//        delay(seconds: 0.0) { () -> () in
+//            SwiftLoader.hide()
+//        }
     }
     
     
