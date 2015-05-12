@@ -7,3 +7,4 @@
 #import "MerchantDatas.h"
 #import <CommonCrypto/CommonCrypto.h>
 #import <math.h>
+#import "SVProgressHUD.h"

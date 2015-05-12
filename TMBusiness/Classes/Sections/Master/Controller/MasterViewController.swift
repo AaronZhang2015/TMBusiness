@@ -26,6 +26,10 @@ class MasterViewController: BaseViewController {
         return TMShopDataManager()
         }()
     
+    lazy var orderDataManager: TMOrderDataManager = {
+        return TMOrderDataManager()
+        }()
+    
     lazy var cacheDataManager: TMCacheDataManager = {
         return TMCacheDataManager()
         }()
@@ -189,6 +193,7 @@ extension MasterViewController: UIAlertViewDelegate {
             // 删除登录信息
             NSFileManager.defaultManager().removeItemAtPath(shopPath, error: nil)
             shopDataManager.clearCategoryAndProduct()
+            orderDataManager.clearRestingOrder()
             presentLoginViewController()
         }
     }

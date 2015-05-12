@@ -48,16 +48,31 @@ class BaseViewController: UIViewController {
         println("startActivity")
 //        SwiftLoader.setConfig(config)
 //        SwiftLoader.show(animated: false)
-        var window = UIApplication.sharedApplication().keyWindow!
-        var indicator = WIndicator.showIndicatorAddedTo(window, animation: true)
-        indicator.text = "请稍等"
-
+//        if let window = UIApplication.sharedApplication().keyWindow {
+//            WIndicator.removeIndicatorFrom(window, animation: false)
+//            var indicator = WIndicator.showIndicatorAddedTo(window, animation: false)
+//            indicator.text = "请稍等"
+//        } else {
+//            WIndicator.removeIndicatorFrom(self.view, animation: false)
+//            var indicator = WIndicator.showIndicatorAddedTo(self.view, animation: false)
+//            indicator.text = "请稍等"
+//        }
+        
+//        SVProgressHUD.showWithStatus("请稍等")
+        SVProgressHUD.setBackgroundColor(UIColor.blackColor().colorWithAlphaComponent(0.6))
+        SVProgressHUD.setForegroundColor(UIColor.whiteColor())
+        SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Gradient)
     }
     
     func stopActivity() {
         println("stopActivity")
-        var window = UIApplication.sharedApplication().keyWindow!
-        WIndicator.removeIndicatorFrom(window, animation: true)
+//        if let window = UIApplication.sharedApplication().keyWindow {
+//            WIndicator.removeIndicatorFrom(window, animation: false)
+//        } else {
+//            WIndicator.removeIndicatorFrom(self.view, animation: false)
+//        }
+        SVProgressHUD.dismiss()
+        
 //        SwiftLoader.hide()
 //        delay(seconds: 0.0) { () -> () in
 //            SwiftLoader.hide()

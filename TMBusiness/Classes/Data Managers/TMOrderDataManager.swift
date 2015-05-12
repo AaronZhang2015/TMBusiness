@@ -207,6 +207,27 @@ class TMOrderDataManager: TMDataManager {
         }
     }
     
+    /// 清空挂单
+    func clearRestingOrder() {
+        var context = CoreDataStack.sharedInstance.context
+        let restingOrderFetch = NSFetchRequest(entityName: "TMRestingOrderManagedObject")
+        var error: NSError?
+        let result = context.executeFetchRequest(restingOrderFetch, error: &error) as! [TMRestingOrderManagedObject]
+        
+        for restingOrder in result {
+            context.deleteObject(restingOrder)
+            
+            for product in restingOrder.product_records {
+                context.deleteObject(product as! TMProductRecordManagedObject)
+            }
+        }
+        
+        //Save the managed object context
+        if !context.save(&error) {
+            println("Could not save: \(error)")
+        }
+    }
+    
     /**
     获取挂单列表
     

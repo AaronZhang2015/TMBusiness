@@ -18,6 +18,10 @@ enum TMConditionType: Int {
 
 enum TMRechargeType: Int {
     case Cash = 1
+    case Alipay = 2
+    case Union = 3
+    case BoxPay = 4
+    case Other = 9
 }
 
 enum TMRechargeFlag: Int {

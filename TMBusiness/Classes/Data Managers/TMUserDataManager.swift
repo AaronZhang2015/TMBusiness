@@ -44,13 +44,29 @@ class TMUserDataManager: TMDataManager {
     :param: adminId       商铺管理员编号
     :param: completion 回调
     */
+    func doUserRecharge(rechargeId: String = "", userId: String, rewardId: String = "", totalAmount: NSNumber, actualAmount: NSNumber, actualType: TMRechargeType, flag: TMRechargeFlag = .Recharge, shopId: String, businessId: String, errorStatus: String = "", recommendCode: String = "", adminId: String = "", completion: (String?, NSError?) -> Void) {
+        userService.doUserRecharge(rechargeId, userId: userId, rewardId: rewardId, totalAmount: totalAmount, actualAmount: actualAmount, actualType: actualType, flag: flag, shopId: shopId, businessId: businessId, errorStatus: errorStatus, recommendCode: recommendCode, adminId: adminId) { [weak self] (recharge_id, error) -> Void in
+            if let strongSelf = self {
+                if let e = error {
+                    // 错误
+                    completion(nil, e)
+                } else {
+                    completion(recharge_id, nil)
+//                    strongSelf.userService.doUserRecharge(recharge_id!, userId: userId, rewardId: rewardId, totalAmount: totalAmount, actualAmount: actualAmount, actualType: actualType, flag: flag, shopId: shopId, businessId: businessId, errorStatus: errorStatus, recommendCode: recommendCode, adminId: adminId, completion: { (_, error) -> Void in
+//                        completion(error)
+//                    })
+                }
+            }
+        }
+    }
+    
     func doUserRechargeWithCash(rechargeId: String = "", userId: String, rewardId: String = "", totalAmount: NSNumber, actualAmount: NSNumber, actualType: TMRechargeType, flag: TMRechargeFlag = .Recharge, shopId: String, businessId: String, errorStatus: String = "", recommendCode: String = "", adminId: String = "", completion: (NSError?) -> Void) {
         userService.doUserRecharge(rechargeId, userId: userId, rewardId: rewardId, totalAmount: totalAmount, actualAmount: actualAmount, actualType: actualType, flag: flag, shopId: shopId, businessId: businessId, errorStatus: errorStatus, recommendCode: recommendCode, adminId: adminId) { [weak self] (recharge_id, error) -> Void in
-            if let e = error {
-                // 错误
-                completion(e)
-            } else {
-                if let strongSelf = self {
+            if let strongSelf = self {
+                if let e = error {
+                    // 错误
+                    completion(e)
+                } else {
                     strongSelf.userService.doUserRecharge(recharge_id!, userId: userId, rewardId: rewardId, totalAmount: totalAmount, actualAmount: actualAmount, actualType: actualType, flag: flag, shopId: shopId, businessId: businessId, errorStatus: errorStatus, recommendCode: recommendCode, adminId: adminId, completion: { (_, error) -> Void in
                         completion(error)
                     })

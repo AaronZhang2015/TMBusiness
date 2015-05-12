@@ -36,12 +36,22 @@ class TMCacheDataManager: TMDataManager {
         var context = CoreDataStack.sharedInstance.context
         let cacheEntity = NSEntityDescription.entityForName("TMCacheManagedObject",
             inManagedObjectContext: context)
+        let cacheFetchRequest = NSFetchRequest(entityName: "TMCacheManagedObject")
+        var predicate = NSPredicate(format: "table_name == %@", cacheType.rawValue)
+        cacheFetchRequest.predicate = predicate
+        var error: NSError?
+        let result = context.executeFetchRequest(cacheFetchRequest, error: &error) as? [TMCacheManagedObject]
+        if let list = result {
+            for record in list {
+                context.deleteObject(record)
+            }
+        }
+        
         let cache = TMCacheManagedObject(entity: cacheEntity!,
             insertIntoManagedObjectContext: context)
         cache.cache_id = cacheId
         cache.table_name = cacheType.rawValue
         //Save the managed object context
-        var error: NSError?
         if !context.save(&error) {
             println("Could not save: \(error)")
         }

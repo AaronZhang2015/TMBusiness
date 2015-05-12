@@ -9,6 +9,7 @@
 import UIKit
 import Snap
 
+
 /**
 *  充值页面
 */
@@ -26,9 +27,11 @@ class TMRechargeView: TMModalView {
     
     var cardButton: UIButton!
     
+    var currentSelectedType: TMRechargeType = .Cash
+    
     var data = [TMReward]()
     
-    var rechargeClosure: ((TMReward) -> Void)!
+    var rechargeClosure: ((TMReward, TMRechargeType) -> Void)!
     
 //    var cancelClosure: (() -> ())!
     
@@ -171,7 +174,7 @@ class TMRechargeView: TMModalView {
         cashButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         cashButton.setTitle("现金", forState: .Normal)
         cashButton.titleLabel?.font = UIFont.systemFontOfSize(22.0)
-        cashButton.addTarget(self, action: "handleCashRechargeAction", forControlEvents: .TouchUpInside)
+        cashButton.addTarget(self, action: "handleCashRechargeAction:", forControlEvents: .TouchUpInside)
         addSubview(cashButton)
         cashButton.snp_makeConstraints { make in
             make.leading.equalTo(cancelButton.snp_trailing).offset(7)
@@ -185,6 +188,7 @@ class TMRechargeView: TMModalView {
         cardButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         cardButton.setTitle("刷卡", forState: .Normal)
         cardButton.titleLabel?.font = UIFont.systemFontOfSize(22.0)
+        cardButton.addTarget(self, action: "handleCashRechargeAction:", forControlEvents: .TouchUpInside)
         addSubview(cardButton)
         cardButton.snp_makeConstraints { make in
             make.leading.equalTo(cashButton.snp_trailing).offset(7)
@@ -225,7 +229,14 @@ class TMRechargeView: TMModalView {
     
     // MARK: - Actions
     
-    func handleCashRechargeAction() {
+    func handleCashRechargeAction(sender: UIButton!) {
+        
+        if sender == cardButton {
+            currentSelectedType = .BoxPay
+        } else {
+            currentSelectedType = .Cash
+        }
+        
         hide()
         var reward = data[currentSelectedIndex]
         var message = "确认充\(reward.current_number_max!)送\(reward.reward_description!)元"
@@ -249,7 +260,11 @@ extension TMRechargeView {
     func show() {
         var window = UIApplication.sharedApplication().keyWindow
         if maskModalView.superview == nil {
-            window?.addSubview(maskModalView)
+//            window?.addSubview(maskModalView)
+            if let window = window {
+                println("window.rootViewController!.view = \(window.rootViewController!.view)")
+                window.rootViewController!.view.addSubview(maskModalView)
+            }
         }
         
         if superview == nil {
@@ -294,7 +309,7 @@ extension TMRechargeView: UIAlertViewDelegate {
             
             if let rechargeClosure = rechargeClosure {
                 var reward = data[currentSelectedIndex]
-                rechargeClosure(reward)
+                rechargeClosure(reward, currentSelectedType)
             }
         }
     }

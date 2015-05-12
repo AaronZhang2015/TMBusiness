@@ -49,6 +49,9 @@ class TMTakeOrderViewController: BaseViewController {
     // 订单
     var order: TMOrder!
     
+    var isRecharging: Bool = false
+    var rechargeId: String?
+    
     // 备注内容
     var orderDescription: String = ""
     
@@ -134,9 +137,15 @@ class TMTakeOrderViewController: BaseViewController {
     // 充值页面
     private lazy var rechargeView: TMRechargeView = {
         var rechargeView = TMRechargeView(frame: CGRectMake(0, 0, 375, 470))
-        rechargeView.rechargeClosure = { [weak self] (reward) in
+        rechargeView.rechargeClosure = { [weak self] (reward, rechargeType) in
             if let strongSelf = self {
-                strongSelf.rechargeWithCash()
+                
+                if rechargeType == .Cash {
+                    strongSelf.rechargeWithCash()
+                } else {
+                    strongSelf.rechargeWithBoxPay()
+                }
+                
             }
         }
         return rechargeView
@@ -145,7 +154,19 @@ class TMTakeOrderViewController: BaseViewController {
     // 消费记录页面
     private lazy var consumeRecordView: TMConsumeRecordView = {
         var consumeRecordView = TMConsumeRecordView(frame: CGRectMake(0, 0, 452 + 18, 450 + 10))
+        consumeRecordView.tableView.addPullToRefresh({ [weak self] () -> () in
+            
+            if let strongSelf = self {
+                strongSelf.consumeRecordView.data.removeAll(keepCapacity: false)
+                strongSelf.fetchUserOrderList()
+            }
+        })
         
+        consumeRecordView.tableView.addLoadMoreView({ [weak self] () -> () in
+            if let strongSelf = self {
+                strongSelf.fetchUserOrderList()
+            }
+        })
         return consumeRecordView
         }()
     
@@ -529,6 +550,8 @@ class TMTakeOrderViewController: BaseViewController {
             if let strongSelf = self {
                 strongSelf.stopActivity()
                 strongSelf.consumeRecordView.updateData(list!)
+                strongSelf.consumeRecordView.tableView.stopPullToRefresh()
+                strongSelf.consumeRecordView.tableView.stopLoadMore()
             }
         }
     }
@@ -841,23 +864,7 @@ class TMTakeOrderViewController: BaseViewController {
             } else {
                 presentInfoAlertView("请选择商品")
             }
-        } /*else {
-             order = takeOrderCompute.getOrder(membershipCardPayView.remarkTextView.text)
         }
-        
-        // 如果订单
-        
-        if order.payable_amount.doubleValue > 0 {
-            order.status = .Resting
-            order.order_index = "\(NSDate().timeIntervalSince1970)"
-            orderDataManager.cacheRestingOrder(order)
-            // 清空之前用户数据
-            takeOrderCompute.clearAllData()
-            presentInfoAlertView("挂单成功")
-        } else {
-            presentInfoAlertView("请选择商品")
-        }*/
-        
         handleRestingOrder()
     }
     
@@ -1042,6 +1049,36 @@ class TMTakeOrderViewController: BaseViewController {
         }
     }
     
+    func rechargeWithBoxPay() {
+        var reward = rechargeView.data[rechargeView.currentSelectedIndex]
+        if let user_id = takeOrderCompute.user?.user_id, reward_id = reward.reward_id, current_number_max = reward.current_number_max {
+            var reward_number = reward.reward_description?.toNumber
+            
+            var totalAmount = current_number_max.integerValue
+            if let reward_number = reward.reward_description?.toNumber {
+                totalAmount += reward_number.integerValue
+            }
+            
+            startActivity()
+            userDataManager.doUserRecharge(userId: user_id, rewardId: reward_id, totalAmount: NSNumber(integer: totalAmount), actualAmount: current_number_max, actualType: .BoxPay, shopId: TMShop.sharedInstance.shop_id, businessId: TMShop.sharedInstance.business_id, adminId: TMShop.sharedInstance.admin_id, completion: { [weak self] (rechargeId, error) -> Void in
+                
+                if let strongSelf = self {
+                    strongSelf.stopActivity()
+                    if let e = error {
+                        
+                        strongSelf.presentInfoAlertView("充值获取订单号失败")
+                    } else {
+                        if let rechargeId = rechargeId {
+                            // 转入盒子支付
+                            strongSelf.isRecharging = true
+                            strongSelf.rechargeId = rechargeId
+                            strongSelf.payWithCashBox(rechargeId, amount: current_number_max)
+                        }
+                    }
+                }
+                })
+        }
+    }
     
     // MARK: - 现金支付页面
     func handleCashPayAction() {
@@ -1524,8 +1561,9 @@ extension TMTakeOrderViewController: CBLoginViewControllerDelegate {
             loginViewController.dismissViewControllerAnimated(true, completion: { [weak self] () -> Void in
                 // 支付失败
                 if let strongSelf = self {
-//                    strongSelf.takeOrderCompute.clearAllData()
                     strongSelf.presentInfoAlertView("授权失败，请重新尝试")
+                    strongSelf.isRecharging = false
+                    strongSelf.rechargeId = nil
                 }
                 })
         }
@@ -1539,8 +1577,9 @@ extension TMTakeOrderViewController: CashBoxManagerSDKDelegate {
             loginViewController.dismissViewControllerAnimated(true, completion: { [weak self] () -> Void in
                 // 支付失败
                 if let strongSelf = self {
-//                    strongSelf.takeOrderCompute.clearAllData()
                     strongSelf.presentInfoAlertView("支付失败，请去未支付订单查看")
+                    strongSelf.isRecharging = false
+                    strongSelf.rechargeId = nil
                 }
             })
         }
@@ -1552,15 +1591,50 @@ extension TMTakeOrderViewController: CashBoxManagerSDKDelegate {
             loginViewController.dismissViewControllerAnimated(true, completion: { [weak self] () -> Void in
                 // 支付失败
                 if let strongSelf = self {
-//                    strongSelf.takeOrderCompute.clearAllData()
                     
                     if info != nil {
                         if let result = info["payResult"] as? String where result == "1" {
-                            // 回调，通知服务器交易完成
-                            // 更新状态为已完成
-                            strongSelf.updateOrderToTransactionDone()
-                            // 更改支付状态
-                            NSNotificationCenter.defaultCenter().postNotificationName(TMOrderListNeedRefresh, object: nil)
+                            
+                            if strongSelf.isRecharging {
+                                // 充值成功，通知服务器
+                                
+                                var reward = strongSelf.rechargeView.data[strongSelf.rechargeView.currentSelectedIndex]
+                                if let user_id = strongSelf.takeOrderCompute.user?.user_id, reward_id = reward.reward_id, current_number_max = reward.current_number_max {
+                                    var reward_number = reward.reward_description?.toNumber
+                                    
+                                    var totalAmount = current_number_max.integerValue
+                                    if let reward_number = reward.reward_description?.toNumber {
+                                        totalAmount += reward_number.integerValue
+                                    }
+                                    strongSelf.userDataManager.doUserRecharge(rechargeId: strongSelf.rechargeId!, userId: user_id, rewardId: reward_id, totalAmount: NSNumber(integer: totalAmount), actualAmount: current_number_max, actualType: .BoxPay, shopId: TMShop.sharedInstance.shop_id, businessId: TMShop.sharedInstance.business_id, adminId: TMShop.sharedInstance.admin_id, completion: { [weak self] (rechargeId, error) -> Void in
+                                        // 充值成功
+                                        // 刷新用户数据
+                                        strongSelf.isRecharging = false
+                                        strongSelf.rechargeId = nil
+                                        strongSelf.userDataManager.fetchEntityAllInfo(user_id, type: TMConditionType.UserId, shopId: TMShop.sharedInstance.shop_id, businessId: TMShop.sharedInstance.business_id, adminId: TMShop.sharedInstance.admin_id, completion: { (user, error) -> Void in
+                                            strongSelf.stopActivity()
+                                            if error == nil {
+                                                if let user = user {
+                                                    if let oldUser = strongSelf.takeOrderCompute.user {
+                                                        user.isScan = oldUser.isScan
+                                                    }
+                                                    
+                                                    strongSelf.takeOrderCompute.setUserDetail(user, hasProducts: true)
+                                                }
+                                                strongSelf.presentInfoAlertView("充值成功")
+                                            }
+                                            
+                                        })
+                                        })
+                                }
+                            } else {
+                                // 回调，通知服务器交易完成
+                                // 更新状态为已完成
+                                strongSelf.updateOrderToTransactionDone()
+                                // 更改支付状态
+                                NSNotificationCenter.defaultCenter().postNotificationName(TMOrderListNeedRefresh, object: nil)
+                            }
+                            
                             return
                         }
                     }
@@ -1578,6 +1652,8 @@ extension TMTakeOrderViewController: CashBoxManagerSDKDelegate {
                 if let strongSelf = self {
                     strongSelf.takeOrderCompute.clearAllData()
                     strongSelf.presentInfoAlertView("登录失败，请重新登录，如果不行，请去重新设置盒子SN号码")
+                    strongSelf.isRecharging = false
+                    strongSelf.rechargeId = nil
                 }
                 })
         }
