@@ -250,7 +250,25 @@ class TMOrderDetailCell: UITableViewCell {
         }
         
         let format = ".2"
-        amountLabel.text = "\(model.actual_amount.doubleValue.format(format))"
+        if model.status == .TransactionDone {
+            var transactionMode = ""
+            switch model.transaction_mode {
+            case .Cash:
+                transactionMode = "（现金支付）"
+            case .Balance:
+                transactionMode = "（余额支付）"
+            case .CashAndBalance:
+                transactionMode = "（现金及余额支付）"
+            case .IBoxPay:
+                transactionMode = "（盒子支付）"
+            case .Other:
+                transactionMode = "（其他支付）"
+            }
+    
+            amountLabel.text = "\(model.actual_amount.doubleValue.format(format))\(transactionMode)"
+        } else {
+            amountLabel.text = "\(model.actual_amount.doubleValue.format(format))"
+        }
     }
     
 }

@@ -264,7 +264,7 @@ class TMParser: NSObject {
         
         order.coupon_id = data["coupon_id"].string
         order.discount = data["discount"].string?.toNumber
-        order.register_time = parseDate(data["register_time"].string)
+        order.register_time = parseDateTimeInterval(data["register_time"].string)
         order.user_mobile_number = data["user_mobile_number"].string
         order.order_description = data["description"].string
         
@@ -381,6 +381,16 @@ class TMParser: NSObject {
     class func parseDate(dateString: String?) -> NSDate? {
         if let dateString = dateString {
             var date = NSDate(fromString: dateString, format: .Custom("yyyy-MM-dd HH:mm:ss"))
+            return date
+        }
+        
+        return nil
+    }
+    
+    class func parseDateTimeInterval(timeInterval: String?) -> NSDate? {
+        if let timeInterval = timeInterval?.toNumber?.doubleValue {
+//            var date = NSDate(fromString: dateString, format: .Custom("yyyy-MM-dd HH:mm:ss"))
+            var date = NSDate(timeIntervalSince1970: timeInterval)
             return date
         }
         

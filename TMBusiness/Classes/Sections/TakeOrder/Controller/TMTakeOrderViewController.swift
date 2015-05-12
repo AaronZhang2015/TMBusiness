@@ -360,6 +360,8 @@ class TMTakeOrderViewController: BaseViewController {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidHide:", name: UIKeyboardDidHideNotification, object: nil)
         */
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "fetchCategoryList", name: TMNeedRefreshCategoryAndProductNotification, object: nil)
     }
     
     override func supportedInterfaceOrientations() -> Int {
@@ -427,8 +429,7 @@ class TMTakeOrderViewController: BaseViewController {
     // 加载菜单
     func fetchCategoryList() {
         startActivity()
-        shopDataManager.fetchEntityProductList(TMShop.sharedInstance.shop_id!, completion: { [weak self] (list, error) -> Void in
-            
+        shopDataManager.fetchEntityProductList(TMShop.sharedInstance.shop_id!, adminId:TMShop.sharedInstance.admin_id, completion: { [weak self] (list, error) -> Void in
             if let strongSelf = self {
                 strongSelf.stopActivity()
                 if let e = error {
@@ -749,7 +750,7 @@ class TMTakeOrderViewController: BaseViewController {
                 return
             }
             
-            if order.payable_amount.doubleValue > 0 {
+            if order.product_records.count > 0 {
                 startActivity()
                 orderDataManager.addOrderEntityInfo(order, completion: { [weak self] (orderId, error) in
                     if let strongSelf = self {
@@ -814,7 +815,7 @@ class TMTakeOrderViewController: BaseViewController {
             startActivity()
 //            var newOrder = takeOrderCompute.getOrder(membershipCardPayView.remarkTextView.text)
             var newOrder = takeOrderCompute.getOrder(orderDescription)
-            if newOrder.payable_amount.doubleValue > 0 {
+            if newOrder.product_records.count > 0 {
                 orderDataManager.updateOrderStatus(order) {[weak self] success in
                     if let strongSelf = self {
                         strongSelf.stopActivity()
@@ -835,7 +836,7 @@ class TMTakeOrderViewController: BaseViewController {
             // 删除之前的挂单
 //            var newOrder = takeOrderCompute.getOrder(membershipCardPayView.remarkTextView.text)
             var newOrder = takeOrderCompute.getOrder(orderDescription)
-            if newOrder.payable_amount.doubleValue > 0 {
+            if newOrder.product_records.count > 0 {
                 orderDataManager.deleteRestingOrder(order)
             } else {
                 presentInfoAlertView("请选择商品")
@@ -865,7 +866,7 @@ class TMTakeOrderViewController: BaseViewController {
         order = takeOrderCompute.getOrder(orderDescription)
         // 如果订单
         
-        if order.payable_amount.doubleValue > 0 {
+        if order.product_records.count > 0 {
             order.status = .Resting
             order.order_index = "\(NSDate().timeIntervalSince1970)"
             orderDataManager.cacheRestingOrder(order)
@@ -887,7 +888,7 @@ class TMTakeOrderViewController: BaseViewController {
             startActivity()
 //            var newOrder = takeOrderCompute.getOrder(membershipCardPayView.remarkTextView.text)
             var newOrder = takeOrderCompute.getOrder(orderDescription)
-            if newOrder.payable_amount.doubleValue > 0 {
+            if newOrder.product_records.count > 0 {
                 orderDataManager.updateOrderStatus(order) {[weak self] success in
                     if let strongSelf = self {
                         
@@ -904,9 +905,8 @@ class TMTakeOrderViewController: BaseViewController {
             return
         } else if takeOrderCompute.isRestingOrder {
             // 删除之前的挂单
-//            var newOrder = takeOrderCompute.getOrder(membershipCardPayView.remarkTextView.text)
             var newOrder = takeOrderCompute.getOrder(orderDescription)
-            if newOrder.payable_amount.doubleValue > 0 {
+            if newOrder.product_records.count > 0 {
                 orderDataManager.deleteRestingOrder(order)
             } else {
                 presentInfoAlertView("请选择商品")
@@ -917,11 +917,10 @@ class TMTakeOrderViewController: BaseViewController {
     }
     
     func addOrder(animated: Bool = true) {
-//        var order = takeOrderCompute.getOrder(membershipCardPayView.remarkTextView.text, hasUserInfo: false)
-        order = takeOrderCompute.getOrder(orderDescription, hasUserInfo: false)
+        order = takeOrderCompute.getOrder(orderDescription, hasUserInfo: true)
         order.status = TMOrderStatus.WaitForPaying
         
-        if order.payable_amount.doubleValue > 0 {
+        if order.product_records.count > 0 {
             if animated {
                 startActivity()
             }
@@ -1071,7 +1070,7 @@ class TMTakeOrderViewController: BaseViewController {
     
             order = takeOrderCompute.getOrder(orderDescription)
         
-            if order.payable_amount.doubleValue > 0 {
+            if order.product_records.count > 0 {
                 startActivity()
                 orderDataManager.addOrderEntityInfo(order, completion: { [weak self] (orderId, error) in
                     if let strongSelf = self {
@@ -1113,7 +1112,7 @@ class TMTakeOrderViewController: BaseViewController {
     :param: order 订单
     :param: user  用户信息
     */
-    func loadFromOrderList(order: TMOrder) {
+    func loadFromOrderList(order: TMOrder, user: TMUser? = nil) {
         editIndexPath = nil
         hideMembershipCardPayView(false)
         hideCashPayView(false)
@@ -1135,6 +1134,11 @@ class TMTakeOrderViewController: BaseViewController {
             takeOrderCompute.isWaitForPaying = false
             takeOrderCompute.isRestingOrder = true
             takeOrderCompute.orderIndex = order.order_index
+        }
+        
+        if let user = user {
+            showMembershipCardPayView()
+            takeOrderCompute.setUserDetail(user, hasProducts: true)
         }
         
         self.order = order
@@ -1232,8 +1236,9 @@ class TMTakeOrderViewController: BaseViewController {
         }
         
         order = takeOrderCompute.getOrder(orderDescription)
+        order.status = TMOrderStatus.WaitForPaying
         order.transaction_mode = TMTransactionMode.IBoxPay
-        if order.payable_amount.doubleValue > 0 {
+        if order.product_records.count > 0 {
             startActivity()
             orderDataManager.addOrderEntityInfo(order, completion: { [weak self] (orderId, error) in
                 if let strongSelf = self {
@@ -1288,7 +1293,7 @@ class TMTakeOrderViewController: BaseViewController {
         order = takeOrderCompute.getOrder(orderDescription)
         order.transaction_mode = TMTransactionMode.Other
         
-        if order.payable_amount.doubleValue > 0 {
+        if order.product_records.count > 0 {
             startActivity()
             orderDataManager.addOrderEntityInfo(order, completion: { [weak self] (orderId, error) in
                 if let strongSelf = self {
@@ -1554,7 +1559,6 @@ extension TMTakeOrderViewController: CashBoxManagerSDKDelegate {
                             // 回调，通知服务器交易完成
                             // 更新状态为已完成
                             strongSelf.updateOrderToTransactionDone()
-//                            strongSelf.presentInfoAlertView("支付成功")
                             // 更改支付状态
                             NSNotificationCenter.defaultCenter().postNotificationName(TMOrderListNeedRefresh, object: nil)
                             return

@@ -766,6 +766,7 @@ class TMTakeOrderCompute {
         order.order_description = remark
         order.status = status
         order.product_records = getProductRecords()
+        order.user_mobile_number =  user?.mobile_number
         return order
     }
 }

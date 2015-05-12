@@ -21,6 +21,10 @@ class TMShopDataManager: TMDataManager {
         return TMCacheService()
         }()
     
+    lazy var cacheDataManager: TMCacheDataManager = {
+        return TMCacheDataManager()
+        }()
+    
     /**
     商家登录
     
@@ -38,8 +42,38 @@ class TMShopDataManager: TMDataManager {
     :param: shopId     商铺编号
     :param: completion 如果请求正常，返回分类列表，否则返回错误
     */
-    func fetchEntityProductList(shopId: String, completion: ([TMCategory]?, NSError?) -> Void) {
+    func fetchEntityProductList(shopId: String, adminId: String, completion: ([TMCategory]?, NSError?) -> Void) {
         
+        // 首先判断本地是否有缓存数据，如果没有或者是旧的版本则需要更新
+        
+        // 获取本地cacheId
+        var localCacheId = cacheDataManager.fetchLocalCacheInfo(.Category)
+        
+        // 获取服务器最新cacheId
+        cacheDataManager.fetchCacheInfo(.Category, adminId: adminId) { [weak self] (cacheId) -> Void in
+            if let strongSelf = self {
+                if cacheId == localCacheId {
+                    strongSelf.fetchEntityProductList(shopId, completion: completion)
+                } else {
+                    // 否则就从网络请求，并缓存本地
+                    strongSelf.shopService.fetchEntityProductList(shopId, completion: { (list, error) -> Void in
+                        // 缓存数据
+                        if error == nil {
+                            strongSelf.cacheCategoryAndProduct(list!)
+                            strongSelf.cacheDataManager.cacheLocalCacheInfo(.Category, cacheId: cacheId!)
+                            var result = strongSelf.fetchCategoryAndProductFromCache()
+                            completion(result, nil)
+                        } else {
+                            completion(list, error)
+                        }
+                    })
+                }
+            }
+        }
+
+    }
+    
+    private func fetchEntityProductList(shopId: String, completion: ([TMCategory]?, NSError?) -> Void) {
         // 首先判断本地数据库是否有数据
         // 如果有数据那么就从本地获取
         var categories = fetchCategoryAndProductFromCache()
@@ -277,7 +311,19 @@ class TMShopDataManager: TMDataManager {
         return product
     }
     
+
     
+    /**
+    获取对账单信息
+    
+    :param: businessId     商户编号
+    :param: shopId         商铺编号
+    :param: startDate      起始时间
+    :param: endDate        截止时间
+    :param: adminId        管理员编号
+    :param: extensionField 扩展字段
+    :param: completion     返回结果
+    */
     func fetchStatisticsDetail(businessId: String, shopId: String, startDate: NSDate, endDate: NSDate, adminId: String, extensionField: String = "", completion: (TMCheckingAccount?, NSError?) -> Void) {
         var startDateTimeInterval: NSTimeInterval = startDate.timeIntervalSince1970
         var endDateTimeInterval: NSTimeInterval = endDate.timeIntervalSince1970

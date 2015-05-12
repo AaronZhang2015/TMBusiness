@@ -109,7 +109,7 @@ public class SwiftLoader: UIView {
     private func stop() {
         
         if (self.animated!) {
-            UIView.animateWithDuration(0.1, animations: { () -> Void in
+            UIView.animateWithDuration(0.0, animations: { () -> Void in
                 self.alpha = 0
                 }, completion: { (finished) -> Void in
                     self.removeFromSuperview()

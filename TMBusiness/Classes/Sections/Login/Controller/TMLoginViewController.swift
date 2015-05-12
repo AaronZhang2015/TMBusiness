@@ -8,6 +8,9 @@
 
 import UIKit
 
+
+let TMNeedRefreshCategoryAndProductNotification = "TMNeedRefreshCategoryAndProductNotification"
+
 protocol TMLoginViewControllerDelegate: class {
     func loginActionDidLoginSuccessful()
 }
@@ -71,6 +74,7 @@ extension TMLoginViewController {
                         // 持久化
                         NSKeyedArchiver.archiveRootObject(shop!, toFile: shopPath)
                         delegate.loginActionDidLoginSuccessful()
+                        NSNotificationCenter.defaultCenter().postNotificationName(TMNeedRefreshCategoryAndProductNotification, object: nil)
                     }
                     strongSelf.dismissViewControllerAnimated(true, completion: nil)
                 }

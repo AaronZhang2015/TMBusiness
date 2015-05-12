@@ -108,6 +108,13 @@ class TMOrderViewController: BaseViewController {
             // 转入结账页面
             if let strongSelf = self {
                 var masterViewController = strongSelf.parentViewController as! MasterViewController
+                if let user_mobile_number = order.user_mobile_number {
+                    strongSelf.fetchEntityInfoAction(user_mobile_number) { user in
+                        // 转入点单页面
+                        masterViewController.handleCheckoutAction(order, user: user)
+                    }
+                }
+                
                 masterViewController.handleCheckoutAction(order)
             }
             
@@ -121,6 +128,14 @@ class TMOrderViewController: BaseViewController {
             // 转入改单页面
             if let strongSelf = self {
                 var masterViewController = strongSelf.parentViewController as! MasterViewController
+//                masterViewController.handleCheckoutAction(order)
+                if let user_mobile_number = order.user_mobile_number {
+                    strongSelf.fetchEntityInfoAction(user_mobile_number) { user in
+                        // 转入点单页面
+                        masterViewController.handleCheckoutAction(order, user: user)
+                    }
+                }
+                
                 masterViewController.handleCheckoutAction(order)
             }
         }
@@ -188,7 +203,12 @@ class TMOrderViewController: BaseViewController {
             make.trailing.equalTo(0)
         }
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "orderListNeedRefresh", name: TMOrderListNeedRefresh, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "orderListNeedRefresh", name: TMOrderListNeedRefresh, object: nil)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        orderListNeedRefresh()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -228,7 +248,6 @@ class TMOrderViewController: BaseViewController {
             make.trailing.equalTo(0)
             
             if let order = currentSelectedOrder where order.product_records.count > 0 {
-                println(order.product_records.count)
                 var height = (order.product_records.count + 1) * 50
                 var delta = height - 350
                 
@@ -336,11 +355,13 @@ class TMOrderViewController: BaseViewController {
                 if error == nil {
                     if let user = user {
                         completion(user)
-                        return
+                    } else {
+                        strongSelf.showMessage("获取用户信息失败，请重新操作", timeout: 1.0)
                     }
+                } else {
+                    // 获取失败，提示不做操作
+                    strongSelf.showMessage("获取用户信息失败，请重新操作", timeout: 1.0)
                 }
-                
-                // 获取失败，提示不做操作
             }
             
         }

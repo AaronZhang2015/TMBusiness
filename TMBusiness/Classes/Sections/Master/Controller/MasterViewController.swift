@@ -22,6 +22,13 @@ class MasterViewController: BaseViewController {
         return TMCheckingAccountViewController()
         }()
     
+    lazy var shopDataManager: TMShopDataManager = {
+        return TMShopDataManager()
+        }()
+    
+    lazy var cacheDataManager: TMCacheDataManager = {
+        return TMCacheDataManager()
+        }()
     
     var currentViewController: UIViewController!
     
@@ -48,6 +55,7 @@ class MasterViewController: BaseViewController {
         } else {
             // 初始化页面为点单页面
             segmentControl.selectedIndex = 0
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "getCacheStatus", name: UIApplicationWillEnterForegroundNotification, object: nil)
         }
     }
 
@@ -71,6 +79,7 @@ class MasterViewController: BaseViewController {
         logoutButton.frame = CGRectMake(0, 0, 26, 26)
         logoutButton.setBackgroundImage(UIImage(named: "tuichu"), forState: .Normal)
         logoutButton.setBackgroundImage(UIImage(named: "tuichu_on"), forState: .Highlighted)
+        logoutButton.addTarget(self, action: "handleLogoutAction", forControlEvents: .TouchUpInside)
         var logoutBarButtonItem = UIBarButtonItem(customView: logoutButton)
         
         navigationItem.rightBarButtonItems = [settingBarButtonItem, logoutBarButtonItem]
@@ -97,8 +106,8 @@ class MasterViewController: BaseViewController {
         navigationController?.presentViewController(loginViewController, animated: true, completion: nil)
     }
     
-    func handleCheckoutAction(order: TMOrder) {
-        takeOrderViewController.loadFromOrderList(order)
+    func handleCheckoutAction(order: TMOrder, user: TMUser? = nil) {
+        takeOrderViewController.loadFromOrderList(order, user: user)
         segmentControl.selectedIndex = 0
     }
     
@@ -137,6 +146,17 @@ class MasterViewController: BaseViewController {
         
         currentViewController = viewController
     }
+    
+    func getCacheStatus() {
+        var localCacheId = cacheDataManager.fetchLocalCacheInfo(.Category)
+        cacheDataManager.fetchCacheInfo(.Category, adminId: TMShop.sharedInstance.admin_id) { [weak self] (cacheId) -> Void in
+            if let strongSelf = self {
+                if cacheId != localCacheId {
+                    NSNotificationCenter.defaultCenter().postNotificationName(TMNeedRefreshCategoryAndProductNotification, object: nil)
+                }
+            }
+        }
+    }
 }
 
 
@@ -148,7 +168,8 @@ extension MasterViewController {
     }
     
     func handleLogoutAction() {
-        
+        var alert = UIAlertView(title: "提示", message: "是否注销当前用户", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "注销")
+        alert.show()
     }
     
     func handleMenuAction(segmentControl: TMSegmentControl) {
@@ -159,5 +180,16 @@ extension MasterViewController {
 extension MasterViewController: TMLoginViewControllerDelegate {
     func loginActionDidLoginSuccessful() {
         segmentControl.selectedIndex = 0
+    }
+}
+
+extension MasterViewController: UIAlertViewDelegate {
+    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+        if buttonIndex == 1 {
+            // 删除登录信息
+            NSFileManager.defaultManager().removeItemAtPath(shopPath, error: nil)
+            shopDataManager.clearCategoryAndProduct()
+            presentLoginViewController()
+        }
     }
 }

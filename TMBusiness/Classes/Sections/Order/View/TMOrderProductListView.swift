@@ -226,6 +226,7 @@ class TMOrderProductListView: UIView {
             let format = ".2"
             let discountFormat = ".1"
             
+            /*
             if order.status == .TransactionDone {
                 // 优惠折扣
                 if let discount = order.discount {
@@ -249,7 +250,23 @@ class TMOrderProductListView: UIView {
                 detailView.consumeLabel.text = "¥\(order.payable_amount.doubleValue.format(format))"
                 detailView.discountLabel.text = "¥0.00"
                 detailView.actualLabel.text = "¥\(order.payable_amount.doubleValue.format(format))"
+            }*/
+            
+            // 优惠折扣
+            if let discount = order.discount {
+                var discountRate = discount.doubleValue.format(discountFormat)
+                detailView.discountAmountLabel.text = "\(discountRate)折"
             }
+            
+            // 消费金额
+            detailView.consumeLabel.text = "¥\(order.payable_amount.doubleValue.format(format))"
+            
+            // 优惠金额
+            var discountAmount = order.payable_amount.doubleValue - order.actual_amount.doubleValue
+            detailView.discountLabel.text = "¥\(discountAmount.format(format))"
+            
+            // 折后金额
+            detailView.actualLabel.text = "¥\(order.actual_amount.doubleValue.format(format))"
             
             
             

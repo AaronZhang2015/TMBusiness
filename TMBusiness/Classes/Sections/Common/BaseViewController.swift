@@ -10,11 +10,12 @@ import UIKit
 
 class BaseViewController: UIViewController {
     
-    lazy var hudMaskView: UIView = {
-        var view = UIView(frame: UIScreen.mainScreen().bounds)
-        view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
-        return view
-        }()
+//    lazy var hudMaskView: UIView = {
+//        var view = UIView(frame: UIScreen.mainScreen().bounds)
+//        view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
+//        return view
+//        }()
+    
     
     lazy var config: SwiftLoader.Config = {
         var c = SwiftLoader.Config()
@@ -37,7 +38,6 @@ class BaseViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
     func presentInfoAlertView(message: String) {
         var alertView = UIAlertView(title: "提示", message: message, delegate: nil, cancelButtonTitle: "确定")
         alertView.show()
@@ -45,17 +45,28 @@ class BaseViewController: UIViewController {
     
     
     func startActivity() {
-        
-        SwiftLoader.setConfig(config)
-        SwiftLoader.show(animated: false)
+        println("startActivity")
+//        SwiftLoader.setConfig(config)
+//        SwiftLoader.show(animated: false)
+        var window = UIApplication.sharedApplication().keyWindow!
+        var indicator = WIndicator.showIndicatorAddedTo(window, animation: true)
+        indicator.text = "请稍等"
+
     }
     
     func stopActivity() {
-        SwiftLoader.hide()
-        hudMaskView.removeFromSuperview()
+        println("stopActivity")
+        var window = UIApplication.sharedApplication().keyWindow!
+        WIndicator.removeIndicatorFrom(window, animation: true)
+//        SwiftLoader.hide()
 //        delay(seconds: 0.0) { () -> () in
 //            SwiftLoader.hide()
 //        }
+    }
+    
+    func showMessage(message: String, timeout: Double = 1.0) {
+        var window = UIApplication.sharedApplication().keyWindow!
+        WIndicator.showMsgInView(window, text: message, timeOut: timeout)
     }
     
     
