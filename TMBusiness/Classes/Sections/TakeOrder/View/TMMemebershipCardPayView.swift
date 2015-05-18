@@ -551,7 +551,7 @@ class TMMemebershipCardPayView: UIView {
         otherButton.setTitle("其他刷卡", forState: .Normal)
         otherButton.titleLabel?.font = balanceButton.titleLabel?.font
         otherButton.titleEdgeInsets = UIEdgeInsetsMake(0, 30, 0, 0)
-        
+        otherButton.hidden = true
         otherButton.setTitleColor(UIColor(hex: 0x1E8EBC), forState: .Normal)
         otherButton.setTitleColor(UIColor.whiteColor(), forState: .Highlighted)
         otherButton.setTitleColor(UIColor.whiteColor(), forState: .Selected)

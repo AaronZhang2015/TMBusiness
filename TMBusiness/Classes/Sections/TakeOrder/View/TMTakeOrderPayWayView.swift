@@ -82,7 +82,7 @@ class TMTakeOrderPayWayView: UIView {
         addSubview(cashPayButton)
         cashPayButton.snp_makeConstraints { make in
             make.size.equalTo(CGSizeMake(90, 90))
-            make.left.equalTo(self.balancePayButton.snp_trailing).offset(8)
+            make.left.equalTo(self.balancePayButton.snp_trailing).offset(8 + 45)
             make.centerY.equalTo(self.snp_centerY)
         }
         
@@ -97,7 +97,7 @@ class TMTakeOrderPayWayView: UIView {
         addSubview(cardPayButton)
         cardPayButton.snp_makeConstraints { make in
             make.size.equalTo(CGSizeMake(90, 90))
-            make.left.equalTo(self.cashPayButton.snp_trailing).offset(8)
+            make.left.equalTo(self.cashPayButton.snp_trailing).offset(8 + 45)
             make.centerY.equalTo(self.snp_centerY)
         }
         
@@ -115,6 +115,7 @@ class TMTakeOrderPayWayView: UIView {
             make.left.equalTo(self.cardPayButton.snp_trailing).offset(8)
             make.centerY.equalTo(self.snp_centerY)
         }
+        otherPayButton.hidden = true
     }
 
     required init(coder aDecoder: NSCoder) {

@@ -254,8 +254,14 @@ class TMOrderProductListView: UIView {
             
             // 优惠折扣
             if let discount = order.discount {
-                var discountRate = discount.doubleValue.format(discountFormat)
-                detailView.discountAmountLabel.text = "\(discountRate)折"
+                
+                if order.status == .Resting {
+                    var discountRate = (discount.doubleValue).format(discountFormat)
+                    detailView.discountAmountLabel.text = "\(discountRate)折"
+                } else {
+                    var discountRate = discount.doubleValue.format(discountFormat)
+                    detailView.discountAmountLabel.text = "\(discountRate)折"
+                }
             }
             
             // 消费金额

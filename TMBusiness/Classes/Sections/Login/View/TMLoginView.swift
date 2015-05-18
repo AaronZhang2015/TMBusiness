@@ -48,6 +48,7 @@ class TMLoginView: UIView {
         usernameTextField = UITextField(frame: CGRectMake(86, 72, 257, 30))
         usernameTextField.borderStyle = .None
         usernameTextField.placeholder = "账号"
+        usernameTextField.delegate = self
         usernameTextField.returnKeyType = .Next
         contentView.addSubview(usernameTextField)
         
@@ -63,9 +64,11 @@ class TMLoginView: UIView {
         contentView.addSubview(passwordIconView)
         
         passwordTextField = UITextField(frame: CGRectMake(86, 135, 257, 30))
+        passwordTextField.keyboardType = UIKeyboardType.NumbersAndPunctuation
         passwordTextField.borderStyle = .None
         passwordTextField.placeholder = "密码"
         passwordTextField.secureTextEntry = true
+        passwordTextField.delegate = self
         passwordTextField.returnKeyType = .Go
         contentView.addSubview(passwordTextField)
         
@@ -82,5 +85,18 @@ class TMLoginView: UIView {
 
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+    }
+}
+
+extension TMLoginView: UITextFieldDelegate {
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        if textField == usernameTextField {
+            passwordTextField.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+            loginButton.sendActionsForControlEvents(.TouchUpInside)
+        }
+        
+        return true
     }
 }

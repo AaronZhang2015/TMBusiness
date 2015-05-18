@@ -42,6 +42,8 @@ class TMTakeOrderViewController: BaseViewController {
     // 商品列表页面
     private var productListContainerView: UIView!
     
+    private var containerViewController: AZPagingContainerViewController!
+    
     var productListContainerViewleadingConstraint: Constraint!
     
     var cashPayViewLeadingConstraint: Constraint!
@@ -53,7 +55,7 @@ class TMTakeOrderViewController: BaseViewController {
     var rechargeId: String?
     
     // 备注内容
-    var orderDescription: String = ""
+//    var orderDescription: String = ""
     
     // 遮罩页面
     private lazy var maskView: UIView = {
@@ -72,7 +74,8 @@ class TMTakeOrderViewController: BaseViewController {
                 strongSelf.hideRemarkView()
                 
                 if index == 1 {
-                    strongSelf.orderDescription = remark.textView.text
+//                    strongSelf.orderDescription = remark.textView.text
+                    strongSelf.takeOrderCompute.orderDescription = remark.textView.text
                 }
             }
         }
@@ -189,6 +192,7 @@ class TMTakeOrderViewController: BaseViewController {
         
         codeScanView.decodeQRCodeClosure = { [weak self] code in
             if let strongSelf = self {
+                strongSelf.hideCodeScanView(true)
                 strongSelf.fetchEntityInfoWithQRCodeAction(code)
             }
         }
@@ -206,7 +210,7 @@ class TMTakeOrderViewController: BaseViewController {
     private var orderProductList: [TMProduct] = [TMProduct]()
     
     // 点单计算算法
-    private lazy var takeOrderCompute: TMTakeOrderCompute = {
+    lazy var takeOrderCompute: TMTakeOrderCompute = {
         var compute = TMTakeOrderCompute()
         
         self.membershipCardPayView.updateEntityAllInfo(compute)
@@ -221,6 +225,7 @@ class TMTakeOrderViewController: BaseViewController {
                 strongSelf.orderDetailView.updateOrderDetail(compute)
                 strongSelf.cashPayView.updateEntityAllInfo(compute)
                 strongSelf.rechargeView.updateRechargeDetail(compute)
+                strongSelf.remarkView.textView.text = compute.orderDescription
             }
         
         }
@@ -428,6 +433,16 @@ class TMTakeOrderViewController: BaseViewController {
     
     // 设置菜单列表
     func configureProductListView() {
+        
+        if containerViewController != nil {
+            containerViewController.willMoveToParentViewController(nil)
+            containerViewController.beginAppearanceTransition(false, animated: false)
+            containerViewController.removeFromParentViewController()
+            containerViewController.view.removeFromSuperview()
+            containerViewController.didMoveToParentViewController(nil)
+            containerViewController.endAppearanceTransition()
+        }
+        
         var controllers: [TMProductListViewController] = [TMProductListViewController]()
         
         for var index = 0; index < data.count; ++index {
@@ -439,7 +454,7 @@ class TMTakeOrderViewController: BaseViewController {
             controllers.append(controller)
         }
         
-        var containerViewController = AZPagingContainerViewController(controllers: controllers, parentViewController: self)
+        containerViewController = AZPagingContainerViewController(controllers: controllers, parentViewController: self)
         
         addChildViewController(containerViewController)
         containerViewController.view.frame = productListContainerView.bounds
@@ -477,11 +492,14 @@ class TMTakeOrderViewController: BaseViewController {
             view.addSubview(maskView)
         }
         
+        view.bringSubviewToFront(maskView)
+        
         if remarkView.superview == nil {
             view.addSubview(remarkView)
             remarkView.top = 20
             remarkView.centerX = maskView.centerX
         }
+        view.bringSubviewToFront(remarkView)
         
         maskView.alpha = 0.4
         
@@ -520,7 +538,8 @@ class TMTakeOrderViewController: BaseViewController {
             return
         }
         
-        presentInfoAlertView("请输入会员手机号或者扫描会员二维码")
+//        presentInfoAlertView("请输入会员手机号或者扫描会员二维码")
+        showCodeScanView()
     }
     
     
@@ -536,7 +555,9 @@ class TMTakeOrderViewController: BaseViewController {
             fetchUserOrderList()
             return
         }
-        presentInfoAlertView("请输入会员手机号或者扫描会员二维码")
+//        presentInfoAlertView("请输入会员手机号或者扫描会员二维码")
+        
+        showCodeScanView()
     }
     
     
@@ -706,6 +727,7 @@ class TMTakeOrderViewController: BaseViewController {
                 
                 if let strongSelf = self {
                     strongSelf.stopActivity()
+                    
                     if error == nil {
                         if let user = user {
                             user.isScan = true
@@ -714,7 +736,8 @@ class TMTakeOrderViewController: BaseViewController {
                         strongSelf.hideCodeScanView(true)
                         strongSelf.membershipCardPayView.phoneNumberTextField.text = ""
                     } else {
-                        strongSelf.codeScanView.canScan = true
+                        strongSelf.showMessage("扫码失败，请检查网络", timeout: 1.0)
+//                        strongSelf.codeScanView.canScan = true
                     }
                 }
                 
@@ -739,7 +762,7 @@ class TMTakeOrderViewController: BaseViewController {
             
             if !takeOrderCompute.isWaitForPaying {
 //                order = takeOrderCompute.getOrder(membershipCardPayView.remarkTextView.text)
-                order = takeOrderCompute.getOrder(orderDescription)
+                order = takeOrderCompute.getOrder()
             }
             
             var transactionMode = takeOrderCompute.getTransactionMode()
@@ -798,6 +821,8 @@ class TMTakeOrderViewController: BaseViewController {
                             // 如果不是刷卡的话，提示成功
                             if strongSelf.order.transaction_mode != TMTransactionMode.IBoxPay {
                                 strongSelf.presentInfoAlertView("支付成功")
+//                                TMPrinterManager.sharedInstance.print(strongSelf.order, user: strongSelf.takeOrderCompute.user, shop: TMShop.sharedInstance)
+                                strongSelf.handlePrintAction(strongSelf.order, user: strongSelf.takeOrderCompute.user, shop: TMShop.sharedInstance)
                                 // 清空之前用户数据
                                 strongSelf.takeOrderCompute.clearAllData()
                             } else {
@@ -837,7 +862,7 @@ class TMTakeOrderViewController: BaseViewController {
             order.admin_id = TMShop.sharedInstance.admin_id
             startActivity()
 //            var newOrder = takeOrderCompute.getOrder(membershipCardPayView.remarkTextView.text)
-            var newOrder = takeOrderCompute.getOrder(orderDescription)
+            var newOrder = takeOrderCompute.getOrder()
             if newOrder.product_records.count > 0 {
                 orderDataManager.updateOrderStatus(order) {[weak self] success in
                     if let strongSelf = self {
@@ -858,7 +883,7 @@ class TMTakeOrderViewController: BaseViewController {
         } else if takeOrderCompute.isRestingOrder {
             // 删除之前的挂单
 //            var newOrder = takeOrderCompute.getOrder(membershipCardPayView.remarkTextView.text)
-            var newOrder = takeOrderCompute.getOrder(orderDescription)
+            var newOrder = takeOrderCompute.getOrder()
             if newOrder.product_records.count > 0 {
                 orderDataManager.deleteRestingOrder(order)
             } else {
@@ -870,7 +895,7 @@ class TMTakeOrderViewController: BaseViewController {
     
     func handleRestingOrder() {
 //        order = takeOrderCompute.getOrder(membershipCardPayView.remarkTextView.text)
-        order = takeOrderCompute.getOrder(orderDescription)
+        order = takeOrderCompute.getOrder()
         // 如果订单
         
         if order.product_records.count > 0 {
@@ -894,7 +919,7 @@ class TMTakeOrderViewController: BaseViewController {
             order.admin_id = TMShop.sharedInstance.admin_id
             startActivity()
 //            var newOrder = takeOrderCompute.getOrder(membershipCardPayView.remarkTextView.text)
-            var newOrder = takeOrderCompute.getOrder(orderDescription)
+            var newOrder = takeOrderCompute.getOrder()
             if newOrder.product_records.count > 0 {
                 orderDataManager.updateOrderStatus(order) {[weak self] success in
                     if let strongSelf = self {
@@ -912,7 +937,7 @@ class TMTakeOrderViewController: BaseViewController {
             return
         } else if takeOrderCompute.isRestingOrder {
             // 删除之前的挂单
-            var newOrder = takeOrderCompute.getOrder(orderDescription)
+            var newOrder = takeOrderCompute.getOrder()
             if newOrder.product_records.count > 0 {
                 orderDataManager.deleteRestingOrder(order)
             } else {
@@ -924,7 +949,7 @@ class TMTakeOrderViewController: BaseViewController {
     }
     
     func addOrder(animated: Bool = true) {
-        order = takeOrderCompute.getOrder(orderDescription, hasUserInfo: true)
+        order = takeOrderCompute.getOrder( hasUserInfo: true)
         order.status = TMOrderStatus.WaitForPaying
         
         if order.product_records.count > 0 {
@@ -941,10 +966,13 @@ class TMTakeOrderViewController: BaseViewController {
                         alert.show()
                     } else {
                         strongSelf.order.order_id = orderId
+                        
+                        strongSelf.presentInfoAlertView("下单成功")
+//                        TMPrinterManager.sharedInstance.print(strongSelf.order, user: strongSelf.takeOrderCompute.user, shop: TMShop.sharedInstance)
+                        strongSelf.handlePrintAction(strongSelf.order, user: strongSelf.takeOrderCompute.user, shop: TMShop.sharedInstance)
+                        NSNotificationCenter.defaultCenter().postNotificationName(TMOrderListNeedRefresh, object: nil)
                         // 清空之前用户数据
                         strongSelf.takeOrderCompute.clearAllData()
-                        strongSelf.presentInfoAlertView("下单成功")
-                        NSNotificationCenter.defaultCenter().postNotificationName(TMOrderListNeedRefresh, object: nil)
                     }
                 }
                 })
@@ -1104,9 +1132,12 @@ class TMTakeOrderViewController: BaseViewController {
                 
                 return
             }
-    
-            order = takeOrderCompute.getOrder(orderDescription)
-        
+            
+            if cashPayView.isUserCashPay {
+                order = takeOrderCompute.getOrder(hasUserInfo: true)
+            } else {
+                order = takeOrderCompute.getOrder(hasUserInfo: false)
+            }
             if order.product_records.count > 0 {
                 startActivity()
                 orderDataManager.addOrderEntityInfo(order, completion: { [weak self] (orderId, error) in
@@ -1131,8 +1162,10 @@ class TMTakeOrderViewController: BaseViewController {
                                 NSNotificationCenter.defaultCenter().postNotificationName(TMOrderListNeedRefresh, object: nil)
                             }
                             
-                            strongSelf.takeOrderCompute.clearAllData()
                             strongSelf.presentInfoAlertView("支付成功")
+//                            TMPrinterManager.sharedInstance.print(strongSelf.order, user: strongSelf.takeOrderCompute.user, shop: TMShop.sharedInstance)
+                            strongSelf.handlePrintAction(strongSelf.order, user: strongSelf.takeOrderCompute.user, shop: TMShop.sharedInstance)
+                            strongSelf.takeOrderCompute.clearAllData()
                         }
                     }
                     })
@@ -1154,6 +1187,10 @@ class TMTakeOrderViewController: BaseViewController {
         hideMembershipCardPayView(false)
         hideCashPayView(false)
         takeOrderCompute.clearAllData()
+        
+        if let orderDescription = order.order_description {
+            takeOrderCompute.orderDescription = orderDescription
+        }
         // 设置商品列表
         // 获取商品列表
         for record in order.product_records {
@@ -1187,12 +1224,13 @@ class TMTakeOrderViewController: BaseViewController {
         order.status = TMOrderStatus.Invalid
         order.business_id = TMShop.sharedInstance.business_id
         order.admin_id = TMShop.sharedInstance.admin_id
+        // TODO
         startActivity()
         orderDataManager.updateOrderStatus(order) { [weak self] success in
             if let strongSelf = self {
                 // 重新创建订单
                 if success {
-                    strongSelf.order = strongSelf.takeOrderCompute.getOrder(strongSelf.orderDescription)
+                    strongSelf.order = strongSelf.takeOrderCompute.getOrder()
                     strongSelf.orderDataManager.addOrderEntityInfo(strongSelf.order, completion: { [weak self] (orderId, error) in
                         if let strongSelf = self {
                             
@@ -1208,8 +1246,10 @@ class TMTakeOrderViewController: BaseViewController {
                                 strongSelf.hideCashPayView(true)
                                 strongSelf.hideMembershipCardPayView(false)
                                 // 清空之前用户数据
-                                strongSelf.takeOrderCompute.clearAllData()
                                 strongSelf.presentInfoAlertView("支付成功")
+//                                TMPrinterManager.sharedInstance.print(strongSelf.order, user: strongSelf.takeOrderCompute.user, shop: TMShop.sharedInstance)
+                                strongSelf.handlePrintAction(strongSelf.order, user: strongSelf.takeOrderCompute.user, shop: TMShop.sharedInstance)
+                                strongSelf.takeOrderCompute.clearAllData()
                                 NSNotificationCenter.defaultCenter().postNotificationName(TMOrderListNeedRefresh, object: nil)
                             }
                         }
@@ -1240,7 +1280,7 @@ class TMTakeOrderViewController: BaseViewController {
                 if let strongSelf = self {
                     // 重新创建订单
                     if success {
-                        strongSelf.order = strongSelf.takeOrderCompute.getOrder(strongSelf.orderDescription)
+                        strongSelf.order = strongSelf.takeOrderCompute.getOrder()
                         
                         // 更新新订单为代支付
                         strongSelf.order.status = TMOrderStatus.WaitForPaying
@@ -1272,7 +1312,7 @@ class TMTakeOrderViewController: BaseViewController {
             return
         }
         
-        order = takeOrderCompute.getOrder(orderDescription)
+        order = takeOrderCompute.getOrder()
         order.status = TMOrderStatus.WaitForPaying
         order.transaction_mode = TMTransactionMode.IBoxPay
         if order.product_records.count > 0 {
@@ -1313,6 +1353,8 @@ class TMTakeOrderViewController: BaseViewController {
             if let strongSelf = self {
                 strongSelf.stopActivity()
                 strongSelf.presentInfoAlertView("支付成功")
+                strongSelf.handlePrintAction(strongSelf.order, user: strongSelf.takeOrderCompute.user, shop: TMShop.sharedInstance)
+                strongSelf.takeOrderCompute.clearAllData()
             }
         }
     }
@@ -1327,7 +1369,7 @@ class TMTakeOrderViewController: BaseViewController {
             
             return
         }
-        order = takeOrderCompute.getOrder(orderDescription)
+        order = takeOrderCompute.getOrder()
         order.transaction_mode = TMTransactionMode.Other
         
         if order.product_records.count > 0 {
@@ -1367,66 +1409,99 @@ class TMTakeOrderViewController: BaseViewController {
     
     
     func payWithCashBox(orderId: String, amount: NSNumber) {
-        var signMessage: String = ""
-        var signDict = NSMutableDictionary()
-    
-        loginViewController = CBLoginViewController()
-        loginViewController.setIsDefualtConnectTypeForBT(false)
-        loginViewController.delegate = self
         
-        // 加载支付信息
-        //---------登录参数---------------------------------
-        loginViewController.datas.username = "15195988772#02"
-        
-        //必须用MD5加密后的密文,并且转换为大写
-        loginViewController.datas.password = "123456".md5()!.uppercaseString
-        // 商户名称
-        loginViewController.datas.outMchName = "ThingMe"
-        // 商户合作ID,由盒子支付分配
-        loginViewController.datas.partner = "10332010089990134"
-        signDict.setValue(loginViewController.datas.partner, forKey: "partner")
-        
-        // 第三方的公司交易订单号
-        loginViewController.datas.outTradeNo = orderId
-        signDict.setValue(loginViewController.datas.outTradeNo, forKey: "outTradeNo")
-        
-        // 交易金额
-        loginViewController.datas.totalFee = Int64(amount.doubleValue * 100) //精确到分
-        signDict.setValue(NSNumber(longLong: loginViewController.datas.totalFee), forKey: "totalFee")
-        
-        // 编码方式
-        loginViewController.datas._inputCharset = "UTF-8"
-        signDict.setValue(loginViewController.datas._inputCharset, forKey: "_inputCharset")
-        
-        // 服务器回调的地址
-        loginViewController.datas.notifyUrl = "http://172.30.10.22:8080/iboxpay"
-        signDict.setValue(loginViewController.datas.notifyUrl, forKey: "notifyUrl")
-        
-        // 加密方式（加密必须需要盒子支付公司配置登录账号的公钥key,否则交易不成功，提示公钥不匹配；这个可以找项目负责人处理）
-        loginViewController.datas.signType = "MD5"
-        
-        var returnSortStr = ""
-        var keyArray = signDict.allKeys as NSArray
-        keyArray = keyArray.sortedArrayUsingSelector("compare:")
-        for var i = 0; i < keyArray.count; ++i {
-            if (count(returnSortStr) == 0) {
-                var key = keyArray[i] as! String
-                var tempStr = "\(key)=\(signDict[key]!)"
-                returnSortStr = "\(returnSortStr)\(tempStr)"
-            } else {
-                var key = keyArray[i] as! String
-                var tempStr = "&\(key)=\(signDict[key]!)"
-                returnSortStr = "\(returnSortStr)\(tempStr)"
+        if let boxPay = NSKeyedUnarchiver.unarchiveObjectWithFile(boxPath) as? TMBoxPay {
+            var signMessage: String = ""
+            var signDict = NSMutableDictionary()
+            
+            loginViewController = CBLoginViewController()
+            loginViewController.setIsDefualtConnectTypeForBT(false)
+            loginViewController.delegate = self
+            
+            // 加载支付信息
+            //---------登录参数---------------------------------
+            loginViewController.datas.username = boxPay.account
+            
+            //必须用MD5加密后的密文,并且转换为大写
+            loginViewController.datas.password = boxPay.password.md5()!.uppercaseString
+            // 商户名称
+            loginViewController.datas.outMchName = "ThingMe"
+            // 商户合作ID,由盒子支付分配
+            loginViewController.datas.partner = boxPay.partner
+            signDict.setValue(loginViewController.datas.partner, forKey: "partner")
+            
+            // 第三方的公司交易订单号
+            loginViewController.datas.outTradeNo = orderId
+            signDict.setValue(loginViewController.datas.outTradeNo, forKey: "outTradeNo")
+            
+            // 交易金额
+            loginViewController.datas.totalFee = Int64(amount.doubleValue * 100) //精确到分
+            signDict.setValue(NSNumber(longLong: loginViewController.datas.totalFee), forKey: "totalFee")
+            
+            // 编码方式
+            loginViewController.datas._inputCharset = "UTF-8"
+            signDict.setValue(loginViewController.datas._inputCharset, forKey: "_inputCharset")
+            
+            // 服务器回调的地址
+            loginViewController.datas.notifyUrl = "http://172.30.10.22:8080/iboxpay"
+            signDict.setValue(loginViewController.datas.notifyUrl, forKey: "notifyUrl")
+            
+            // 加密方式（加密必须需要盒子支付公司配置登录账号的公钥key,否则交易不成功，提示公钥不匹配；这个可以找项目负责人处理）
+            loginViewController.datas.signType = "MD5"
+            
+            var returnSortStr = ""
+            var keyArray = signDict.allKeys as NSArray
+            keyArray = keyArray.sortedArrayUsingSelector("compare:")
+            for var i = 0; i < keyArray.count; ++i {
+                if (count(returnSortStr) == 0) {
+                    var key = keyArray[i] as! String
+                    var tempStr = "\(key)=\(signDict[key]!)"
+                    returnSortStr = "\(returnSortStr)\(tempStr)"
+                } else {
+                    var key = keyArray[i] as! String
+                    var tempStr = "&\(key)=\(signDict[key]!)"
+                    returnSortStr = "\(returnSortStr)\(tempStr)"
+                }
             }
+            
+            signMessage = returnSortStr
+            signMessage = signMessage.stringByAppendingString("&key=\(boxPay.md5Key)")
+            signMessage = signMessage.md5()!
+            
+            loginViewController.datas.signContent = signMessage
+            var nc = UINavigationController(rootViewController: loginViewController)
+            self.presentViewController(nc, animated: true, completion: nil)
+        } else {
+            presentInfoAlertView("请去系统设置里面配置盒子信息")
         }
-        
-        signMessage = returnSortStr
-        signMessage = signMessage.stringByAppendingString("&key=f218542278ff4e85b7ce00ed390c4ba7")
-        signMessage = signMessage.md5()!
-        
-        loginViewController.datas.signContent = signMessage
-        var nc = UINavigationController(rootViewController: loginViewController)
-        self.presentViewController(nc, animated: true, completion: nil)
+    }
+    
+    func handlePrintAction(order: TMOrder, user: TMUser?, shop: TMShop) {
+        // 首先获取单号
+        orderDataManager.fetchOrderIndex(shop.shop_id, completion: { (error, order_index) -> Void in
+            var orderIndex = 0
+            
+            if let index = order_index?.toInt() {
+                orderIndex = index + 1
+            } else {
+                // 获取本地单号缓存
+                if let order_index = NSUserDefaults.standardUserDefaults().stringForKey("TMOrderIndex") {
+                    if let index = order_index.toInt() {
+                        orderIndex = index + 1
+                    } else {
+                        orderIndex = 0
+                    }
+                } else {
+                    orderIndex = 0
+                }
+            }
+            
+            // 单号获取成功
+            // 打印
+            order.order_index = "\(orderIndex)"
+            NSUserDefaults.standardUserDefaults().setValue(order.order_index!, forKey: "TMOrderIndex")
+            TMPrinterManager.sharedInstance.print(order, user: user, shop: TMShop.sharedInstance)
+        })
     }
 }
 
@@ -1561,7 +1636,7 @@ extension TMTakeOrderViewController: CBLoginViewControllerDelegate {
             loginViewController.dismissViewControllerAnimated(true, completion: { [weak self] () -> Void in
                 // 支付失败
                 if let strongSelf = self {
-                    strongSelf.presentInfoAlertView("授权失败，请重新尝试")
+                    strongSelf.presentInfoAlertView("授权失败，请去系统设置里面重新设置盒子信息")
                     strongSelf.isRecharging = false
                     strongSelf.rechargeId = nil
                 }
@@ -1577,9 +1652,15 @@ extension TMTakeOrderViewController: CashBoxManagerSDKDelegate {
             loginViewController.dismissViewControllerAnimated(true, completion: { [weak self] () -> Void in
                 // 支付失败
                 if let strongSelf = self {
-                    strongSelf.presentInfoAlertView("支付失败，请去未支付订单查看")
-                    strongSelf.isRecharging = false
-                    strongSelf.rechargeId = nil
+                    
+                    if strongSelf.isRecharging {
+                        strongSelf.presentInfoAlertView("充值支付失败")
+                        strongSelf.isRecharging = false
+                        strongSelf.rechargeId = nil
+                    } else {
+                        strongSelf.presentInfoAlertView("支付失败，请去未支付订单查看")
+                    }
+                    
                 }
             })
         }

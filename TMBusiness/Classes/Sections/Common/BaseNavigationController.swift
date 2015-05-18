@@ -15,6 +15,8 @@ class BaseNavigationController: UINavigationController {
 
         navigationBar.translucent = false
         navigationBar.setBackgroundImage(UIImage(named: "nav"), forBarMetrics: .Default)
+        navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
+        navigationBar.tintColor = UIColor.whiteColor()
     }
 
     override func didReceiveMemoryWarning() {

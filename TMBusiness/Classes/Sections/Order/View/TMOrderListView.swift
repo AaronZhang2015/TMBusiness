@@ -240,6 +240,12 @@ class TMOrderDetailCell: UITableViewCell {
         
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        phoneNumberLabel.text = ""
+        amountLabel.text = ""
+    }
+    
     func configureData(model: TMOrder) {
         if let date = model.register_time {
             dateLabel.text = date.toString(format: .Custom("yyyy-MM-dd HH:mm:ss"))

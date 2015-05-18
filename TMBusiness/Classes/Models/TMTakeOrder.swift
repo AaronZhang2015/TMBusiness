@@ -226,6 +226,15 @@ class TMTakeOrderCompute {
     
     var shop: TMShop?
     
+    // 备注
+    var orderDescription: String = "" {
+        didSet {
+            if let closure = refreshDataClosure {
+                closure(self)
+            }
+        }
+    }
+    
     // 刷新数据事件
     var refreshDataClosure: ((TMTakeOrderCompute) -> ())?
     
@@ -377,6 +386,7 @@ class TMTakeOrderCompute {
         clearProductList()
         isWaitForPaying = false
         isRestingOrder = false
+        orderDescription = ""
         
         if let closure = clearAllDataClosure {
             closure(self)
@@ -461,11 +471,31 @@ class TMTakeOrderCompute {
         
         if let immediate = shop.immediate {
             // 当次生效奖励
+//            var typeString =  as NSString
+            /*
             if (immediate as NSString).containsString("\(TMImmediateType.Now.rawValue)") {
                 takeOrderRule.immediate = TMImmediateType.Now
             } else {
                 takeOrderRule.immediate = TMImmediateType.Next
             }
+*/
+            
+            var immediateString = immediate as NSString
+            var typeString = "\(TMImmediateType.Now.rawValue)" as NSString
+            
+            var range = immediateString.rangeOfString("\(TMImmediateType.Now.rawValue)")
+            
+            if range.location != NSNotFound {
+                takeOrderRule.immediate = TMImmediateType.Now
+            } else {
+                takeOrderRule.immediate = TMImmediateType.Next
+            }
+            
+//            if immediateString.containsString("") {
+//                takeOrderRule.immediate = TMImmediateType.Now
+//            } else {
+//                takeOrderRule.immediate = TMImmediateType.Next
+//            }
         }
         
         // 根据是否有商品来计算
@@ -732,7 +762,7 @@ class TMTakeOrderCompute {
     }
     
     
-    func getOrder(remark: String, hasUserInfo: Bool = true, status: TMOrderStatus = .TransactionDone) -> TMOrder {
+    func getOrder(hasUserInfo: Bool = true, status: TMOrderStatus = .TransactionDone) -> TMOrder {
         
         var order = TMOrder()
         
@@ -743,10 +773,11 @@ class TMTakeOrderCompute {
                 order.user_id = TMShop.sharedInstance.shop_id
             }
             order.actual_amount = NSNumber(double: getActualAmount())
-            order.discount = NSNumber(double: getMaxDiscount())
+            order.discount = NSNumber(double: getMaxDiscount() * 10) 
+            order.user_mobile_number =  user?.mobile_number
         } else {
             order.actual_amount = NSNumber(double: getConsumeAmount())
-            order.discount = 1.0
+            order.discount = 1.0 * 10
         }
         
         
@@ -763,10 +794,9 @@ class TMTakeOrderCompute {
         order.coupon_id = ""
         order.discount_type = getDiscountType()
         order.register_time = NSDate()
-        order.order_description = remark
+        order.order_description = orderDescription
         order.status = status
         order.product_records = getProductRecords()
-        order.user_mobile_number =  user?.mobile_number
         return order
     }
 }

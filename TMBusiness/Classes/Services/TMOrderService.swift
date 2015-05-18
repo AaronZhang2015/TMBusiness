@@ -130,4 +130,18 @@ class TMOrderService: NSObject {
             }
         }
     }
+    
+    func fetchOrderIndex(shopId: String, completion:(NSError?, String?) -> Void) {
+        var parameters = ["shop_id": shopId, "extension_field": ""]
+        
+        manager.request(.POST, relativePath: "getOrderIndexWith", parameters: parameters) { (result) -> Void in
+            switch result {
+            case let .Error(e):
+                completion(e, nil)
+            case let .Value(json):
+                let data = json["data"].string
+                completion(nil, data)
+            }
+        }
+    }
 }

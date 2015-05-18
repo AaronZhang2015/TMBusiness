@@ -108,7 +108,7 @@ class TMOrderViewController: BaseViewController {
             // 转入结账页面
             if let strongSelf = self {
                 var masterViewController = strongSelf.parentViewController as! MasterViewController
-                if let user_mobile_number = order.user_mobile_number {
+                if let user_mobile_number = order.user_mobile_number where count(user_mobile_number) > 0 {
                     strongSelf.fetchEntityInfoAction(user_mobile_number) { user in
                         // 转入点单页面
                         masterViewController.handleCheckoutAction(order, user: user)
@@ -121,7 +121,7 @@ class TMOrderViewController: BaseViewController {
         }
         
         view.printOrderClosure = { [weak self] order in
-            
+            TMPrinterManager.sharedInstance.print(order, user: nil, shop: TMShop.sharedInstance)
         }
         
         view.changeOrderClosure = { [weak self] order in
@@ -129,7 +129,7 @@ class TMOrderViewController: BaseViewController {
             if let strongSelf = self {
                 var masterViewController = strongSelf.parentViewController as! MasterViewController
 //                masterViewController.handleCheckoutAction(order)
-                if let user_mobile_number = order.user_mobile_number {
+                if let user_mobile_number = order.user_mobile_number where count(user_mobile_number) > 0 {
                     strongSelf.fetchEntityInfoAction(user_mobile_number) { user in
                         // 转入点单页面
                         masterViewController.handleCheckoutAction(order, user: user)

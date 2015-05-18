@@ -43,7 +43,8 @@ class TMLoginViewController: BaseViewController {
         headerView = TMLoginHeaderView(frame: CGRectMake(0, 0, 1024, 111))
         view.addSubview(headerView)
         
-        loginView = TMLoginView(frame: CGRectMake(293, 250, 440, 352))
+        loginView = TMLoginView(frame: CGRectMake(293, 250 - 100, 440, 352))
+        loginView.usernameTextField.becomeFirstResponder()
         view.addSubview(loginView)
         loginView.loginButton.addTarget(self, action: "handleLoginAction", forControlEvents: .TouchUpInside)
     }
@@ -61,6 +62,9 @@ extension TMLoginViewController {
             username = "ys006"
             password = "123456"
         }
+        
+        loginView.passwordTextField.resignFirstResponder()
+        loginView.usernameTextField.resignFirstResponder()
         
         startActivity()
         shopDataManager.login(username, password: password) { [weak self] (shop, error) -> Void in

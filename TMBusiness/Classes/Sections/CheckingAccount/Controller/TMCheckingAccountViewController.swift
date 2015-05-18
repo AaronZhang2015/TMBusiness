@@ -11,6 +11,10 @@ import Snap
 
 class TMCheckingAccountViewController: BaseViewController {
     
+    var startDate: NSDate!
+    var endDate: NSDate!
+    var checkingAccount: TMCheckingAccount?
+    
     lazy var shopDataManager: TMShopDataManager = {
         return TMShopDataManager()
         }()
@@ -18,6 +22,7 @@ class TMCheckingAccountViewController: BaseViewController {
     lazy var checkingAccountHeaderView: TMCheckingAccountSearchView = {
         var view = TMCheckingAccountSearchView()
         view.searchButton.addTarget(self, action: "handleSearchActon", forControlEvents: .TouchUpInside)
+        view.printButton.addTarget(self, action: "handlePrintActon", forControlEvents: .TouchUpInside)
         return view
         }()
     
@@ -61,12 +66,17 @@ class TMCheckingAccountViewController: BaseViewController {
     }
     
     func handleSearchActon() {
-        var startDate: NSDate!
-        var endDate: NSDate!
+        
+        var now = NSDate()
         
         if let startDateString = checkingAccountHeaderView.startDateButton.titleLabel?.text, endDateString = checkingAccountHeaderView.endDateButton.titleLabel?.text {
             startDate = NSDate(fromString: startDateString, format: .Custom("yyyy-MM-dd"))
             endDate = NSDate(fromString: endDateString, format: .Custom("yyyy-MM-dd"))
+            
+            // 如果截止时间和今天是同一天
+            if endDateString == now.toString(format: .Custom("yyyy-MM-dd")) {
+                endDate = now
+            }
         } else {
             startDate = NSDate()
             endDate = NSDate()
@@ -74,21 +84,30 @@ class TMCheckingAccountViewController: BaseViewController {
             checkingAccountHeaderView.endDateButton.setTitle(endDate.toString(format: .Custom("yyyy-MM-dd")), forState: .Normal)
         }
         
-        startDate = startDate.startDateInDay()
-        endDate = endDate.startDateInDay()
+//        self.startDate = startDate//.startDateInDay()
+//        self.endDate = endDate//.startDateInDay()
         
         startActivity()
-        shopDataManager.fetchStatisticsDetail(TMShop.sharedInstance.business_id, shopId: TMShop.sharedInstance.shop_id, startDate: startDate, endDate: endDate, adminId: TMShop.sharedInstance.admin_id) {[weak self] (checkingAccount, error) in
+        shopDataManager.fetchStatisticsDetail(TMShop.sharedInstance.business_id, shopId: TMShop.sharedInstance.shop_id, startDate: startDate.startDateInDay(), endDate: endDate.startDateInDay(), adminId: TMShop.sharedInstance.admin_id) {[weak self] (checkingAccount, error) in
             if let strongSelf = self {
                 strongSelf.stopActivity()
+                strongSelf.checkingAccount = checkingAccount
                 if let e = error {
-                    
+                    strongSelf.showMessage("查询失败")
                 } else {
                     strongSelf.amountView.configureData(checkingAccount!)
                     strongSelf.detailView.configureData(checkingAccount!)
                 }
             }
         }
+    }
+    
+    func handlePrintActon() {
         
+        if let checkingAccount = checkingAccount, startDate = startDate, endDate = endDate {
+            TMPrinterManager.sharedInstance.printCheckingAccount(checkingAccount, shop: TMShop.sharedInstance, startDate: startDate.startDateInDay(), endDate: endDate)
+        } else {
+            showMessage("请先进行查询")
+        }
     }
 }

@@ -17,7 +17,7 @@ class TMProductRecord: NSObject {
     var product_id: String?
     
     // 商品名称
-    var product_name: String?
+    var product_name: String! = ""
     
     // 商品单价
     var price: NSNumber! = 0

@@ -69,7 +69,12 @@ class TMCodeScanView: UIView {
         session.addOutput(output)
         
         output.metadataObjectTypes = [AVMetadataObjectTypeQRCode]
-        output.rectOfInterest = CGRectMake(128.0 / width, 121.0 / height, 302, 302)
+        
+        if UIScreen.mainScreen().bounds.width > 1024 {
+            output.rectOfInterest = CGRectMake(128.0 / width, 121.0 / height, 302, 302)
+        }
+        
+        
         output.setMetadataObjectsDelegate(self, queue: dispatch_get_main_queue())
         
         previewLayer = AVCaptureVideoPreviewLayer.layerWithSession(session) as! AVCaptureVideoPreviewLayer
@@ -226,11 +231,13 @@ extension TMCodeScanView: AVCaptureMetadataOutputObjectsDelegate {
             if metadata.type == AVMetadataObjectTypeQRCode {
                 var transformed = previewLayer.transformedMetadataObjectForMetadataObject(metadata) as! AVMetadataMachineReadableCodeObject
                 code = transformed.stringValue
+                println("code = \(code)")
                 
                 if canScan {
                     if isValidQRCode() {
                         if let closure = decodeQRCodeClosure {
                             canScan = false
+                            println("**********************")
                             closure(code)
                         }
                     }

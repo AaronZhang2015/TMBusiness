@@ -22,6 +22,19 @@ class MasterViewController: BaseViewController {
         return TMCheckingAccountViewController()
         }()
     
+    lazy var settingViewController: BaseNavigationController = {
+        var setting = TMSettingViewController()
+        setting.delegate = self
+        var nav = BaseNavigationController(rootViewController: setting)
+        return nav
+        }()
+    
+    lazy var maskView: UIView = {
+        var view = UIView(frame: UIScreen.mainScreen().bounds)
+        view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.6)
+        return view
+        }()
+    
     lazy var shopDataManager: TMShopDataManager = {
         return TMShopDataManager()
         }()
@@ -76,7 +89,11 @@ class MasterViewController: BaseViewController {
         settingButton.frame = CGRectMake(0, 0, 26, 26)
         settingButton.setBackgroundImage(UIImage(named: "shezhi"), forState: .Normal)
         settingButton.setBackgroundImage(UIImage(named: "shezhi_on"), forState: .Highlighted)
+        settingButton.addTarget(self, action: "handleSettingAction", forControlEvents: .TouchUpInside)
         var settingBarButtonItem = UIBarButtonItem(customView: settingButton)
+        
+        var flexibleBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FixedSpace, target: nil, action: nil)
+        flexibleBarButtonItem.width = 30
         
         // 退出按钮
         var logoutButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
@@ -86,7 +103,7 @@ class MasterViewController: BaseViewController {
         logoutButton.addTarget(self, action: "handleLogoutAction", forControlEvents: .TouchUpInside)
         var logoutBarButtonItem = UIBarButtonItem(customView: logoutButton)
         
-        navigationItem.rightBarButtonItems = [settingBarButtonItem, logoutBarButtonItem]
+        navigationItem.rightBarButtonItems = [settingBarButtonItem, flexibleBarButtonItem, logoutBarButtonItem]
         
         // 左边Logo
         var logoButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
@@ -151,6 +168,7 @@ class MasterViewController: BaseViewController {
         currentViewController = viewController
     }
     
+    
     func getCacheStatus() {
         var localCacheId = cacheDataManager.fetchLocalCacheInfo(.Category)
         cacheDataManager.fetchCacheInfo(.Category, adminId: TMShop.sharedInstance.admin_id) { [weak self] (cacheId) -> Void in
@@ -168,16 +186,40 @@ class MasterViewController: BaseViewController {
 extension MasterViewController {
     
     func handleSettingAction() {
-        
+        if maskView.superview == nil {
+            navigationController?.view.addSubview(maskView)
+        }
+        navigationController?.view.addSubview(settingViewController.view)
+        var frame = UIScreen.mainScreen().bounds
+        frame.left = view.width - 400
+        frame.width = 400
+        settingViewController.view.frame = frame
+        settingViewController.didMoveToParentViewController(self)
     }
     
     func handleLogoutAction() {
+        
         var alert = UIAlertView(title: "提示", message: "是否注销当前用户", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "注销")
         alert.show()
     }
     
     func handleMenuAction(segmentControl: TMSegmentControl) {
         handleMenu(segmentControl.selectedIndex)
+    }
+}
+
+extension MasterViewController: TMSettingViewControllerDelegate{
+    func dismissSettingViewController() {
+        settingViewController.willMoveToParentViewController(nil)
+        settingViewController.beginAppearanceTransition(false, animated: false)
+        settingViewController.removeFromParentViewController()
+        settingViewController.view.removeFromSuperview()
+        settingViewController.didMoveToParentViewController(nil)
+        settingViewController.endAppearanceTransition()
+        
+        if maskView.superview != nil {
+            maskView.removeFromSuperview()
+        }
     }
 }
 
@@ -191,6 +233,7 @@ extension MasterViewController: UIAlertViewDelegate {
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
         if buttonIndex == 1 {
             // 删除登录信息
+            takeOrderViewController.takeOrderCompute.clearAllData()
             NSFileManager.defaultManager().removeItemAtPath(shopPath, error: nil)
             shopDataManager.clearCategoryAndProduct()
             orderDataManager.clearRestingOrder()

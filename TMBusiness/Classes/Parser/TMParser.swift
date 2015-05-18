@@ -372,8 +372,15 @@ class TMParser: NSObject {
         boxPay.sn = data["iBoxPay_SN"].stringValue
         boxPay.account = data["iBoxPay_account"].stringValue
         boxPay.password = data["iBoxPay_password"].stringValue
-        boxPay.partner = data["partner"].stringValue
-        boxPay.md5Key = data["md5_key"].stringValue
+        
+        if let partner = data["partner"].string where count(partner) > 0 {
+            boxPay.partner = partner
+        }
+        
+        if let md5Key = data["md5_key"].string where count(md5Key) > 0 {
+            boxPay.md5Key = md5Key
+        }
+        
         return boxPay
     }
     

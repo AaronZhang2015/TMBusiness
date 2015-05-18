@@ -57,7 +57,7 @@ class TMOrderDataManager: TMDataManager {
         
         var discountString = ""
         if let discount = order.discount {
-            var discountRate = discount.doubleValue * 10
+            var discountRate = discount.doubleValue //* 10
             discountString = "\(discountRate.format(format))"
         }
         
@@ -311,4 +311,8 @@ class TMOrderDataManager: TMDataManager {
         orderService.updateOrderStatus(order.status, orderId: order.order_id!, shopId: order.shop_id!, businessId: order.business_id!, adminId: order.admin_id!, completion: completion)
     }
     
+    
+    func fetchOrderIndex(shopId: String, completion:(NSError?, String?) -> Void) {
+        orderService.fetchOrderIndex(shopId, completion: completion)
+    }
 }

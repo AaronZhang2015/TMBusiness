@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6B015A191B05F8FD00FD6CB6 /* TMPrinterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B015A181B05F8FD00FD6CB6 /* TMPrinterManager.swift */; };
 		6B025EAA1AE8C3B100C3A9FB /* TMModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B025EA91AE8C3B100C3A9FB /* TMModalView.swift */; };
 		6B1E4B981B0255B6001C0FAB /* SVIndefiniteAnimatedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B1E4B931B0255B6001C0FAB /* SVIndefiniteAnimatedView.m */; };
 		6B1E4B991B0255B6001C0FAB /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6B1E4B951B0255B6001C0FAB /* SVProgressHUD.bundle */; };
@@ -31,6 +32,7 @@
 		6B4FBDAF1ACD25410017CB6F /* TMTakeOrderDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4FBDAE1ACD25410017CB6F /* TMTakeOrderDetailView.swift */; };
 		6B4FBDB11ACD2CBF0017CB6F /* TMTakeOrderPayWayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4FBDB01ACD2CBF0017CB6F /* TMTakeOrderPayWayView.swift */; };
 		6B4FBDB31ACD439B0017CB6F /* TMProductListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4FBDB21ACD439B0017CB6F /* TMProductListViewController.swift */; };
+		6B52CC191B032F9E00D9746F /* BoxPaySettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B52CC181B032F9E00D9746F /* BoxPaySettingViewController.swift */; };
 		6B55BB5D1AE5E79500413B85 /* TMParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B55BB5C1AE5E79500413B85 /* TMParser.swift */; };
 		6B5A2A0A1AEF846A00C787D4 /* TMOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5A2A091AEF846A00C787D4 /* TMOrderViewController.swift */; };
 		6B5A2A0C1AEF85D800C787D4 /* TMOrderMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5A2A0B1AEF85D800C787D4 /* TMOrderMenuView.swift */; };
@@ -39,6 +41,7 @@
 		6B5BE4821AF07C240040A1D2 /* PullToRefreshView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5BE4801AF07C240040A1D2 /* PullToRefreshView.swift */; };
 		6B5BE4831AF07C240040A1D2 /* AZLoadMoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5BE4811AF07C240040A1D2 /* AZLoadMoreView.swift */; };
 		6B5BE48B1AF07C440040A1D2 /* pulltorefresharrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B5BE48A1AF07C440040A1D2 /* pulltorefresharrow.png */; };
+		6B5C314D1B02E76E0085D4E5 /* TMSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5C314C1B02E76E0085D4E5 /* TMSettingViewController.swift */; };
 		6B5F08051ACC551200CBD3BD /* Alamofire.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 6B5F07FA1ACC550600CBD3BD /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6B5F081D1ACC560F00CBD3BD /* TMOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5F08131ACC560F00CBD3BD /* TMOrder.swift */; };
 		6B5F081F1ACC560F00CBD3BD /* TMProductRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5F08151ACC560F00CBD3BD /* TMProductRecord.swift */; };
@@ -75,6 +78,10 @@
 		6B64DB731ADE62D000192C7B /* Thing Me.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6B64DB711ADE62D000192C7B /* Thing Me.xcdatamodeld */; };
 		6B67DE451AE7465800E27FC6 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B67DE441AE7465800E27FC6 /* Crypto.swift */; };
 		6B6EC8E91AD779C000A85B2B /* TMMemebershipCardPayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B6EC8E81AD779C000A85B2B /* TMMemebershipCardPayView.swift */; };
+		6B7242BE1B05DD4500DF5EE1 /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B7242B71B05DD4500DF5EE1 /* AsyncSocket.m */; };
+		6B7242BF1B05DD4500DF5EE1 /* AsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B7242B91B05DD4500DF5EE1 /* AsyncUdpSocket.m */; };
+		6B7242C01B05DD4500DF5EE1 /* ESCCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B7242BB1B05DD4500DF5EE1 /* ESCCommand.m */; };
+		6B7242C11B05DD4500DF5EE1 /* PrinterCmdUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B7242BD1B05DD4500DF5EE1 /* PrinterCmdUtils.m */; };
 		6B7852591ACC353C008F1A49 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B7852581ACC353C008F1A49 /* AppDelegate.swift */; };
 		6B78525E1ACC353D008F1A49 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6B78525C1ACC353D008F1A49 /* Main.storyboard */; };
 		6B7852601ACC353D008F1A49 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6B78525F1ACC353D008F1A49 /* Images.xcassets */; };
@@ -184,7 +191,6 @@
 		6BC3A6B41AFF5C3F00452EF4 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BC3A6B31AFF5C3F00452EF4 /* AssetsLibrary.framework */; };
 		6BC3A6B61AFF5C4400452EF4 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BC3A6B51AFF5C4400452EF4 /* CoreText.framework */; };
 		6BC3A6B81AFF5C4900452EF4 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BC3A6B71AFF5C4900452EF4 /* CoreData.framework */; };
-		6BC3A6BA1AFF5C4F00452EF4 /* CoreAudioKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BC3A6B91AFF5C4F00452EF4 /* CoreAudioKit.framework */; };
 		6BC3A6BC1AFF5C6F00452EF4 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BC3A6BB1AFF5C6F00452EF4 /* MediaPlayer.framework */; };
 		6BDA93FB1AED306D007FD408 /* SwiftLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BDA93FA1AED306D007FD408 /* SwiftLoader.swift */; };
 		6BEF67221AD3B36400EF2BCB /* TMOrderRemarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEF67211AD3B36400EF2BCB /* TMOrderRemarkView.swift */; };
@@ -309,6 +315,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6B015A181B05F8FD00FD6CB6 /* TMPrinterManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMPrinterManager.swift; sourceTree = "<group>"; };
 		6B025EA91AE8C3B100C3A9FB /* TMModalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMModalView.swift; sourceTree = "<group>"; };
 		6B1E4B921B0255B6001C0FAB /* SVIndefiniteAnimatedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVIndefiniteAnimatedView.h; sourceTree = "<group>"; };
 		6B1E4B931B0255B6001C0FAB /* SVIndefiniteAnimatedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVIndefiniteAnimatedView.m; sourceTree = "<group>"; };
@@ -335,6 +342,7 @@
 		6B4FBDAE1ACD25410017CB6F /* TMTakeOrderDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMTakeOrderDetailView.swift; sourceTree = "<group>"; };
 		6B4FBDB01ACD2CBF0017CB6F /* TMTakeOrderPayWayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMTakeOrderPayWayView.swift; sourceTree = "<group>"; };
 		6B4FBDB21ACD439B0017CB6F /* TMProductListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMProductListViewController.swift; sourceTree = "<group>"; };
+		6B52CC181B032F9E00D9746F /* BoxPaySettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxPaySettingViewController.swift; sourceTree = "<group>"; };
 		6B55BB5C1AE5E79500413B85 /* TMParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMParser.swift; sourceTree = "<group>"; };
 		6B5A2A091AEF846A00C787D4 /* TMOrderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMOrderViewController.swift; sourceTree = "<group>"; };
 		6B5A2A0B1AEF85D800C787D4 /* TMOrderMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMOrderMenuView.swift; sourceTree = "<group>"; };
@@ -343,6 +351,7 @@
 		6B5BE4801AF07C240040A1D2 /* PullToRefreshView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullToRefreshView.swift; sourceTree = "<group>"; };
 		6B5BE4811AF07C240040A1D2 /* AZLoadMoreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZLoadMoreView.swift; sourceTree = "<group>"; };
 		6B5BE48A1AF07C440040A1D2 /* pulltorefresharrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pulltorefresharrow.png; sourceTree = "<group>"; };
+		6B5C314C1B02E76E0085D4E5 /* TMSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMSettingViewController.swift; sourceTree = "<group>"; };
 		6B5F07F21ACC550600CBD3BD /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = Alamofire/Alamofire.xcodeproj; sourceTree = "<group>"; };
 		6B5F08131ACC560F00CBD3BD /* TMOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMOrder.swift; sourceTree = "<group>"; };
 		6B5F08151ACC560F00CBD3BD /* TMProductRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMProductRecord.swift; sourceTree = "<group>"; };
@@ -380,6 +389,15 @@
 		6B67DE441AE7465800E27FC6 /* Crypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
 		6B67DE461AE7466E00E27FC6 /* TMBusiness-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TMBusiness-Bridging-Header.h"; sourceTree = "<group>"; };
 		6B6EC8E81AD779C000A85B2B /* TMMemebershipCardPayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMMemebershipCardPayView.swift; sourceTree = "<group>"; };
+		6B7242B61B05DD4500DF5EE1 /* AsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncSocket.h; sourceTree = "<group>"; };
+		6B7242B71B05DD4500DF5EE1 /* AsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncSocket.m; sourceTree = "<group>"; };
+		6B7242B81B05DD4500DF5EE1 /* AsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncUdpSocket.h; sourceTree = "<group>"; };
+		6B7242B91B05DD4500DF5EE1 /* AsyncUdpSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncUdpSocket.m; sourceTree = "<group>"; };
+		6B7242BA1B05DD4500DF5EE1 /* ESCCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESCCommand.h; sourceTree = "<group>"; };
+		6B7242BB1B05DD4500DF5EE1 /* ESCCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESCCommand.m; sourceTree = "<group>"; };
+		6B7242BC1B05DD4500DF5EE1 /* PrinterCmdUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrinterCmdUtils.h; sourceTree = "<group>"; };
+		6B7242BD1B05DD4500DF5EE1 /* PrinterCmdUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrinterCmdUtils.m; sourceTree = "<group>"; };
+		6B7242CC1B05F3E000DF5EE1 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		6B7852531ACC353C008F1A49 /* TMBusiness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TMBusiness.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B7852571ACC353C008F1A49 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6B7852581ACC353C008F1A49 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -558,7 +576,6 @@
 			files = (
 				6BABEC4D1B01E184002F9BF9 /* CoreGraphics.framework in Frameworks */,
 				6BC3A6BC1AFF5C6F00452EF4 /* MediaPlayer.framework in Frameworks */,
-				6BC3A6BA1AFF5C4F00452EF4 /* CoreAudioKit.framework in Frameworks */,
 				6BC3A6B81AFF5C4900452EF4 /* CoreData.framework in Frameworks */,
 				6BC3A6B61AFF5C4400452EF4 /* CoreText.framework in Frameworks */,
 				6BC3A6B41AFF5C3F00452EF4 /* AssetsLibrary.framework in Frameworks */,
@@ -693,6 +710,22 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		6B52CC0F1B032F7700D9746F /* BoxPaySettingViewController */ = {
+			isa = PBXGroup;
+			children = (
+				6B52CC101B032F7700D9746F /* Controller */,
+			);
+			path = BoxPaySettingViewController;
+			sourceTree = "<group>";
+		};
+		6B52CC101B032F7700D9746F /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				6B52CC181B032F9E00D9746F /* BoxPaySettingViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
 		6B55BB551AE5E77C00413B85 /* Parser */ = {
 			isa = PBXGroup;
 			children = (
@@ -728,6 +761,30 @@
 				6BA460AD1AF1D99F00FB3A7E /* TMWaitForPayingMenuView.swift */,
 				6BA460AF1AF1DC2800FB3A7E /* TMTransactionDoneMenuView.swift */,
 				6BA460B11AF201BB00FB3A7E /* TMOrderProductDetailView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		6B5C31491B02E7400085D4E5 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				6B5C314A1B02E7400085D4E5 /* Controller */,
+				6B5C314B1B02E7400085D4E5 /* View */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
+		6B5C314A1B02E7400085D4E5 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				6B5C314C1B02E76E0085D4E5 /* TMSettingViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		6B5C314B1B02E7400085D4E5 /* View */ = {
+			isa = PBXGroup;
+			children = (
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -830,6 +887,8 @@
 		6B5F080D1ACC55C800CBD3BD /* Sections */ = {
 			isa = PBXGroup;
 			children = (
+				6B52CC0F1B032F7700D9746F /* BoxPaySettingViewController */,
+				6B5C31491B02E7400085D4E5 /* Setting */,
 				6B942A321AE4909D00AC6AD2 /* QRScan */,
 				6B4FBD981ACD16AA0017CB6F /* ProductList */,
 				6B5F080E1ACC55C800CBD3BD /* Common */,
@@ -872,6 +931,7 @@
 				6BB65AE41AE0AAF400BD924A /* TMUserDataManager.swift */,
 				6B3E20DE1AE9E23200BD80D7 /* TMOrderDataManager.swift */,
 				6BABEBFE1B01A9F5002F9BF9 /* TMCacheDataManager.swift */,
+				6B015A181B05F8FD00FD6CB6 /* TMPrinterManager.swift */,
 			);
 			path = "Data Managers";
 			sourceTree = "<group>";
@@ -955,6 +1015,21 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		6B7242AE1B05DCFF00DF5EE1 /* Printer */ = {
+			isa = PBXGroup;
+			children = (
+				6B7242B61B05DD4500DF5EE1 /* AsyncSocket.h */,
+				6B7242B71B05DD4500DF5EE1 /* AsyncSocket.m */,
+				6B7242B81B05DD4500DF5EE1 /* AsyncUdpSocket.h */,
+				6B7242B91B05DD4500DF5EE1 /* AsyncUdpSocket.m */,
+				6B7242BA1B05DD4500DF5EE1 /* ESCCommand.h */,
+				6B7242BB1B05DD4500DF5EE1 /* ESCCommand.m */,
+				6B7242BC1B05DD4500DF5EE1 /* PrinterCmdUtils.h */,
+				6B7242BD1B05DD4500DF5EE1 /* PrinterCmdUtils.m */,
+			);
+			path = Printer;
+			sourceTree = "<group>";
+		};
 		6B78524A1ACC353C008F1A49 = {
 			isa = PBXGroup;
 			children = (
@@ -995,6 +1070,7 @@
 				6B67DE461AE7466E00E27FC6 /* TMBusiness-Bridging-Header.h */,
 				6B7852571ACC353C008F1A49 /* Info.plist */,
 				6B64DB711ADE62D000192C7B /* Thing Me.xcdatamodeld */,
+				6B7242CC1B05F3E000DF5EE1 /* MyPlayground.playground */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1103,6 +1179,7 @@
 		6BC3A5E71AFF516700452EF4 /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				6B7242AE1B05DCFF00DF5EE1 /* Printer */,
 				6B1E4B911B0255B6001C0FAB /* SVProgressHUD */,
 				6BABEC4E1B01E353002F9BF9 /* WIndicator.swift */,
 				6BABEC4F1B01E353002F9BF9 /* WActivityIndicator.swift */,
@@ -1437,7 +1514,7 @@
 				TargetAttributes = {
 					6B7852521ACC353C008F1A49 = {
 						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = 7KB5AS4MMH;
+						DevelopmentTeam = VG6PAG6J96;
 					};
 					6B7852671ACC353D008F1A49 = {
 						CreatedOnToolsVersion = 6.2;
@@ -1599,6 +1676,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B7242BE1B05DD4500DF5EE1 /* AsyncSocket.m in Sources */,
 				6B6093FB1ADFA54F00739652 /* TMCacheManagedObject.swift in Sources */,
 				6BC3A67D1AFF516700452EF4 /* MGSplitViewController.m in Sources */,
 				6B3E20E91AEA41B600BD80D7 /* TMRestingOrderManagedObject.swift in Sources */,
@@ -1630,10 +1708,12 @@
 				6BC3A6811AFF516700452EF4 /* UIView+convenience.m in Sources */,
 				6B8A0B021AE00FA000CD2100 /* NSDate+LangExt.swift in Sources */,
 				6BABEC511B01E353002F9BF9 /* WIndicator.swift in Sources */,
+				6B5C314D1B02E76E0085D4E5 /* TMSettingViewController.swift in Sources */,
 				6BC3A6711AFF516700452EF4 /* SBJsonStreamParserState.m in Sources */,
 				6BC3A66B1AFF516700452EF4 /* GTMBase64.m in Sources */,
 				6B5F08291ACC561E00CBD3BD /* TMOrderService.swift in Sources */,
 				6BC3A5DF1AFF183800452EF4 /* TMBoxPay.swift in Sources */,
+				6B7242C11B05DD4500DF5EE1 /* PrinterCmdUtils.m in Sources */,
 				6B5F08251ACC560F00CBD3BD /* TMUserAccountBalance.swift in Sources */,
 				6B3DB47A1ADF883D00ACC391 /* TMCacheService.swift in Sources */,
 				6BABEC531B01E353002F9BF9 /* WIndicatorText.swift in Sources */,
@@ -1658,6 +1738,7 @@
 				6B55BB5D1AE5E79500413B85 /* TMParser.swift in Sources */,
 				6BC3A6671AFF516700452EF4 /* ASIHTTPRequest.m in Sources */,
 				6B4FBDAF1ACD25410017CB6F /* TMTakeOrderDetailView.swift in Sources */,
+				6B52CC191B032F9E00D9746F /* BoxPaySettingViewController.swift in Sources */,
 				6B64DB5D1ADE462100192C7B /* JSONHelper.swift in Sources */,
 				6BA460B01AF1DC2800FB3A7E /* TMTransactionDoneMenuView.swift in Sources */,
 				6BC3A6681AFF516700452EF4 /* ASIInputStream.m in Sources */,
@@ -1671,6 +1752,7 @@
 				6B9DEDB61ADBBD4F00090163 /* TMConsumeRecordView.swift in Sources */,
 				6B5F08371ACC565700CBD3BD /* TMNetworkManager.swift in Sources */,
 				6BA06F7E1ACE6E4600DDA62E /* AZPagingContainerMenuView.swift in Sources */,
+				6B7242BF1B05DD4500DF5EE1 /* AsyncUdpSocket.m in Sources */,
 				6BC3A6781AFF516700452EF4 /* MAConfirmButton.m in Sources */,
 				6B805C201AD4206500F2D968 /* AZPlaceholderTextView.swift in Sources */,
 				6BC3A6851AFF516700452EF4 /* WETouchableView.m in Sources */,
@@ -1698,6 +1780,7 @@
 				6B4FBDAD1ACD1FDA0017CB6F /* TMTakeOrderListCell.swift in Sources */,
 				6BEF67221AD3B36400EF2BCB /* TMOrderRemarkView.swift in Sources */,
 				6B5F08241ACC560F00CBD3BD /* TMUser.swift in Sources */,
+				6B015A191B05F8FD00FD6CB6 /* TMPrinterManager.swift in Sources */,
 				6BC3A6721AFF516700452EF4 /* SBJsonStreamWriter.m in Sources */,
 				6B5F082B1ACC561E00CBD3BD /* TMUserService.swift in Sources */,
 				6B4FBDA61ACD186B0017CB6F /* AAContainerViewController.swift in Sources */,
@@ -1714,6 +1797,7 @@
 				6B5A2A0C1AEF85D800C787D4 /* TMOrderMenuView.swift in Sources */,
 				6BA06F8B1ACE88BB00DDA62E /* AZPagingContainerMenuListView.swift in Sources */,
 				6BABEC451B01DCAC002F9BF9 /* KVNProgress.m in Sources */,
+				6B7242C01B05DD4500DF5EE1 /* ESCCommand.m in Sources */,
 				6BC3A67E1AFF516700452EF4 /* NSDictionaryAdditions.m in Sources */,
 				6BC3A6631AFF516700452EF4 /* ASIDataCompressor.m in Sources */,
 				6BB65AE51AE0AAF400BD924A /* TMUserDataManager.swift in Sources */,
@@ -1890,7 +1974,7 @@
 					"$(PROJECT_DIR)/TMBusiness/Classes/Vendors/iBoxPay/SDKLib",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "dec5a0bd-13e5-4de6-a582-419635e8aa65";
+				PROVISIONING_PROFILE = "dd4231c8-2b73-40eb-9652-793c923eddf0";
 				SWIFT_OBJC_BRIDGING_HEADER = "TMBusiness/TMBusiness-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 2;
@@ -1916,7 +2000,7 @@
 					"$(PROJECT_DIR)/TMBusiness/Classes/Vendors/iBoxPay/SDKLib",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "dec5a0bd-13e5-4de6-a582-419635e8aa65";
+				PROVISIONING_PROFILE = "dd4231c8-2b73-40eb-9652-793c923eddf0";
 				SWIFT_OBJC_BRIDGING_HEADER = "TMBusiness/TMBusiness-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
@@ -1938,7 +2022,7 @@
 				INFOPLIST_FILE = TMBusinessTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "dec5a0bd-13e5-4de6-a582-419635e8aa65";
+				PROVISIONING_PROFILE = "dd4231c8-2b73-40eb-9652-793c923eddf0";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TMBusiness.app/TMBusiness";
 			};
 			name = Debug;
@@ -1954,7 +2038,7 @@
 				INFOPLIST_FILE = TMBusinessTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "dec5a0bd-13e5-4de6-a582-419635e8aa65";
+				PROVISIONING_PROFILE = "dd4231c8-2b73-40eb-9652-793c923eddf0";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TMBusiness.app/TMBusiness";
 			};
 			name = Release;

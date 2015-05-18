@@ -65,23 +65,14 @@ class BaseViewController: UIViewController {
     }
     
     func stopActivity() {
-        println("stopActivity")
-//        if let window = UIApplication.sharedApplication().keyWindow {
-//            WIndicator.removeIndicatorFrom(window, animation: false)
-//        } else {
-//            WIndicator.removeIndicatorFrom(self.view, animation: false)
-//        }
         SVProgressHUD.dismiss()
-        
-//        SwiftLoader.hide()
-//        delay(seconds: 0.0) { () -> () in
-//            SwiftLoader.hide()
-//        }
     }
     
     func showMessage(message: String, timeout: Double = 1.0) {
-        var window = UIApplication.sharedApplication().keyWindow!
-        WIndicator.showMsgInView(window, text: message, timeOut: timeout)
+        SVProgressHUD.showErrorWithStatus(message)
+        delay(seconds: timeout) { () -> () in
+            SVProgressHUD.dismiss()
+        }
     }
     
     

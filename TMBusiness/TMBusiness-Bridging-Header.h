@@ -8,3 +8,8 @@
 #import <CommonCrypto/CommonCrypto.h>
 #import <math.h>
 #import "SVProgressHUD.h"
+//#import "PrinterManager.h"
+#import "AsyncSocket.h"
+#import "ESCCommand.h"
+#import "PrinterCmdUtils.h"
+

@@ -12,6 +12,7 @@ import Snap
 class TMCheckingAccountSearchView: TMModalView {
     
     var searchButton: UIButton!
+    var printButton: UIButton!
     
     var popoverVC: UIPopoverController!
     var isStartDate: Bool = true
@@ -91,6 +92,19 @@ class TMCheckingAccountSearchView: TMModalView {
         addSubview(searchButton)
         searchButton.snp_makeConstraints { (make) -> Void in
             make.leading.equalTo(endDateButton.snp_trailing).offset(25)
+            make.size.equalTo(CGSizeMake(88, 40))
+            make.centerY.equalTo(snp_centerY)
+        }
+        
+        printButton = UIButton.buttonWithType(.Custom) as! UIButton
+        printButton.setBackgroundImage(UIImage(named: "checking_account_search"), forState: .Normal)
+        printButton.setBackgroundImage(UIImage(named: "checking_account_search_on"), forState: .Highlighted)
+        printButton.setTitle("打印", forState: .Normal)
+        printButton.setTitleColor(UIColor(hex: 0x1E8EBC), forState: .Normal)
+        printButton.setTitleColor(UIColor.whiteColor(), forState: .Highlighted)
+        addSubview(printButton)
+        printButton.snp_makeConstraints { (make) -> Void in
+            make.leading.equalTo(searchButton.snp_trailing).offset(25)
             make.size.equalTo(CGSizeMake(88, 40))
             make.centerY.equalTo(snp_centerY)
         }

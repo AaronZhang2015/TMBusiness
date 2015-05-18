@@ -214,13 +214,16 @@ extension TMCheckingAccountAmountView: UITableViewDataSource {
                 cell.amountLabel.font = UIFont.boldSystemFontOfSize(17.0)
                 cell.backgroundColor = UIColor(hex: 0xf0faff)
                 nameText = "寻觅充值补贴"
-                amountText = "¥\(abs(checkingAccount.subsidy.total.doubleValue).format(format))"
+//                amountText = "¥\(abs(checkingAccount.subsidy.total.doubleValue).format(format))"
+                amountText = "¥\((checkingAccount.subsidy.total.doubleValue).format(format))"
             } else if indexPath.row == 1 {
                 nameText = "    未结算"
-                amountText = "¥\(abs(checkingAccount.subsidy.unclear.doubleValue).format(format))"
+//                amountText = "¥\(abs(checkingAccount.subsidy.unclear.doubleValue).format(format))"
+                amountText = "¥\((checkingAccount.subsidy.unclear.doubleValue).format(format))"
             } else if indexPath.row == 2 {
                 nameText = "    已结算"
-                amountText = "¥\(abs(checkingAccount.subsidy.total.doubleValue - checkingAccount.subsidy.unclear.doubleValue).format(format))"
+//                amountText = "¥\(abs(checkingAccount.subsidy.total.doubleValue - checkingAccount.subsidy.unclear.doubleValue).format(format))"
+                amountText = "¥\((checkingAccount.subsidy.total.doubleValue - checkingAccount.subsidy.unclear.doubleValue).format(format))"
             }
         } else if indexPath.section == 4 {
             if indexPath.row == 0 {
@@ -228,13 +231,16 @@ extension TMCheckingAccountAmountView: UITableViewDataSource {
                 cell.amountLabel.font = UIFont.boldSystemFontOfSize(17.0)
                 cell.backgroundColor = UIColor(hex: 0xf0faff)
                 nameText = "对账"
-                amountText = "¥\(abs(checkingAccount.recharge_amount.actual_amount.doubleValue + checkingAccount.cash_amount.doubleValue + checkingAccount.box_amount.doubleValue + checkingAccount.recharge_box.actual_amount.doubleValue).format(format))"
+//                amountText = "¥\(abs(checkingAccount.recharge_amount.actual_amount.doubleValue + checkingAccount.cash_amount.doubleValue + checkingAccount.box_amount.doubleValue + checkingAccount.recharge_box.actual_amount.doubleValue).format(format))"
+                amountText = "¥\((checkingAccount.recharge_amount.actual_amount.doubleValue + checkingAccount.cash_amount.doubleValue + checkingAccount.box_amount.doubleValue + checkingAccount.recharge_box.actual_amount.doubleValue).format(format))"
             } else if indexPath.row == 1 {
                 nameText = "    现金收入合计"
-                amountText = "¥\(abs(checkingAccount.recharge_amount.actual_amount.doubleValue + checkingAccount.cash_amount.doubleValue).format(format))"
+//                amountText = "¥\(abs(checkingAccount.recharge_amount.actual_amount.doubleValue + checkingAccount.cash_amount.doubleValue).format(format))"
+                amountText = "¥\((checkingAccount.recharge_amount.actual_amount.doubleValue + checkingAccount.cash_amount.doubleValue).format(format))"
             } else if indexPath.row == 2 {
                 nameText = "    刷卡收入总额"
-                amountText = "¥\(abs(checkingAccount.box_amount.doubleValue + checkingAccount.recharge_box.actual_amount.doubleValue).format(format))"
+//                amountText = "¥\(abs(checkingAccount.box_amount.doubleValue + checkingAccount.recharge_box.actual_amount.doubleValue).format(format))"
+                amountText = "¥\((checkingAccount.box_amount.doubleValue + checkingAccount.recharge_box.actual_amount.doubleValue).format(format))"
             }
         }
         
