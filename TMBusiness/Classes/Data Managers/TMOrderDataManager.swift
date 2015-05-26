@@ -194,11 +194,14 @@ class TMOrderDataManager: TMDataManager {
         let result = managedContext.executeFetchRequest(restingOrderFetch, error: &error) as?[TMRestingOrderManagedObject]
         
         if let list = result {
-            managedContext.deleteObject(list[0])
-            
-            for product in list[0].product_records {
-                managedContext.deleteObject(product as! TMProductRecordManagedObject)
+            if list.count > 0 {
+                managedContext.deleteObject(list[0])
+                
+                for product in list[0].product_records {
+                    managedContext.deleteObject(product as! TMProductRecordManagedObject)
+                }
             }
+            
         }
         
         //Save the managed object context
@@ -309,6 +312,44 @@ class TMOrderDataManager: TMDataManager {
     
     func updateOrderStatus(order: TMOrder, completion: (Bool -> Void)) {
         orderService.updateOrderStatus(order.status, orderId: order.order_id!, shopId: order.shop_id!, businessId: order.business_id!, adminId: order.admin_id!, completion: completion)
+    }
+    
+    
+    func updateOrderEntityInfo(order: TMOrder, completion:(String?, NSError?) -> Void) {
+        let format = ".2"
+        
+        var orderId = ""
+        if let order_id = order.order_id {
+            orderId = order_id
+        }
+        
+        var couponId = ""
+        if let conpon_id = order.coupon_id {
+            couponId = conpon_id
+        }
+        
+        var discountString = ""
+        if let discount = order.discount {
+            var discountRate = discount.doubleValue //* 10
+            discountString = "\(discountRate.format(format))"
+        }
+        
+        var businessId = ""
+        if let business_id = order.business_id {
+            businessId = business_id
+        }
+        
+        var adminId = ""
+        if let admin_id = order.admin_id {
+            adminId = admin_id
+        }
+        
+        var userId = ""
+        if let user_id = order.user_id {
+            userId = user_id
+        }
+        
+        orderService.updateOrderEntityInfo(orderId: orderId, userId: userId, shopId: order.shop_id!, transactionMode: order.transaction_mode, registerType: order.register_type, payableAmount: order.payable_amount, actualAmount: order.actual_amount, couponId: couponId, discount: discountString, discountType: order.discount_type, description: order.order_description!, businessId: businessId, orderStatus: order.status, productList: order.product_records, adminId: adminId, completion: completion)
     }
     
     

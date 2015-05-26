@@ -17,6 +17,8 @@ class TMSettingViewController: UITableViewController {
     var delegate: TMSettingViewControllerDelegate!
     
     var boxPayViewController: BoxPaySettingViewController = BoxPaySettingViewController()
+    
+    lazy var printViewController: TMPrintSettingViewController = TMPrintSettingViewController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,7 +50,7 @@ class TMSettingViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 4
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -68,6 +70,9 @@ class TMSettingViewController: UITableViewController {
         case 2:
             cell?.textLabel!.text = "盒子支付设置"
             cell?.detailTextLabel?.text = ""
+        case 3:
+            cell?.textLabel!.text = "商家设置"
+            cell?.detailTextLabel?.text = ""
         default:
             break
         }
@@ -84,6 +89,8 @@ class TMSettingViewController: UITableViewController {
             println()
         case 2:
             navigationController?.pushViewController(boxPayViewController, animated: true)
+        case 3:
+            navigationController?.pushViewController(printViewController, animated: true)
         default:
             break
         }

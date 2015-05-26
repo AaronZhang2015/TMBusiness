@@ -27,6 +27,8 @@ class TMRechargeView: TMModalView {
     
     var cardButton: UIButton!
     
+    var cancelButton: UIButton!
+    
     var currentSelectedType: TMRechargeType = .Cash
     
     var data = [TMReward]()
@@ -153,14 +155,14 @@ class TMRechargeView: TMModalView {
         
         tableView.registerClass(TMRechargeTypeCell.self, forCellReuseIdentifier: TMRechargeTypeCellIdentifier)
         
-        var cancelButton = UIButton.buttonWithType(.Custom) as! UIButton
+        cancelButton = UIButton.buttonWithType(.Custom) as! UIButton
         cancelButton.setBackgroundImage(UIImage(named: "recharge_cancel"), forState: .Normal)
         cancelButton.setBackgroundImage(UIImage(named: "recharge_cancel_on"), forState: .Highlighted)
         cancelButton.setTitleColor(UIColor(hex: 0x1E8EBC), forState: .Normal)
         cancelButton.setTitleColor(UIColor.whiteColor(), forState: .Highlighted)
         cancelButton.setTitle("取消", forState: .Normal)
         cancelButton.titleLabel?.font = UIFont.systemFontOfSize(22.0)
-        cancelButton.addTarget(self, action: "handleCancelRechargeAction", forControlEvents: .TouchUpInside)
+//        cancelButton.addTarget(self, action: "handleCancelRechargeAction", forControlEvents: .TouchUpInside)
         addSubview(cancelButton)
         cancelButton.snp_makeConstraints { make in
             make.leading.equalTo(15)
@@ -258,12 +260,18 @@ extension TMRechargeView {
     显示页面
     */
     func show() {
-        var window = UIApplication.sharedApplication().keyWindow
+//        var window = UIApplication.sharedApplication().keyWindow
+        
+        var window = UIApplication.sharedApplication().windows[0] as? UIWindow
+        
         if maskModalView.superview == nil {
 //            window?.addSubview(maskModalView)
+            
+            
             if let window = window {
                 println("window.rootViewController!.view = \(window.rootViewController!.view)")
-                window.rootViewController!.view.addSubview(maskModalView)
+//                window.rootViewController!.view.addSubview(maskModalView)
+                window.subviews[0].addSubview(maskModalView)
             }
         }
         

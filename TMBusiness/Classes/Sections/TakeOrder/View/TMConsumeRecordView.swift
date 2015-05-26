@@ -18,6 +18,8 @@ class TMConsumeRecordView: TMModalView {
     var data:[TMOrder] = [TMOrder]()
     var contentView: UIView!
     
+    var closeButton: UIButton!
+    
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -59,10 +61,10 @@ class TMConsumeRecordView: TMModalView {
             make.bottom.equalTo(-22)
         }
         
-        var closeButton = UIButton.buttonWithType(.Custom) as! UIButton
+        closeButton = UIButton.buttonWithType(.Custom) as! UIButton
         closeButton.setImage(UIImage(named: "consume_close"), forState: .Normal)
         closeButton.setImage(UIImage(named: "consume_close_on"), forState: .Highlighted)
-        closeButton.addTarget(self, action: "hide", forControlEvents: .TouchUpInside)
+//        closeButton.addTarget(self, action: "hide", forControlEvents: .TouchUpInside)
         addSubview(closeButton)
         closeButton.snp_makeConstraints { make in
             make.top.equalTo(snp_top).offset(0)

@@ -29,7 +29,7 @@ class TMTransactionDoneMenuView: UIView {
         var button = UIButton.buttonWithType(.Custom) as! UIButton
         button.setBackgroundImage(UIImage(named: "home_order"), forState: .Normal)
         button.setBackgroundImage(UIImage(named: "home_order_on"), forState: .Highlighted)
-        button.setTitle("改单", forState: .Normal)
+        button.setTitle("反结账", forState: .Normal)
         button.setTitleColor(UIColor(hex: 0x1E8EBC), forState: .Normal)
         button.setTitleColor(UIColor.whiteColor(), forState: .Highlighted)
         return button

@@ -75,6 +75,20 @@ class BaseViewController: UIViewController {
         }
     }
     
+    func showSuccessfulMessage(message: String) {
+        SVProgressHUD.showSuccessWithStatus(message, duration: 1.0)
+//        delay(seconds: 1) { () -> () in
+//            SVProgressHUD.dismiss()
+//        }
+    }
+    
+    func showSuccessfulMessage(message: String, timeout: Double) {
+        SVProgressHUD.showSuccessWithStatus(message, duration: timeout)
+//        delay(seconds: timeout) { () -> () in
+//            SVProgressHUD.dismiss()
+//        }
+    }
+    
     
     func delay(#seconds: Double, completion:()->()) {
         let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64( Double(NSEC_PER_SEC) * seconds ))

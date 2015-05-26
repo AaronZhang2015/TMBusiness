@@ -144,4 +144,41 @@ class TMOrderService: NSObject {
             }
         }
     }
+    
+    
+     /**
+    反结账
+    
+    
+    */
+    func updateOrderEntityInfo(#orderId: String, userId: String, shopId: String, transactionMode: TMTransactionMode, registerType: TMRegisterType, payableAmount: NSNumber, actualAmount: NSNumber, couponId: String, discount: String, discountType: TMDiscountType, description: String, businessId: String, orderStatus: TMOrderStatus, productList: [TMProductRecord], adminId: String, completion:(String?, NSError?) -> Void) {
+
+        var is_contain_product = 0
+        if productList.count > 0 {
+            is_contain_product = 1
+        }
+        
+        var parameters = ["order_id": orderId,
+            "user_id": userId,
+            "shop_id": shopId,
+            "coupon_id": couponId,
+            "discount_type": "\(discountType.rawValue)",
+            "business_id": businessId,
+            "order_status": "\(orderStatus.rawValue)",
+            "is_contain_product": "\(is_contain_product)",
+            "admin_id": adminId,
+            "device_type": "\(AppManager.platform().rawValue)"]
+        
+        manager.request(.POST, relativePath: "order_updateEntityInfo", parameters: parameters) { (result) -> Void in
+            switch result {
+            case let .Error(e):
+                completion(nil, e)
+            case let .Value(json):
+                // 解析数据
+                let data = json["data"].stringValue
+                completion(data, nil)
+            }
+        }
+        
+    }
 }

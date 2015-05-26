@@ -60,26 +60,46 @@ class TMWaitForPayingMenuView: UIView {
             make.height.equalTo(1)
         }
         
+        /*
         addSubview(printButton)
         printButton.snp_makeConstraints { (make) -> Void in
             make.size.equalTo(CGSizeMake(80, 50))
             make.leading.equalTo(40)
             make.bottom.equalTo(-40)
         }
+        */
         
+        /*
         addSubview(changeButton)
         changeButton.snp_makeConstraints { (make) -> Void in
             make.size.equalTo(CGSizeMake(80, 50))
             make.leading.equalTo(printButton.snp_trailing).offset(10)
             make.bottom.equalTo(-40)
         }
+        */
         
+        /*
         addSubview(checkoutButton)
         checkoutButton.snp_makeConstraints { (make) -> Void in
             make.height.equalTo(50)
             make.leading.equalTo(changeButton.snp_trailing).offset(10)
             make.bottom.equalTo(-40)
             make.trailing.equalTo(-40)
+        }
+        */
+        
+        addSubview(printButton)
+        printButton.snp_makeConstraints { (make) -> Void in
+            make.size.equalTo(CGSizeMake(110, 50))
+            make.leading.equalTo(70)
+            make.bottom.equalTo(-40)
+        }
+        
+        addSubview(checkoutButton)
+        checkoutButton.snp_makeConstraints { (make) -> Void in
+            make.size.equalTo(CGSizeMake(110, 50))
+            make.bottom.equalTo(-40)
+            make.trailing.equalTo(-70)
         }
     }
 }

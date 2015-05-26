@@ -15,6 +15,16 @@ class TMPrinterManager: NSObject {
         return socket
         }()
     
+    var failedClosure: (() -> ())?
+    
+    var ipAddress: String = ""
+    
+    var retryCount: Int = 3
+    
+    lazy var command: ESCCommand = ESCCommand()
+    
+    lazy var cmdUtils: PrinterCmdUtils = PrinterCmdUtils()
+    
     class var sharedInstance: TMPrinterManager {
         struct Singleton {
             static let instance = TMPrinterManager()
@@ -23,19 +33,43 @@ class TMPrinterManager: NSObject {
     }
     
     func connect(host: String) -> Bool {
-        return asyncSocket.connectToHost(host, onPort: 9100, error: nil)
+        ipAddress = host
+        if !asyncSocket.isConnected() {
+            asyncSocket.disconnect()
+            
+            return asyncSocket.connectToHost(host, onPort: 9100, withTimeout: 500, error: nil)
+//            return asyncSocket.connectToHost(host, onPort: 9100, error: nil)
+        }
+        
+        return true
     }
     
     func print(order: TMOrder, user: TMUser?, shop: TMShop, immediate: Bool = false) {
+        encapsulateOrder(order, user, shop)
         
         if !asyncSocket.isConnected() {
-            if !connect("192.168.1.10") {
+            
+            if count(ipAddress) == 0 {
+                if let closure = failedClosure {
+                    closure()
+                }
+            }
+            
+            asyncSocket.disconnect()
+            if !connect(ipAddress) {
                 return
             }
+        } else {
+            asyncSocket.writeData(command.content, withTimeout: -1, tag: 0)
         }
         
-        var command = ESCCommand()
-        var cmdUtils = PrinterCmdUtils()
+//        var command = ESCCommand()
+//        var cmdUtils = PrinterCmdUtils()
+        
+    }
+    
+    func encapsulateOrder(order: TMOrder, _ user: TMUser?, _ shop: TMShop) {
+        command.content = NSMutableData()
         // 初始化
         command.addCommand(cmdUtils.printerInit())
         // ------- 设置店铺名称 -------
@@ -146,25 +180,36 @@ class TMPrinterManager: NSObject {
             command.addCommand(cmdUtils.nextLine(1))
         }
         
-        // 支付方式
-        var transactionMode = ""
-        switch order.transaction_mode {
-        case .Cash:
-            transactionMode = "现金支付:"
-        case .CashAndBalance:
-            transactionMode = "现金及月支付:"
-        case .IBoxPay:
-            transactionMode = "刷卡支付:"
-        case .Balance:
-            transactionMode = "余额支付:"
-        case .Other:
-            transactionMode = "其他支付:"
+        if order.status == .TransactionDone {
+            // 支付方式
+            var transactionMode = ""
+            switch order.transaction_mode {
+            case .Cash:
+                transactionMode = "现金支付:"
+            case .CashAndBalance:
+                transactionMode = "现金及余额支付:"
+            case .IBoxPay:
+                transactionMode = "刷卡支付:"
+            case .Balance:
+                transactionMode = "余额支付:"
+            case .Other:
+                transactionMode = "其他支付:"
+            }
+            command.addText(transactionMode)
+            command.addText("\(order.actual_amount.doubleValue.format(format))")
+            command.addCommand(cmdUtils.nextLine(1))
+        } else {
+            command.addText("支付状态：未支付")
+            command.addCommand(cmdUtils.nextLine(1))
         }
-        command.addText(transactionMode)
-        command.addText("\(order.actual_amount.doubleValue.format(format))")
-        command.addCommand(cmdUtils.nextLine(1))
         
         // 电话
+        var phoneNumberKey = "\(TMShop.sharedInstance.shop_id)_PhoneNumber"
+        if let value = NSUserDefaults.standardUserDefaults().valueForKey(phoneNumberKey) as? String {
+            command.addText("电话：")
+            command.addText(value)
+            command.addCommand(cmdUtils.nextLine(1))
+        }
         
         
         // 地址
@@ -172,21 +217,31 @@ class TMPrinterManager: NSObject {
         if let address = shop.address {
             command.addText(address)
         }
-        command.addCommand(cmdUtils.nextLine(1))
+        command.addCommand(cmdUtils.nextLine(5))
         
-        asyncSocket.writeData(command.content, withTimeout: -1, tag: 0)
-        
+//        asyncSocket.writeData(command.content, withTimeout: -1, tag: 0)
     }
     
     func printCheckingAccount(checkingAccount: TMCheckingAccount, shop: TMShop, startDate: NSDate, endDate: NSDate) {
+        encapsulateCheckingAccount(checkingAccount, shop, startDate, endDate)
+        
         if !asyncSocket.isConnected() {
-            if !connect("192.168.1.10") {
+            if count(ipAddress) == 0 {
+                if let closure = failedClosure {
+                    closure()
+                }
+            }
+            asyncSocket.disconnect()
+            if !connect(ipAddress) {
                 return
             }
+        } else {
+            asyncSocket.writeData(command.content, withTimeout: -1, tag: 0)
         }
-        
-        var command = ESCCommand()
-        var cmdUtils = PrinterCmdUtils()
+    }
+    
+    func encapsulateCheckingAccount(checkingAccount: TMCheckingAccount, _ shop: TMShop, _ startDate: NSDate, _ endDate: NSDate) {
+        command.content = NSMutableData()
         // 初始化
         command.addCommand(cmdUtils.printerInit())
         // ------- 设置店铺名称 -------
@@ -211,7 +266,7 @@ class TMPrinterManager: NSObject {
         command.addCommand(cmdUtils.nextLine(1))
         
         let format = ".2"
-//        let discountFormat = ".1"
+        //        let discountFormat = ".1"
         // ------- 下划线 --------
         command.addText("--------------------------------")
         command.addCommand(cmdUtils.nextLine(1))
@@ -323,7 +378,7 @@ class TMPrinterManager: NSObject {
             command.addText(productString)
             command.addCommand(cmdUtils.nextLine(1))
         }
-        asyncSocket.writeData(command.content, withTimeout: -1, tag: 0)
+        command.addCommand(cmdUtils.nextLine(5))
     }
     
     
@@ -437,22 +492,27 @@ class TMPrinterManager: NSObject {
 
 extension TMPrinterManager: AsyncSocketDelegate {
     func onSocket(sock: AsyncSocket!, didConnectToHost host: String!, port: UInt16) {
-        sock.readDataWithTimeout(-1, tag: 0)
+        println("didConnectToHost")
+        asyncSocket.writeData(command.content, withTimeout: -1, tag: 0)
     }
     
     func onSocket(sock: AsyncSocket!, willDisconnectWithError err: NSError!) {
+        println("willDisconnectWithError")
         
+        if let closure = failedClosure {
+            closure()
+        }
     }
     
     func onSocketDidDisconnect(sock: AsyncSocket!) {
-        
+        println("onSocketDidDisconnect")
     }
     
     func onSocket(sock: AsyncSocket!, didReadData data: NSData!, withTag tag: Int) {
-        
+        println("didReadData")
     }
     
     func onSocket(sock: AsyncSocket!, didWriteDataWithTag tag: Int) {
-        
+        println("didWriteDataWithTag")
     }
 }

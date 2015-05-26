@@ -66,7 +66,8 @@ extension TMProductListViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(productListReuseIdentifier, forIndexPath: indexPath) as! TMProductCell
         let product = productList[indexPath.row]
         cell.productNameLabel.text = product.product_name
-        
+        let format = ".2"
+        cell.priceLabel.text = product.official_quotation.doubleValue.format(format)
         return cell
     }
 }

@@ -64,7 +64,8 @@ class TMShopDataManager: TMDataManager {
                             var result = strongSelf.fetchCategoryAndProductFromCache()
                             completion(result, nil)
                         } else {
-                            completion(list, error)
+                            var result = strongSelf.fetchCategoryAndProductFromCache()
+                            completion(result, error)
                         }
                     })
                 }
@@ -275,7 +276,7 @@ class TMShopDataManager: TMDataManager {
         let result = managedContext.executeFetchRequest(restingOrderFetch, error: &error) as?[TMProductManagedObject]
         
         var product: TMProduct!
-        if let list = result {
+        if let list = result where list.count > 0  {
             product = TMProduct()
             var productRecord = list[0]
             product.product_id = productRecord.product_id

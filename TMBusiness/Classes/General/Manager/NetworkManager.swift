@@ -11,6 +11,7 @@ import Alamofire
 //import SwiftyJSON
 
 let ServerAddress = "http://www.xunmitech.com/tBeaconService/BeaconService.asmx/"
+//let ServerAddress = "http://www.xunmitech.com/BeaconService/BeaconService.asmx/"
 //let ServerAddress = "http://192.168.1.20/tBeaconService/BeaconService.asmx/"
 //let ServerAddress = "http://112.124.125.21/tBeaconService/BeaconService.asmx/"
 

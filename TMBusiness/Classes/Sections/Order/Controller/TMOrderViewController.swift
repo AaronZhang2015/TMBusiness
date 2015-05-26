@@ -23,12 +23,25 @@ class TMOrderViewController: BaseViewController {
     // 选中的订单
     var currentSelectedOrder: TMOrder!
     
+    var user: TMUser?
+    var order: TMOrder!
+    
     lazy var orderDataManager: TMOrderDataManager = {
         return TMOrderDataManager()
         }()
     
     lazy var userDataManager: TMUserDataManager = {
         return TMUserDataManager()
+        }()
+    
+    private lazy var printerManager: TMPrinterManager = {
+        var manager = TMPrinterManager.sharedInstance
+        manager.failedClosure = {[weak self] in
+            if let strongSelf = self {
+                strongSelf.showMessage("请去系统设置里面配置打印机ip地址")
+            }
+        }
+        return manager
         }()
     
     lazy var menuView: TMOrderMenuView = {
@@ -121,22 +134,54 @@ class TMOrderViewController: BaseViewController {
         }
         
         view.printOrderClosure = { [weak self] order in
-            TMPrinterManager.sharedInstance.print(order, user: nil, shop: TMShop.sharedInstance)
+            if let strongSelf = self {
+                strongSelf.handlePrintActon(order, user: nil, shop: TMShop.sharedInstance)
+            }
         }
         
         view.changeOrderClosure = { [weak self] order in
             // 转入改单页面
             if let strongSelf = self {
+                strongSelf.order = order
+                
                 var masterViewController = strongSelf.parentViewController as! MasterViewController
-//                masterViewController.handleCheckoutAction(order)
                 if let user_mobile_number = order.user_mobile_number where count(user_mobile_number) > 0 {
                     strongSelf.fetchEntityInfoAction(user_mobile_number) { user in
+                        
+                        if order.status == .Resting {
+                            masterViewController.handleCheckoutAction(order, user: user)
+                            return
+                        }
+                        
+                        // 如果是交易完成状态
+//                        if order.status == .TransactionDone {
+                        
+                            strongSelf.user = user
+                            // 弹出反结账确认提示
+                            var alertView = UIAlertView(title: "提示", message: "确认反结账此订单", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "确定")
+                            alertView.tag = 1002
+                            alertView.show()
+                            return
+//                        } else {
+//                            masterViewController.handleCheckoutAction(order)
+//                        }
                         // 转入点单页面
-                        masterViewController.handleCheckoutAction(order, user: user)
+//
                     }
+                } else {
+                    
+                    if order.status == .Resting {
+                        masterViewController.handleCheckoutAction(order)
+                        return
+                    }
+                    
+                    // 弹出反结账确认提示
+                    var alertView = UIAlertView(title: "提示", message: "确认反结账此订单", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "确定")
+                    alertView.tag = 1002
+                    alertView.show()
+                    return
+        
                 }
-                
-                masterViewController.handleCheckoutAction(order)
             }
         }
         
@@ -393,6 +438,72 @@ class TMOrderViewController: BaseViewController {
         }
     }
     
+    func handlePrintActon(order: TMOrder, user: TMUser?, shop: TMShop) {
+        var IPKey = "\(TMShop.sharedInstance.shop_id)_IP"
+        if let value = NSUserDefaults.standardUserDefaults().stringForKey(IPKey) {
+            printerManager.ipAddress = value
+        } else {
+            showMessage("请去系统设置里面配置打印机ip地址")
+            return
+        }
+        
+        printerManager.print(order, user: user, shop: TMShop.sharedInstance)
+    }
+    
+    func handlePrintTakingOrderActon(order: TMOrder, user: TMUser?, shop: TMShop) {
+        
+        var printStatusKey = "\(TMShop.sharedInstance.shop_id)_PrintStatus"
+        
+        if !NSUserDefaults.standardUserDefaults().boolForKey(printStatusKey) {
+            return
+        }
+        
+        var IPKey = "\(TMShop.sharedInstance.shop_id)_IP"
+        if let value = NSUserDefaults.standardUserDefaults().stringForKey(IPKey) {
+            printerManager.ipAddress = value
+        } else {
+            
+            delay(seconds: 3.0, completion: { [weak self ]() -> () in
+                if let strongSelf = self {
+                    strongSelf.showMessage("请去系统设置里面配置打印机ip地址")
+                }
+                })
+            
+            return
+        }
+        
+        // 首先获取单号
+        orderDataManager.fetchOrderIndex(shop.shop_id, completion: { [weak self] (error, order_index) -> Void in
+            
+            if let strongSelf = self {
+                var orderIndex = 0
+                
+                if let index = order_index?.toInt() {
+                    orderIndex = index + 1
+                } else {
+                    // 获取本地单号缓存
+                    if let order_index = NSUserDefaults.standardUserDefaults().stringForKey("TMOrderIndex") {
+                        if let index = order_index.toInt() {
+                            orderIndex = index + 1
+                        } else {
+                            orderIndex = 0
+                        }
+                    } else {
+                        orderIndex = 0
+                    }
+                }
+                
+                // 单号获取成功
+                // 打印
+                order.order_index = "\(orderIndex)"
+                NSUserDefaults.standardUserDefaults().setValue(order.order_index!, forKey: "TMOrderIndex")
+                strongSelf.printerManager.print(order, user: user, shop: TMShop.sharedInstance)
+            }
+            
+            })
+
+    }
+    
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
@@ -401,6 +512,13 @@ class TMOrderViewController: BaseViewController {
 extension TMOrderViewController: UIAlertViewDelegate {
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
         if buttonIndex == 0 {
+            
+            if alertView.tag == 1004 {
+                var masterViewController = parentViewController as! MasterViewController
+                masterViewController.handleChangeOrderAction(order, user: user)
+                user = nil
+            }
+            
             return
         }
         
@@ -420,9 +538,10 @@ extension TMOrderViewController: UIAlertViewDelegate {
                         strongSelf.stopActivity()
                         // 订单成功
                         if let e = error {
-                            
+                            strongSelf.showMessage("下单失败，请检查网络")
                         } else {
                             // 提交成功
+                            strongSelf.handlePrintTakingOrderActon(strongSelf.currentSelectedOrder, user: nil, shop: TMShop.sharedInstance)
                             strongSelf.orderDataManager.deleteRestingOrder(strongSelf.currentSelectedOrder)
                             strongSelf.currentSelectedOrder = nil
                             strongSelf.orderProductListView.hidden = true
@@ -431,6 +550,58 @@ extension TMOrderViewController: UIAlertViewDelegate {
                     }
                     })
             }
+        } else if alertView.tag == 1002 {
+            
+            var masterViewController = parentViewController as! MasterViewController
+            if order.status == .Resting {
+                orderDataManager.deleteRestingOrder(order)
+                masterViewController.handleChangeOrderAction(order)
+                user = nil
+                return
+            }
+            
+            //  反结账
+            order.business_id = TMShop.sharedInstance.business_id
+            order.admin_id = TMShop.sharedInstance.admin_id
+            if order.user_id == nil {
+                order.user_id = TMShop.sharedInstance.shop_id
+            }
+            startActivity()
+            
+            if let order_id = order.order_id {
+                // 反结账
+                orderDataManager.updateOrderEntityInfo(order) { [weak self](amount, error) -> Void in
+                    if let strongSelf = self {
+                        strongSelf.stopActivity()
+                        // 订单成功
+                        if let e = error {
+                            // 提示错误
+                            var alert = UIAlertView(title: "提示", message: "废弃订单失败，请重新尝试", delegate: nil, cancelButtonTitle: "确定")
+                            alert.show()
+                        } else {
+                            let format = ".2"
+                            if let amount = amount?.doubleValue where amount > 0 {
+                                
+                                var message = ""
+                                if let user = strongSelf.user, mobile_number = user.mobile_number {
+                                    message = "反结账订单成功！\n您需要返回用户：\(mobile_number)\n现金：\(amount.format(format))"
+                                } else {
+                                     message = "反结账订单成功！\n您需要返回用户现金：\(amount.format(format))"
+                                }
+                                
+                                var alert = UIAlertView(title: "提示", message: message, delegate: self, cancelButtonTitle: "确定")
+                                alert.tag = 1004
+                                alert.show()
+                                return
+                            } else {
+                                masterViewController.handleChangeOrderAction(strongSelf.order, user: strongSelf.user)
+                                    strongSelf.user = nil
+                            }
+                        }
+                    }
+                }
+            }
+            
         }
     }
 }

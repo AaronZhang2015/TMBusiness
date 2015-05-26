@@ -9,9 +9,12 @@
 /* Begin PBXBuildFile section */
 		6B015A191B05F8FD00FD6CB6 /* TMPrinterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B015A181B05F8FD00FD6CB6 /* TMPrinterManager.swift */; };
 		6B025EAA1AE8C3B100C3A9FB /* TMModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B025EA91AE8C3B100C3A9FB /* TMModalView.swift */; };
+		6B1779BB1B0AD81B000E4AB1 /* TMPrintSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1779BA1B0AD81B000E4AB1 /* TMPrintSettingViewController.swift */; };
+		6B1779C01B0AEA8F000E4AB1 /* TMPrintDetailSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1779BF1B0AEA8F000E4AB1 /* TMPrintDetailSettingViewController.swift */; };
 		6B1E4B981B0255B6001C0FAB /* SVIndefiniteAnimatedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B1E4B931B0255B6001C0FAB /* SVIndefiniteAnimatedView.m */; };
 		6B1E4B991B0255B6001C0FAB /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6B1E4B951B0255B6001C0FAB /* SVProgressHUD.bundle */; };
 		6B1E4B9A1B0255B6001C0FAB /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B1E4B971B0255B6001C0FAB /* SVProgressHUD.m */; };
+		6B2DE7AD1B1308CB0070079E /* Default-Landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B2DE7AC1B1308CB0070079E /* Default-Landscape@2x.png */; };
 		6B330DC91ADC163C00BBDAF1 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B330DC81ADC163C00BBDAF1 /* SwiftyJSON.swift */; };
 		6B3C129C1AE4743F00D5A8B9 /* AZCodeScannerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B3C129B1AE4743F00D5A8B9 /* AZCodeScannerManager.swift */; };
 		6B3DB4761ADF4F9200ACC391 /* TMProductManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B3DB4751ADF4F9200ACC391 /* TMProductManagedObject.swift */; };
@@ -85,7 +88,6 @@
 		6B7852591ACC353C008F1A49 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B7852581ACC353C008F1A49 /* AppDelegate.swift */; };
 		6B78525E1ACC353D008F1A49 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6B78525C1ACC353D008F1A49 /* Main.storyboard */; };
 		6B7852601ACC353D008F1A49 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6B78525F1ACC353D008F1A49 /* Images.xcassets */; };
-		6B7852631ACC353D008F1A49 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B7852611ACC353D008F1A49 /* LaunchScreen.xib */; };
 		6B78526F1ACC353D008F1A49 /* TMBusinessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B78526E1ACC353D008F1A49 /* TMBusinessTests.swift */; };
 		6B805C201AD4206500F2D968 /* AZPlaceholderTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B805C1F1AD4206500F2D968 /* AZPlaceholderTextView.swift */; };
 		6B8954451AEDDE3B00B0348D /* TMCheckingAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B8954441AEDDE3B00B0348D /* TMCheckingAccountViewController.swift */; };
@@ -317,11 +319,14 @@
 /* Begin PBXFileReference section */
 		6B015A181B05F8FD00FD6CB6 /* TMPrinterManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMPrinterManager.swift; sourceTree = "<group>"; };
 		6B025EA91AE8C3B100C3A9FB /* TMModalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMModalView.swift; sourceTree = "<group>"; };
+		6B1779BA1B0AD81B000E4AB1 /* TMPrintSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMPrintSettingViewController.swift; sourceTree = "<group>"; };
+		6B1779BF1B0AEA8F000E4AB1 /* TMPrintDetailSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMPrintDetailSettingViewController.swift; sourceTree = "<group>"; };
 		6B1E4B921B0255B6001C0FAB /* SVIndefiniteAnimatedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVIndefiniteAnimatedView.h; sourceTree = "<group>"; };
 		6B1E4B931B0255B6001C0FAB /* SVIndefiniteAnimatedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVIndefiniteAnimatedView.m; sourceTree = "<group>"; };
 		6B1E4B951B0255B6001C0FAB /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
 		6B1E4B961B0255B6001C0FAB /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
 		6B1E4B971B0255B6001C0FAB /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
+		6B2DE7AC1B1308CB0070079E /* Default-Landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x.png"; sourceTree = "<group>"; };
 		6B330DC81ADC163C00BBDAF1 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		6B3C129B1AE4743F00D5A8B9 /* AZCodeScannerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZCodeScannerManager.swift; sourceTree = "<group>"; };
 		6B3DB4751ADF4F9200ACC391 /* TMProductManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TMProductManagedObject.swift; sourceTree = "<group>"; };
@@ -403,7 +408,6 @@
 		6B7852581ACC353C008F1A49 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6B78525D1ACC353D008F1A49 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6B78525F1ACC353D008F1A49 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		6B7852621ACC353D008F1A49 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		6B7852681ACC353D008F1A49 /* TMBusinessTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TMBusinessTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B78526D1ACC353D008F1A49 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6B78526E1ACC353D008F1A49 /* TMBusinessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMBusinessTests.swift; sourceTree = "<group>"; };
@@ -608,6 +612,54 @@
 			isa = PBXGroup;
 			children = (
 				6B025EA91AE8C3B100C3A9FB /* TMModalView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		6B1779B01B0AD63D000E4AB1 /* PrinterSettingViewController */ = {
+			isa = PBXGroup;
+			children = (
+				6B1779B11B0AD63D000E4AB1 /* Controller */,
+				6B1779B21B0AD63D000E4AB1 /* View */,
+			);
+			path = PrinterSettingViewController;
+			sourceTree = "<group>";
+		};
+		6B1779B11B0AD63D000E4AB1 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				6B1779BA1B0AD81B000E4AB1 /* TMPrintSettingViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		6B1779B21B0AD63D000E4AB1 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		6B1779BC1B0AEA3B000E4AB1 /* PrintDetailSettingViewController */ = {
+			isa = PBXGroup;
+			children = (
+				6B1779BD1B0AEA3B000E4AB1 /* Controller */,
+				6B1779BE1B0AEA3B000E4AB1 /* View */,
+			);
+			path = PrintDetailSettingViewController;
+			sourceTree = "<group>";
+		};
+		6B1779BD1B0AEA3B000E4AB1 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				6B1779BF1B0AEA8F000E4AB1 /* TMPrintDetailSettingViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		6B1779BE1B0AEA3B000E4AB1 /* View */ = {
+			isa = PBXGroup;
+			children = (
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -887,6 +939,8 @@
 		6B5F080D1ACC55C800CBD3BD /* Sections */ = {
 			isa = PBXGroup;
 			children = (
+				6B1779BC1B0AEA3B000E4AB1 /* PrintDetailSettingViewController */,
+				6B1779B01B0AD63D000E4AB1 /* PrinterSettingViewController */,
 				6B52CC0F1B032F7700D9746F /* BoxPaySettingViewController */,
 				6B5C31491B02E7400085D4E5 /* Setting */,
 				6B942A321AE4909D00AC6AD2 /* QRScan */,
@@ -1058,7 +1112,6 @@
 				6B7852581ACC353C008F1A49 /* AppDelegate.swift */,
 				6B78525C1ACC353D008F1A49 /* Main.storyboard */,
 				6B78525F1ACC353D008F1A49 /* Images.xcassets */,
-				6B7852611ACC353D008F1A49 /* LaunchScreen.xib */,
 				6B7852561ACC353C008F1A49 /* Supporting Files */,
 			);
 			path = TMBusiness;
@@ -1067,6 +1120,7 @@
 		6B7852561ACC353C008F1A49 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				6B2DE7AC1B1308CB0070079E /* Default-Landscape@2x.png */,
 				6B67DE461AE7466E00E27FC6 /* TMBusiness-Bridging-Header.h */,
 				6B7852571ACC353C008F1A49 /* Info.plist */,
 				6B64DB711ADE62D000192C7B /* Thing Me.xcdatamodeld */,
@@ -1639,9 +1693,9 @@
 				6BC3A6891AFF516700452EF4 /* popoverArrowLeft.png in Resources */,
 				6BC3A6871AFF516700452EF4 /* popoverArrowDown@2x.png in Resources */,
 				6BC3A6951AFF516700452EF4 /* popoverBgSimple.png in Resources */,
-				6B7852631ACC353D008F1A49 /* LaunchScreen.xib in Resources */,
 				6BC3A6611AFF516700452EF4 /* Companylogo.png in Resources */,
 				6BC3A6961AFF516700452EF4 /* popoverBgSimple1.png in Resources */,
+				6B2DE7AD1B1308CB0070079E /* Default-Landscape@2x.png in Resources */,
 				6BC3A68E1AFF516700452EF4 /* popoverArrowRightSimple.png in Resources */,
 				6BC3A68B1AFF516700452EF4 /* popoverArrowLeftSimple.png in Resources */,
 				6BABEC471B01DCAC002F9BF9 /* KVNProgressView.xib in Resources */,
@@ -1705,6 +1759,7 @@
 				6BC3A6761AFF516700452EF4 /* SBJsonUTF8Stream.m in Sources */,
 				6B64DB671ADE4EDE00192C7B /* TMProduct.swift in Sources */,
 				6B330DC91ADC163C00BBDAF1 /* SwiftyJSON.swift in Sources */,
+				6B1779C01B0AEA8F000E4AB1 /* TMPrintDetailSettingViewController.swift in Sources */,
 				6BC3A6811AFF516700452EF4 /* UIView+convenience.m in Sources */,
 				6B8A0B021AE00FA000CD2100 /* NSDate+LangExt.swift in Sources */,
 				6BABEC511B01E353002F9BF9 /* WIndicator.swift in Sources */,
@@ -1794,6 +1849,7 @@
 				6BC3A6751AFF516700452EF4 /* SBJsonTokeniser.m in Sources */,
 				6BA460B21AF201BB00FB3A7E /* TMOrderProductDetailView.swift in Sources */,
 				6BA460A61AF1CDBF00FB3A7E /* TMRestingOrderMenuView.swift in Sources */,
+				6B1779BB1B0AD81B000E4AB1 /* TMPrintSettingViewController.swift in Sources */,
 				6B5A2A0C1AEF85D800C787D4 /* TMOrderMenuView.swift in Sources */,
 				6BA06F8B1ACE88BB00DDA62E /* AZPagingContainerMenuListView.swift in Sources */,
 				6BABEC451B01DCAC002F9BF9 /* KVNProgress.m in Sources */,
@@ -1860,14 +1916,6 @@
 				6B78525D1ACC353D008F1A49 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		6B7852611ACC353D008F1A49 /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6B7852621ACC353D008F1A49 /* Base */,
-			);
-			name = LaunchScreen.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

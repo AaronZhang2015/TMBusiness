@@ -19,6 +19,16 @@ class TMCheckingAccountViewController: BaseViewController {
         return TMShopDataManager()
         }()
     
+    private lazy var printerManager: TMPrinterManager = {
+        var manager = TMPrinterManager.sharedInstance
+        manager.failedClosure = {[weak self] in
+            if let strongSelf = self {
+                strongSelf.showMessage("请去系统设置里面配置打印机ip地址")
+            }
+        }
+        return manager
+        }()
+    
     lazy var checkingAccountHeaderView: TMCheckingAccountSearchView = {
         var view = TMCheckingAccountSearchView()
         view.searchButton.addTarget(self, action: "handleSearchActon", forControlEvents: .TouchUpInside)
@@ -103,6 +113,14 @@ class TMCheckingAccountViewController: BaseViewController {
     }
     
     func handlePrintActon() {
+        
+        var IPKey = "\(TMShop.sharedInstance.shop_id)_IP"
+        if let value = NSUserDefaults.standardUserDefaults().stringForKey(IPKey) {
+            printerManager.ipAddress = value
+        } else {
+            showMessage("请去系统设置里面配置打印机ip地址")
+            return
+        }
         
         if let checkingAccount = checkingAccount, startDate = startDate, endDate = endDate {
             TMPrinterManager.sharedInstance.printCheckingAccount(checkingAccount, shop: TMShop.sharedInstance, startDate: startDate.startDateInDay(), endDate: endDate)

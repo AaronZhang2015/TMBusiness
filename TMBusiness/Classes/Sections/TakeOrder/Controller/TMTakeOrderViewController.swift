@@ -22,6 +22,16 @@ class TMTakeOrderViewController: BaseViewController {
     
     private lazy var orderDataManager: TMOrderDataManager = TMOrderDataManager()
     
+    private lazy var printerManager: TMPrinterManager = {
+        var manager = TMPrinterManager.sharedInstance
+        manager.failedClosure = {[weak self] in
+            if let strongSelf = self {
+                strongSelf.showMessage("请去系统设置里面配置打印机ip地址")
+            }
+        }
+        return manager
+        }()
+    
     var loginViewController: CBLoginViewController!
     
     // 备注操作
@@ -53,9 +63,6 @@ class TMTakeOrderViewController: BaseViewController {
     
     var isRecharging: Bool = false
     var rechargeId: String?
-    
-    // 备注内容
-//    var orderDescription: String = ""
     
     // 遮罩页面
     private lazy var maskView: UIView = {
@@ -140,6 +147,7 @@ class TMTakeOrderViewController: BaseViewController {
     // 充值页面
     private lazy var rechargeView: TMRechargeView = {
         var rechargeView = TMRechargeView(frame: CGRectMake(0, 0, 375, 470))
+        rechargeView.cancelButton.addTarget(self, action: "hideRechargeView", forControlEvents: .TouchUpInside)
         rechargeView.rechargeClosure = { [weak self] (reward, rechargeType) in
             if let strongSelf = self {
                 
@@ -157,6 +165,7 @@ class TMTakeOrderViewController: BaseViewController {
     // 消费记录页面
     private lazy var consumeRecordView: TMConsumeRecordView = {
         var consumeRecordView = TMConsumeRecordView(frame: CGRectMake(0, 0, 452 + 18, 450 + 10))
+        consumeRecordView.closeButton.addTarget(self, action: "hideConsumeView", forControlEvents: .TouchUpInside)
         consumeRecordView.tableView.addPullToRefresh({ [weak self] () -> () in
             
             if let strongSelf = self {
@@ -468,10 +477,18 @@ class TMTakeOrderViewController: BaseViewController {
         shopDataManager.fetchEntityProductList(TMShop.sharedInstance.shop_id!, adminId:TMShop.sharedInstance.admin_id, completion: { [weak self] (list, error) -> Void in
             if let strongSelf = self {
                 strongSelf.stopActivity()
-                if let e = error {
-                    
+//                if let e = error {
+//                    
+//                } else {
+//                    strongSelf.data = list!
+//                    strongSelf.configureProductListView()
+//                }
+                
+                if let result = list {
+                    strongSelf.data = result
+                    strongSelf.configureProductListView()
                 } else {
-                    strongSelf.data = list!
+                    strongSelf.data.removeAll(keepCapacity: false)
                     strongSelf.configureProductListView()
                 }
             }
@@ -527,6 +544,92 @@ class TMTakeOrderViewController: BaseViewController {
         }
     }
     
+    /**
+    显示充值页面
+    */
+    func showRechargeView() {
+        if maskView.superview == nil {
+            view.addSubview(maskView)
+        }
+        
+        view.bringSubviewToFront(maskView)
+        
+        if rechargeView.superview == nil {
+            view.addSubview(rechargeView)
+            rechargeView.centerY = maskView.centerY
+            rechargeView.centerX = maskView.centerX
+        }
+        view.bringSubviewToFront(rechargeView)
+        
+        maskView.alpha = 0.4
+        
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.rechargeView.alpha = 1.0
+            }) { (finished) -> Void in
+                return
+        }
+        
+        rechargeView.transform = CGAffineTransformMakeScale(0.5, 0.5)
+        UIView.animateWithDuration(0.3, delay: 0.0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0.3, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+            self.rechargeView.transform = CGAffineTransformIdentity
+            }, completion: nil)
+    }
+    
+    
+    /**
+    隐藏充值页面
+    */
+    func hideRechargeView() {
+        UIView.animateWithDuration(0.3, delay: 0.0, options: .CurveEaseInOut, animations: { () -> Void in
+            self.rechargeView.alpha = 0.0
+            }) { (finished) -> Void in
+                self.maskView.alpha = 0
+        }
+    }
+    
+    /**
+    显示消费页面
+    */
+    func showConsumeView() {
+        if maskView.superview == nil {
+            view.addSubview(maskView)
+        }
+        
+        view.bringSubviewToFront(maskView)
+        
+        if consumeRecordView.superview == nil {
+            view.addSubview(consumeRecordView)
+            consumeRecordView.centerY = maskView.centerY
+            consumeRecordView.centerX = maskView.centerX
+        }
+        view.bringSubviewToFront(consumeRecordView)
+        
+        maskView.alpha = 0.4
+        
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.consumeRecordView.alpha = 1.0
+            }) { (finished) -> Void in
+                return
+        }
+        
+        consumeRecordView.transform = CGAffineTransformMakeScale(0.5, 0.5)
+        UIView.animateWithDuration(0.3, delay: 0.0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0.3, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+            self.consumeRecordView.transform = CGAffineTransformIdentity
+            }, completion: nil)
+    }
+    
+    
+    /**
+    隐藏充值页面
+    */
+    func hideConsumeView() {
+        UIView.animateWithDuration(0.3, delay: 0.0, options: .CurveEaseInOut, animations: { () -> Void in
+            self.consumeRecordView.alpha = 0.0
+            }) { (finished) -> Void in
+                self.maskView.alpha = 0
+        }
+    }
+    
     // MARK: - 充值
     
     /**
@@ -534,11 +637,9 @@ class TMTakeOrderViewController: BaseViewController {
     */
     func hanldeRechargeAction() {
         if let user = takeOrderCompute.user {
-            rechargeView.show()
+            showRechargeView()
             return
         }
-        
-//        presentInfoAlertView("请输入会员手机号或者扫描会员二维码")
         showCodeScanView()
     }
     
@@ -550,13 +651,11 @@ class TMTakeOrderViewController: BaseViewController {
     */
     func handleConsumeAction() {
         if let user = takeOrderCompute.user {
-            consumeRecordView.show()
+            showConsumeView()
             // 加载消费记录数据
             fetchUserOrderList()
             return
         }
-//        presentInfoAlertView("请输入会员手机号或者扫描会员二维码")
-        
         showCodeScanView()
     }
     
@@ -705,11 +804,11 @@ class TMTakeOrderViewController: BaseViewController {
             
             if let strongSelf = self {
                 strongSelf.stopActivity()
-                if error == nil {
-                    if let user = user {
-                        strongSelf.takeOrderCompute.setUserDetail(user, hasProducts: true)
-                        strongSelf.membershipCardPayView.phoneNumberTextField.text = ""
-                    }
+                if let e = error where e.code == 3001 {
+                    strongSelf.showMessage("查询用户不存在")
+                } else if let user = user {
+                    strongSelf.takeOrderCompute.setUserDetail(user, hasProducts: true)
+                    strongSelf.membershipCardPayView.phoneNumberTextField.text = ""
                 }
             }
             
@@ -759,14 +858,11 @@ class TMTakeOrderViewController: BaseViewController {
             
             // 判断当前支付方式，如果是包含现金支付，并且现金确实需要额外支付
             // 那么跳转到现金支付页面，进行操作
-            
             if !takeOrderCompute.isWaitForPaying {
-//                order = takeOrderCompute.getOrder(membershipCardPayView.remarkTextView.text)
                 order = takeOrderCompute.getOrder()
             }
             
             var transactionMode = takeOrderCompute.getTransactionMode()
-            
             
             if transactionMode == .Cash {
                 if takeOrderCompute.getActualAmount() > 0 {
@@ -821,7 +917,6 @@ class TMTakeOrderViewController: BaseViewController {
                             // 如果不是刷卡的话，提示成功
                             if strongSelf.order.transaction_mode != TMTransactionMode.IBoxPay {
                                 strongSelf.presentInfoAlertView("支付成功")
-//                                TMPrinterManager.sharedInstance.print(strongSelf.order, user: strongSelf.takeOrderCompute.user, shop: TMShop.sharedInstance)
                                 strongSelf.handlePrintAction(strongSelf.order, user: strongSelf.takeOrderCompute.user, shop: TMShop.sharedInstance)
                                 // 清空之前用户数据
                                 strongSelf.takeOrderCompute.clearAllData()
@@ -861,7 +956,6 @@ class TMTakeOrderViewController: BaseViewController {
             order.business_id = TMShop.sharedInstance.business_id
             order.admin_id = TMShop.sharedInstance.admin_id
             startActivity()
-//            var newOrder = takeOrderCompute.getOrder(membershipCardPayView.remarkTextView.text)
             var newOrder = takeOrderCompute.getOrder()
             if newOrder.product_records.count > 0 {
                 orderDataManager.updateOrderStatus(order) {[weak self] success in
@@ -967,7 +1061,8 @@ class TMTakeOrderViewController: BaseViewController {
                     } else {
                         strongSelf.order.order_id = orderId
                         
-                        strongSelf.presentInfoAlertView("下单成功")
+//                        strongSelf.presentInfoAlertView("下单成功")
+                        strongSelf.showSuccessfulMessage("下单成功", timeout: 3.0)
 //                        TMPrinterManager.sharedInstance.print(strongSelf.order, user: strongSelf.takeOrderCompute.user, shop: TMShop.sharedInstance)
                         strongSelf.handlePrintAction(strongSelf.order, user: strongSelf.takeOrderCompute.user, shop: TMShop.sharedInstance)
                         NSNotificationCenter.defaultCenter().postNotificationName(TMOrderListNeedRefresh, object: nil)
@@ -1047,6 +1142,7 @@ class TMTakeOrderViewController: BaseViewController {
                 totalAmount += reward_number.integerValue
             }
             
+            hideRechargeView()
             startActivity()
             userDataManager.doUserRechargeWithCash(userId: user_id, rewardId: reward_id, totalAmount: NSNumber(integer: totalAmount), actualAmount: current_number_max, actualType: .Cash, shopId: TMShop.sharedInstance.shop_id, businessId: TMShop.sharedInstance.business_id, adminId: TMShop.sharedInstance.admin_id, completion: { [weak self] (error) -> Void in
                 
@@ -1087,6 +1183,7 @@ class TMTakeOrderViewController: BaseViewController {
                 totalAmount += reward_number.integerValue
             }
             
+            hideRechargeView()
             startActivity()
             userDataManager.doUserRecharge(userId: user_id, rewardId: reward_id, totalAmount: NSNumber(integer: totalAmount), actualAmount: current_number_max, actualType: .BoxPay, shopId: TMShop.sharedInstance.shop_id, businessId: TMShop.sharedInstance.business_id, adminId: TMShop.sharedInstance.admin_id, completion: { [weak self] (rechargeId, error) -> Void in
                 
@@ -1182,12 +1279,13 @@ class TMTakeOrderViewController: BaseViewController {
     :param: order 订单
     :param: user  用户信息
     */
-    func loadFromOrderList(order: TMOrder, user: TMUser? = nil) {
+    func loadFromOrderList(order: TMOrder, user: TMUser? = nil, isChangeOrder: Bool = false) {
         editIndexPath = nil
         hideMembershipCardPayView(false)
         hideCashPayView(false)
         takeOrderCompute.clearAllData()
         
+        takeOrderCompute.isChangeOrder = isChangeOrder
         if let orderDescription = order.order_description {
             takeOrderCompute.orderDescription = orderDescription
         }
@@ -1220,6 +1318,62 @@ class TMTakeOrderViewController: BaseViewController {
     }
     
     func updateOrder() {
+        
+        order.business_id = TMShop.sharedInstance.business_id
+        order.admin_id = TMShop.sharedInstance.admin_id
+        if order.user_id == nil {
+            order.user_id = TMShop.sharedInstance.shop_id
+        }
+        startActivity()
+        
+        if let order_id = order.order_id where !takeOrderCompute.isChangeOrder {
+        
+            // 反结账
+            orderDataManager.updateOrderEntityInfo(order) { [weak self](orderId, error) -> Void in
+                if let strongSelf = self {
+                    strongSelf.stopActivity()
+                    // 订单成功
+                    if let e = error {
+                        // 提示错误
+                        var alert = UIAlertView(title: "提示", message: "支付提交失败", delegate: nil, cancelButtonTitle: "确定")
+                        alert.show()
+                    } else {
+                        // 反结账成功
+                        strongSelf.order.order_id = nil
+                        
+                        strongSelf.updateOrder()
+                    }
+                }
+            }
+        } else {
+            order.status = .TransactionDone
+            orderDataManager.addOrderEntityInfo(order, completion: { [weak self] (orderId, error) in
+                if let strongSelf = self {
+                    
+                    strongSelf.stopActivity()
+                    // 订单成功
+                    if let e = error {
+                        // 提示错误
+                        var alert = UIAlertView(title: "提示", message: "支付提交失败", delegate: nil, cancelButtonTitle: "确定")
+                        alert.show()
+                    } else {
+                        strongSelf.order.order_id = orderId
+                        // 提示操作成功
+                        strongSelf.hideCashPayView(true)
+                        strongSelf.hideMembershipCardPayView(false)
+                        // 清空之前用户数据
+                        strongSelf.presentInfoAlertView("支付成功")
+                        strongSelf.handlePrintAction(strongSelf.order, user: strongSelf.takeOrderCompute.user, shop: TMShop.sharedInstance)
+                        strongSelf.takeOrderCompute.clearAllData()
+                        NSNotificationCenter.defaultCenter().postNotificationName(TMOrderListNeedRefresh, object: nil)
+                    }
+                }
+                })
+        }
+
+        
+        
+        /*
         // 更新订单状态
         order.status = TMOrderStatus.Invalid
         order.business_id = TMShop.sharedInstance.business_id
@@ -1259,6 +1413,7 @@ class TMTakeOrderViewController: BaseViewController {
                 }
             }
         }
+        */
     }
     
     // MARK: - 结算方式
@@ -1477,30 +1632,55 @@ class TMTakeOrderViewController: BaseViewController {
     }
     
     func handlePrintAction(order: TMOrder, user: TMUser?, shop: TMShop) {
-        // 首先获取单号
-        orderDataManager.fetchOrderIndex(shop.shop_id, completion: { (error, order_index) -> Void in
-            var orderIndex = 0
+        
+        var printStatusKey = "\(TMShop.sharedInstance.shop_id)_PrintStatus"
+        
+        if !NSUserDefaults.standardUserDefaults().boolForKey(printStatusKey) {
+            return
+        }
+        
+        var IPKey = "\(TMShop.sharedInstance.shop_id)_IP"
+        if let value = NSUserDefaults.standardUserDefaults().stringForKey(IPKey) {
+            printerManager.ipAddress = value
+        } else {
             
-            if let index = order_index?.toInt() {
-                orderIndex = index + 1
-            } else {
-                // 获取本地单号缓存
-                if let order_index = NSUserDefaults.standardUserDefaults().stringForKey("TMOrderIndex") {
-                    if let index = order_index.toInt() {
-                        orderIndex = index + 1
+            delay(seconds: 3.0, completion: { [weak self ]() -> () in
+                if let strongSelf = self {
+                    strongSelf.showMessage("请去系统设置里面配置打印机ip地址")
+                }
+            })
+            
+            return
+        }
+
+        // 首先获取单号
+        orderDataManager.fetchOrderIndex(shop.shop_id, completion: { [weak self] (error, order_index) -> Void in
+            
+            if let strongSelf = self {
+                var orderIndex = 0
+                
+                if let index = order_index?.toInt() {
+                    orderIndex = index + 1
+                } else {
+                    // 获取本地单号缓存
+                    if let order_index = NSUserDefaults.standardUserDefaults().stringForKey("TMOrderIndex") {
+                        if let index = order_index.toInt() {
+                            orderIndex = index + 1
+                        } else {
+                            orderIndex = 0
+                        }
                     } else {
                         orderIndex = 0
                     }
-                } else {
-                    orderIndex = 0
                 }
+                
+                // 单号获取成功
+                // 打印
+                order.order_index = "\(orderIndex)"
+                NSUserDefaults.standardUserDefaults().setValue(order.order_index!, forKey: "TMOrderIndex")
+                strongSelf.printerManager.print(order, user: user, shop: TMShop.sharedInstance)
             }
             
-            // 单号获取成功
-            // 打印
-            order.order_index = "\(orderIndex)"
-            NSUserDefaults.standardUserDefaults().setValue(order.order_index!, forKey: "TMOrderIndex")
-            TMPrinterManager.sharedInstance.print(order, user: user, shop: TMShop.sharedInstance)
         })
     }
 }

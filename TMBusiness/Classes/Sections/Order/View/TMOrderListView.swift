@@ -253,6 +253,8 @@ class TMOrderDetailCell: UITableViewCell {
         
         if let phoneNumber = model.user_mobile_number {
             phoneNumberLabel.text = phoneNumber
+        } else {
+            phoneNumberLabel.text = ""
         }
         
         let format = ".2"

@@ -11,20 +11,30 @@ import UIKit
 class TMProductCell: UICollectionViewCell {
     
     var productNameLabel: UILabel!
+    var priceLabel: UILabel!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundView = UIImageView(image: UIImage(named: "caibg"))
         selectedBackgroundView = UIImageView(image: UIImage(named: "caibg_on"))
         
-        productNameLabel = UILabel(frame: bounds)
-        productNameLabel.numberOfLines = 3
+        productNameLabel = UILabel(frame: CGRectMake(0, 0, bounds.width, bounds.height - 40))
+        productNameLabel.numberOfLines = 2
         productNameLabel.font = UIFont.systemFontOfSize(20.0)
         productNameLabel.textAlignment = .Center
         productNameLabel.backgroundColor = UIColor.clearColor()
         productNameLabel.textColor = UIColor.blackColor()
             productNameLabel.highlightedTextColor = UIColor.whiteColor()
         addSubview(productNameLabel)
+        
+        priceLabel = UILabel(frame: CGRectMake(0, bounds.height - 30, bounds.width, 20))
+        priceLabel.numberOfLines = 1
+        priceLabel.font = UIFont.systemFontOfSize(20.0)
+        priceLabel.textAlignment = .Center
+        priceLabel.backgroundColor = UIColor.clearColor()
+        priceLabel.textColor = UIColor.blackColor()
+        priceLabel.highlightedTextColor = UIColor.whiteColor()
+        addSubview(priceLabel)
     }
     
     required init(coder aDecoder: NSCoder) {

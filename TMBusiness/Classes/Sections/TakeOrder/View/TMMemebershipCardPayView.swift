@@ -747,6 +747,11 @@ class TMMemebershipCardPayView: UIView {
                     cashLabel.hidden = false
                     cashTitleLabel.hidden = false
                     cashLabel.text = "¥\(actualAmount.format(format))"
+                } else if sender == cashButton {
+                    takeOrderCompute.setTransactionMode(.Balance)
+                    cashLabel.hidden = true
+                    cashTitleLabel.hidden = true
+                    cashLabel.text = "¥0.00"
                 }
             }
             return

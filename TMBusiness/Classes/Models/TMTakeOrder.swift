@@ -219,6 +219,11 @@ class TMTakeOrderCompute {
     
     var isRestingOrder: Bool = false
     
+    var isChangeOrder: Bool = false
+    // 当前订单状态
+//    var orderStatus: TMOrderStatus = .Resting
+    
+    
     var orderIndex: String?
     
     // 用户实体信息

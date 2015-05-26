@@ -85,25 +85,33 @@ class MasterViewController: BaseViewController {
         
         view.backgroundColor = UIColor.whiteColor()
         // 设置按钮
-        var settingButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
-        settingButton.frame = CGRectMake(0, 0, 26, 26)
-        settingButton.setBackgroundImage(UIImage(named: "shezhi"), forState: .Normal)
-        settingButton.setBackgroundImage(UIImage(named: "shezhi_on"), forState: .Highlighted)
-        settingButton.addTarget(self, action: "handleSettingAction", forControlEvents: .TouchUpInside)
-        var settingBarButtonItem = UIBarButtonItem(customView: settingButton)
+//        var settingButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
+//        settingButton.frame = CGRectMake(0, 0, 36, 26)
+//        settingButton.setTitle("设置", forState: .Normal)
+////        settingButton.setBackgroundImage(UIImage(named: "shezhi"), forState: .Normal)
+////        settingButton.setBackgroundImage(UIImage(named: "shezhi_on"), forState: .Highlighted)
+//        settingButton.addTarget(self, action: "handleSettingAction", forControlEvents: .TouchUpInside)
+//        var settingBarButtonItem = UIBarButtonItem(customView: settingButton)
+        
+        var settingBarButtonItem = UIBarButtonItem(title: "设置", style: UIBarButtonItemStyle.Plain, target: self, action: "handleSettingAction")
         
         var flexibleBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FixedSpace, target: nil, action: nil)
         flexibleBarButtonItem.width = 30
         
         // 退出按钮
-        var logoutButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
-        logoutButton.frame = CGRectMake(0, 0, 26, 26)
-        logoutButton.setBackgroundImage(UIImage(named: "tuichu"), forState: .Normal)
-        logoutButton.setBackgroundImage(UIImage(named: "tuichu_on"), forState: .Highlighted)
-        logoutButton.addTarget(self, action: "handleLogoutAction", forControlEvents: .TouchUpInside)
-        var logoutBarButtonItem = UIBarButtonItem(customView: logoutButton)
+//        var logoutButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
+//        logoutButton.frame = CGRectMake(0, 0, 36, 26)
+////        settingButton.setTitle("退出", forState: .Normal)
+//        logoutButton.setBackgroundImage(UIImage(named: "tuichu"), forState: .Normal)
+//        logoutButton.setBackgroundImage(UIImage(named: "tuichu_on"), forState: .Highlighted)
+//        logoutButton.addTarget(self, action: "handleLogoutAction", forControlEvents: .TouchUpInside)
+//        var logoutBarButtonItem = UIBarButtonItem(customView: logoutButton)
         
-        navigationItem.rightBarButtonItems = [settingBarButtonItem, flexibleBarButtonItem, logoutBarButtonItem]
+        var logoutBarButtonItem = UIBarButtonItem(title: "退出", style: UIBarButtonItemStyle.Plain, target: self, action: "handleLogoutAction")
+        
+        var changeUserBarButtonItem = UIBarButtonItem(title: "交接班", style: UIBarButtonItemStyle.Plain, target: self, action: "changeUserAction")
+        
+        navigationItem.rightBarButtonItems = [settingBarButtonItem, flexibleBarButtonItem, logoutBarButtonItem, flexibleBarButtonItem, changeUserBarButtonItem]
         
         // 左边Logo
         var logoButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
@@ -129,6 +137,11 @@ class MasterViewController: BaseViewController {
     
     func handleCheckoutAction(order: TMOrder, user: TMUser? = nil) {
         takeOrderViewController.loadFromOrderList(order, user: user)
+        segmentControl.selectedIndex = 0
+    }
+    
+    func handleChangeOrderAction(order: TMOrder, user: TMUser? = nil) {
+        takeOrderViewController.loadFromOrderList(order, user: user, isChangeOrder: true)
         segmentControl.selectedIndex = 0
     }
     
@@ -199,7 +212,23 @@ extension MasterViewController {
     
     func handleLogoutAction() {
         
-        var alert = UIAlertView(title: "提示", message: "是否注销当前用户", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "注销")
+        
+        // 注销之前先判定本地是否有挂单
+        var restingOrderList = orderDataManager.fetchRestingOrderList()
+        
+        if restingOrderList.isEmpty {
+            var alert = UIAlertView(title: "提示", message: "是否注销当前用户", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "注销")
+            alert.show()
+        } else {
+            var alert = UIAlertView(title: "提示", message: "您还有挂单尚未处理完，是否注销当前用户", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "注销")
+            alert.show()
+        }
+
+    }
+    
+    func changeUserAction() {
+        var alert = UIAlertView(title: "提示", message: "是否进行交接班", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "交接班")
+        alert.tag = 1001
         alert.show()
     }
     
@@ -226,17 +255,23 @@ extension MasterViewController: TMSettingViewControllerDelegate{
 extension MasterViewController: TMLoginViewControllerDelegate {
     func loginActionDidLoginSuccessful() {
         segmentControl.selectedIndex = 0
+        takeOrderViewController.takeOrderCompute.clearAllData()
+        orderViewController = TMOrderViewController()
+        checkingAccountController = TMCheckingAccountViewController()
     }
 }
 
 extension MasterViewController: UIAlertViewDelegate {
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
         if buttonIndex == 1 {
-            // 删除登录信息
             takeOrderViewController.takeOrderCompute.clearAllData()
-            NSFileManager.defaultManager().removeItemAtPath(shopPath, error: nil)
-            shopDataManager.clearCategoryAndProduct()
-            orderDataManager.clearRestingOrder()
+            // 删除登录信息
+            if alertView.tag != 1001 {
+                NSFileManager.defaultManager().removeItemAtPath(shopPath, error: nil)
+                shopDataManager.clearCategoryAndProduct()
+                orderDataManager.clearRestingOrder()
+            }
+            
             presentLoginViewController()
         }
     }

@@ -59,6 +59,7 @@ typedef NS_ENUM(NSUInteger, SVProgressHUDMaskType) {
 + (void)showInfoWithStatus:(NSString *)string maskType:(SVProgressHUDMaskType)maskType;
 
 + (void)showSuccessWithStatus:(NSString*)string;
++ (void)showSuccessWithStatus:(NSString*)string duration:(NSTimeInterval)duration;
 + (void)showSuccessWithStatus:(NSString*)string maskType:(SVProgressHUDMaskType)maskType;
 
 + (void)showErrorWithStatus:(NSString *)string;

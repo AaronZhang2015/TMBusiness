@@ -185,6 +185,7 @@ class TMOrderProductListView: UIView {
         // 交易完成按钮
         addSubview(transactionDoneMenuView)
         transactionDoneMenuView.printButton.addTarget(self, action: "handlePrintAction", forControlEvents: .TouchUpInside)
+        transactionDoneMenuView.changeButton.addTarget(self, action: "handleChangeOrderAction", forControlEvents: .TouchUpInside)
         transactionDoneMenuView.hidden = true
         transactionDoneMenuView.snp_makeConstraints { (make) -> Void in
             make.bottom.equalTo(boxImageView.snp_bottom)
