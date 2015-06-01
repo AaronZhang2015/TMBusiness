@@ -636,8 +636,23 @@ class TMTakeOrderViewController: BaseViewController {
     处理充值按钮点击事件
     */
     func hanldeRechargeAction() {
-        if let user = takeOrderCompute.user {
-            showRechargeView()
+        if let user = takeOrderCompute.user, reward_record_list = user.reward_record {
+            
+            var reward_record: TMRewardRecord?
+            
+            for record in reward_record_list {
+                if record.type?.integerValue == TMRewardType.Recharge.rawValue {
+                    reward_record = record
+                    break
+                }
+            }
+            
+            if let reward_record = reward_record, rewards = reward_record.shop?.rewards where rewards.count > 0 {
+                showRechargeView()
+            } else {
+                presentInfoAlertView("没有可充值信息")
+            }
+            
             return
         }
         showCodeScanView()
@@ -1011,10 +1026,11 @@ class TMTakeOrderViewController: BaseViewController {
             order.status = .Invalid
             order.business_id = TMShop.sharedInstance.business_id
             order.admin_id = TMShop.sharedInstance.admin_id
-            startActivity()
+            
 //            var newOrder = takeOrderCompute.getOrder(membershipCardPayView.remarkTextView.text)
             var newOrder = takeOrderCompute.getOrder()
             if newOrder.product_records.count > 0 {
+                startActivity()
                 orderDataManager.updateOrderStatus(order) {[weak self] success in
                     if let strongSelf = self {
                         
@@ -1346,6 +1362,7 @@ class TMTakeOrderViewController: BaseViewController {
                 }
             }
         } else {
+            order = takeOrderCompute.getOrder()
             order.status = .TransactionDone
             orderDataManager.addOrderEntityInfo(order, completion: { [weak self] (orderId, error) in
                 if let strongSelf = self {

@@ -81,6 +81,7 @@ class TMShop: NSObject, NSCoding {
         aCoder.encodeObject(shop_name, forKey: "shop_name")
         aCoder.encodeObject(admin_id, forKey: "admin_id")
         aCoder.encodeObject(admin_name, forKey: "admin_name")
+        aCoder.encodeObject(address, forKey: "address")
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -89,5 +90,6 @@ class TMShop: NSObject, NSCoding {
         shop_name = aDecoder.decodeObjectForKey("shop_name") as? String
         admin_id = aDecoder.decodeObjectForKey("admin_id") as! String
         admin_name = aDecoder.decodeObjectForKey("admin_name") as? String
+        address = aDecoder.decodeObjectForKey("address") as? String
     }
 }

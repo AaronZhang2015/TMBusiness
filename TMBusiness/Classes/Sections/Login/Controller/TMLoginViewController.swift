@@ -58,10 +58,19 @@ extension TMLoginViewController {
         var password = loginView.passwordTextField.text
         // test
         
-        if count(username) == 0 {
-            username = "ys006"
-            password = "123456"
+//        if count(username) == 0 {
+//            username = "ys006"
+//            password = "123456"
+//        }
+        
+        if username.isEmpty {
+            presentInfoAlertView("请输入用户名")
+            return
+        } else if password.isEmpty {
+            presentInfoAlertView("请输入密码")
+            return
         }
+        
         
         loginView.passwordTextField.resignFirstResponder()
         loginView.usernameTextField.resignFirstResponder()
@@ -72,7 +81,7 @@ extension TMLoginViewController {
             if let strongSelf = self {
                 strongSelf.stopActivity()
                 if let e = error {
-                    
+                    strongSelf.presentInfoAlertView("用户名和密码错误")
                 } else {
                     if let delegate = strongSelf.delegate {
                         // 持久化
